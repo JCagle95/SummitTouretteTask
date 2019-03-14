@@ -31,6 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainpage));
             this.Mainpage_TaskTab = new System.Windows.Forms.TabControl();
             this.Welcome_Tab = new System.Windows.Forms.TabPage();
+            this.Summit_SenseStatus = new System.Windows.Forms.Label();
+            this.Summit_StimStatus = new System.Windows.Forms.Label();
+            this.Summit_UntilEOS = new System.Windows.Forms.Label();
+            this.Summit_SerialNumber = new System.Windows.Forms.Label();
+            this.Summit_BatteryLevel = new System.Windows.Forms.Label();
             this.Summit_GetStatusButton = new System.Windows.Forms.Button();
             this.Summit_DiscoverRCS = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
@@ -54,17 +59,18 @@
             this.LeftCh2_Checkbox = new System.Windows.Forms.CheckBox();
             this.LeftCh1_Checkbox = new System.Windows.Forms.CheckBox();
             this.Montage_Run = new System.Windows.Forms.Button();
-            this.Summit_BatteryLevel = new System.Windows.Forms.Label();
-            this.Summit_SerialNumber = new System.Windows.Forms.Label();
-            this.Summit_UntilEOS = new System.Windows.Forms.Label();
-            this.Summit_StimStatus = new System.Windows.Forms.Label();
-            this.Summit_SsenseStatus = new System.Windows.Forms.Label();
+            this.ConfigSensing_Tab = new System.Windows.Forms.TabPage();
+            this.Task_Tab = new System.Windows.Forms.TabPage();
+            this.Sensing_SamplingRate = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.Sensing_GetStatusButton = new System.Windows.Forms.Button();
             this.Mainpage_TaskTab.SuspendLayout();
             this.Welcome_Tab.SuspendLayout();
             this.Montage_Tab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Montage_FrameDuration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Montage_Duration)).BeginInit();
             this.LeadSelection_Panel.SuspendLayout();
+            this.ConfigSensing_Tab.SuspendLayout();
             this.SuspendLayout();
             // 
             // Mainpage_TaskTab
@@ -73,7 +79,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Mainpage_TaskTab.Controls.Add(this.Welcome_Tab);
+            this.Mainpage_TaskTab.Controls.Add(this.ConfigSensing_Tab);
             this.Mainpage_TaskTab.Controls.Add(this.Montage_Tab);
+            this.Mainpage_TaskTab.Controls.Add(this.Task_Tab);
             this.Mainpage_TaskTab.Font = new System.Drawing.Font("Segoe UI Semibold", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Mainpage_TaskTab.Location = new System.Drawing.Point(80, 45);
             this.Mainpage_TaskTab.Name = "Mainpage_TaskTab";
@@ -86,7 +94,7 @@
             // 
             this.Welcome_Tab.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.Welcome_Tab.BackColor = System.Drawing.Color.LightGray;
-            this.Welcome_Tab.Controls.Add(this.Summit_SsenseStatus);
+            this.Welcome_Tab.Controls.Add(this.Summit_SenseStatus);
             this.Welcome_Tab.Controls.Add(this.Summit_StimStatus);
             this.Welcome_Tab.Controls.Add(this.Summit_UntilEOS);
             this.Welcome_Tab.Controls.Add(this.Summit_SerialNumber);
@@ -107,6 +115,61 @@
             this.Welcome_Tab.TabIndex = 0;
             this.Welcome_Tab.Text = "Welcome";
             this.Welcome_Tab.UseVisualStyleBackColor = true;
+            // 
+            // Summit_SenseStatus
+            // 
+            this.Summit_SenseStatus.AutoSize = true;
+            this.Summit_SenseStatus.BackColor = System.Drawing.Color.Transparent;
+            this.Summit_SenseStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Summit_SenseStatus.Location = new System.Drawing.Point(74, 608);
+            this.Summit_SenseStatus.Name = "Summit_SenseStatus";
+            this.Summit_SenseStatus.Size = new System.Drawing.Size(240, 45);
+            this.Summit_SenseStatus.TabIndex = 15;
+            this.Summit_SenseStatus.Text = "Sensing Status:";
+            // 
+            // Summit_StimStatus
+            // 
+            this.Summit_StimStatus.AutoSize = true;
+            this.Summit_StimStatus.BackColor = System.Drawing.Color.Transparent;
+            this.Summit_StimStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Summit_StimStatus.Location = new System.Drawing.Point(74, 544);
+            this.Summit_StimStatus.Name = "Summit_StimStatus";
+            this.Summit_StimStatus.Size = new System.Drawing.Size(293, 45);
+            this.Summit_StimStatus.TabIndex = 14;
+            this.Summit_StimStatus.Text = "Stimulation Status:";
+            // 
+            // Summit_UntilEOS
+            // 
+            this.Summit_UntilEOS.AutoSize = true;
+            this.Summit_UntilEOS.BackColor = System.Drawing.Color.Transparent;
+            this.Summit_UntilEOS.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Summit_UntilEOS.Location = new System.Drawing.Point(74, 479);
+            this.Summit_UntilEOS.Name = "Summit_UntilEOS";
+            this.Summit_UntilEOS.Size = new System.Drawing.Size(240, 45);
+            this.Summit_UntilEOS.TabIndex = 13;
+            this.Summit_UntilEOS.Text = "Days until EOS:";
+            // 
+            // Summit_SerialNumber
+            // 
+            this.Summit_SerialNumber.AutoSize = true;
+            this.Summit_SerialNumber.BackColor = System.Drawing.Color.Transparent;
+            this.Summit_SerialNumber.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Summit_SerialNumber.Location = new System.Drawing.Point(74, 355);
+            this.Summit_SerialNumber.Name = "Summit_SerialNumber";
+            this.Summit_SerialNumber.Size = new System.Drawing.Size(237, 45);
+            this.Summit_SerialNumber.TabIndex = 12;
+            this.Summit_SerialNumber.Text = "Serial Number:";
+            // 
+            // Summit_BatteryLevel
+            // 
+            this.Summit_BatteryLevel.AutoSize = true;
+            this.Summit_BatteryLevel.BackColor = System.Drawing.Color.Transparent;
+            this.Summit_BatteryLevel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Summit_BatteryLevel.Location = new System.Drawing.Point(74, 419);
+            this.Summit_BatteryLevel.Name = "Summit_BatteryLevel";
+            this.Summit_BatteryLevel.Size = new System.Drawing.Size(217, 45);
+            this.Summit_BatteryLevel.TabIndex = 11;
+            this.Summit_BatteryLevel.Text = "Battery Level:";
             // 
             // Summit_GetStatusButton
             // 
@@ -439,60 +502,61 @@
             this.Montage_Run.UseVisualStyleBackColor = false;
             this.Montage_Run.Click += new System.EventHandler(this.Montage_Run_Click);
             // 
-            // Summit_BatteryLevel
+            // ConfigSensing_Tab
             // 
-            this.Summit_BatteryLevel.AutoSize = true;
-            this.Summit_BatteryLevel.BackColor = System.Drawing.Color.Transparent;
-            this.Summit_BatteryLevel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Summit_BatteryLevel.Location = new System.Drawing.Point(74, 419);
-            this.Summit_BatteryLevel.Name = "Summit_BatteryLevel";
-            this.Summit_BatteryLevel.Size = new System.Drawing.Size(217, 45);
-            this.Summit_BatteryLevel.TabIndex = 11;
-            this.Summit_BatteryLevel.Text = "Battery Level:";
+            this.ConfigSensing_Tab.Controls.Add(this.Sensing_GetStatusButton);
+            this.ConfigSensing_Tab.Controls.Add(this.Sensing_SamplingRate);
+            this.ConfigSensing_Tab.Controls.Add(this.label9);
+            this.ConfigSensing_Tab.Location = new System.Drawing.Point(8, 64);
+            this.ConfigSensing_Tab.Name = "ConfigSensing_Tab";
+            this.ConfigSensing_Tab.Padding = new System.Windows.Forms.Padding(3);
+            this.ConfigSensing_Tab.Size = new System.Drawing.Size(1744, 828);
+            this.ConfigSensing_Tab.TabIndex = 2;
+            this.ConfigSensing_Tab.Text = "Sensing Configuration";
+            this.ConfigSensing_Tab.UseVisualStyleBackColor = true;
             // 
-            // Summit_SerialNumber
+            // Task_Tab
             // 
-            this.Summit_SerialNumber.AutoSize = true;
-            this.Summit_SerialNumber.BackColor = System.Drawing.Color.Transparent;
-            this.Summit_SerialNumber.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Summit_SerialNumber.Location = new System.Drawing.Point(74, 355);
-            this.Summit_SerialNumber.Name = "Summit_SerialNumber";
-            this.Summit_SerialNumber.Size = new System.Drawing.Size(237, 45);
-            this.Summit_SerialNumber.TabIndex = 12;
-            this.Summit_SerialNumber.Text = "Serial Number:";
+            this.Task_Tab.Location = new System.Drawing.Point(8, 64);
+            this.Task_Tab.Name = "Task_Tab";
+            this.Task_Tab.Size = new System.Drawing.Size(1744, 828);
+            this.Task_Tab.TabIndex = 3;
+            this.Task_Tab.Text = "Task Selection";
+            this.Task_Tab.UseVisualStyleBackColor = true;
             // 
-            // Summit_UntilEOS
+            // Sensing_SamplingRate
             // 
-            this.Summit_UntilEOS.AutoSize = true;
-            this.Summit_UntilEOS.BackColor = System.Drawing.Color.Transparent;
-            this.Summit_UntilEOS.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Summit_UntilEOS.Location = new System.Drawing.Point(74, 479);
-            this.Summit_UntilEOS.Name = "Summit_UntilEOS";
-            this.Summit_UntilEOS.Size = new System.Drawing.Size(240, 45);
-            this.Summit_UntilEOS.TabIndex = 13;
-            this.Summit_UntilEOS.Text = "Days until EOS:";
+            this.Sensing_SamplingRate.BackColor = System.Drawing.SystemColors.Window;
+            this.Sensing_SamplingRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Sensing_SamplingRate.FormattingEnabled = true;
+            this.Sensing_SamplingRate.Items.AddRange(new object[] {
+            "250 Hz",
+            "500 Hz",
+            "1000 Hz"});
+            this.Sensing_SamplingRate.Location = new System.Drawing.Point(436, 239);
+            this.Sensing_SamplingRate.Name = "Sensing_SamplingRate";
+            this.Sensing_SamplingRate.Size = new System.Drawing.Size(191, 58);
+            this.Sensing_SamplingRate.TabIndex = 12;
             // 
-            // Summit_StimStatus
+            // label9
             // 
-            this.Summit_StimStatus.AutoSize = true;
-            this.Summit_StimStatus.BackColor = System.Drawing.Color.Transparent;
-            this.Summit_StimStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Summit_StimStatus.Location = new System.Drawing.Point(74, 544);
-            this.Summit_StimStatus.Name = "Summit_StimStatus";
-            this.Summit_StimStatus.Size = new System.Drawing.Size(293, 45);
-            this.Summit_StimStatus.TabIndex = 14;
-            this.Summit_StimStatus.Text = "Stimulation Status:";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(62, 241);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(362, 50);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "Sampling Rate (Hz): ";
             // 
-            // Summit_SsenseStatus
+            // Sensing_GetStatusButton
             // 
-            this.Summit_SsenseStatus.AutoSize = true;
-            this.Summit_SsenseStatus.BackColor = System.Drawing.Color.Transparent;
-            this.Summit_SsenseStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Summit_SsenseStatus.Location = new System.Drawing.Point(74, 608);
-            this.Summit_SsenseStatus.Name = "Summit_SsenseStatus";
-            this.Summit_SsenseStatus.Size = new System.Drawing.Size(240, 45);
-            this.Summit_SsenseStatus.TabIndex = 15;
-            this.Summit_SsenseStatus.Text = "Sensing Status:";
+            this.Sensing_GetStatusButton.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Sensing_GetStatusButton.Location = new System.Drawing.Point(71, 46);
+            this.Sensing_GetStatusButton.Name = "Sensing_GetStatusButton";
+            this.Sensing_GetStatusButton.Size = new System.Drawing.Size(450, 59);
+            this.Sensing_GetStatusButton.TabIndex = 13;
+            this.Sensing_GetStatusButton.Text = "Get Sensing Configuration";
+            this.Sensing_GetStatusButton.UseVisualStyleBackColor = true;
+            this.Sensing_GetStatusButton.Click += new System.EventHandler(this.Sensing_GetStatusButton_Click);
             // 
             // Mainpage
             // 
@@ -515,6 +579,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Montage_Duration)).EndInit();
             this.LeadSelection_Panel.ResumeLayout(false);
             this.LeadSelection_Panel.PerformLayout();
+            this.ConfigSensing_Tab.ResumeLayout(false);
+            this.ConfigSensing_Tab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -548,9 +614,14 @@
         private System.Windows.Forms.Button Summit_GetStatusButton;
         private System.Windows.Forms.Label Summit_SerialNumber;
         private System.Windows.Forms.Label Summit_BatteryLevel;
-        private System.Windows.Forms.Label Summit_SsenseStatus;
+        private System.Windows.Forms.Label Summit_SenseStatus;
         private System.Windows.Forms.Label Summit_StimStatus;
         private System.Windows.Forms.Label Summit_UntilEOS;
+        private System.Windows.Forms.TabPage ConfigSensing_Tab;
+        private System.Windows.Forms.Button Sensing_GetStatusButton;
+        private System.Windows.Forms.ComboBox Sensing_SamplingRate;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TabPage Task_Tab;
     }
 }
 

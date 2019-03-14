@@ -14,6 +14,7 @@ using Medtronic.SummitAPI.Classes;
 using Medtronic.TelemetryM;
 using Medtronic.NeuroStim.Olympus.DataTypes.PowerManagement;
 using Medtronic.NeuroStim.Olympus.DataTypes.DeviceManagement;
+using Medtronic.NeuroStim.Olympus.DataTypes.Sensing;
 
 namespace SummitTouretteTask
 {
@@ -26,6 +27,21 @@ namespace SummitTouretteTask
         public int samplingRate;
     };
 
+    public struct TdSensingSetting
+    {
+        public TdMuxInputs[,] channelMux;
+        public TdSampleRates[] samplingRate;
+        public TdEvokedResponseEnable[] evokedResponse;
+        public TdLpfStage1[] stage1LPF;
+        public TdLpfStage2[] stage2LPF;
+        public TdHpfs[] stage1HPF;
+        public bool[] enableStatus;
+    };
+
+    public struct FFTSensingSetting
+    {
+    };
+
     public partial class Mainpage : Form
     {
 
@@ -36,6 +52,9 @@ namespace SummitTouretteTask
         string ORCA_ProjectString;
         SummitManager summitManager;
         SummitSystem summitSystem;
+
+        // Real-time Data Streaming Settings
+        SensingSetting sensingSetting;
 
         public Mainpage()
         {
@@ -224,18 +243,32 @@ namespace SummitTouretteTask
                 string serialNumber = generalData.DeviceSerialNumber.ToString();
                 this.Summit_SerialNumber.Text = "Serial Number: " + serialNumber;
 
-                // The result of the battery read is automatically logged to the device settings file, 
-                // but the application can log its own information if they desire. Example shown-
-                this.summitSystem.LogCustomEvent(commandInfo.TxTime, commandInfo.RxTime, "BatteryLevel", batteryLevel);
-
-                // Write the result out to the console
-                this.
-                Console.WriteLine("Current Battery Level: " + batteryLevel);
+                string stimStatus = generalData.TherapyStatusData.TherapyStatus.ToString();
+                this.Summit_StimStatus.Text = "Stimulation Status: " + stimStatus;
             }
             else
             {
-
+                MessageBox.Show("Read General Info Failed...");
             }
+
+            SensingState sensingStatus;
+            commandReturn = this.summitSystem.ReadSensingState(out sensingStatus);
+
+            if (commandReturn.RejectCode == 0)
+            {
+                string stateValue = sensingStatus.State.ToString();
+                this.Summit_SenseStatus.Text = "Sensing Status: " + stateValue;
+            }
+            else
+            {
+                MessageBox.Show("Read Sensing Status Failed...");
+            }
+            
+        }
+
+        private void Sensing_GetStatusButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
