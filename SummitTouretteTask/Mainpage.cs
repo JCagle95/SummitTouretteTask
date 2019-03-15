@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 using Medtronic.SummitAPI.Classes;
 using Medtronic.TelemetryM;
@@ -40,8 +41,15 @@ namespace SummitTouretteTask
 
     public struct FFTSensingSetting
     {
-    };
+        public FftSizes fftSizes;
+        public ushort interval;
+        public FftWindowAutoLoads windowLoad;
+        public bool enableWindow;
+        public FftWeightMultiplies shiftBits;
 
+        public double binSize;
+    };
+    
     public partial class Mainpage : Form
     {
 
@@ -54,14 +62,41 @@ namespace SummitTouretteTask
         SummitSystem summitSystem;
 
         // Real-time Data Streaming Settings
-        SensingSetting sensingSetting;
+        TdSensingSetting sensingSetting;
+        FFTSensingSetting fftSetting;
+
+        // Configuration Check
+        bool[] configurationCheck;
+
+        DataManager dataManager;
 
         public Mainpage()
         {
             InitializeComponent();
 
             // Initialize Required Variables
-            montageSetting.leadSelection = new bool[] { true , true, true, true };
+            this.dataManager = new DataManager();
+            this.configurationCheck = new bool[4] { false, false, false, false };
+
+            // Initialize Sensing Setting
+            this.sensingSetting.samplingRate = new TdSampleRates[4];
+            this.sensingSetting.channelMux = new TdMuxInputs[4, 2];
+            this.sensingSetting.evokedResponse = new TdEvokedResponseEnable[4];
+            this.sensingSetting.stage1LPF = new TdLpfStage1[4];
+            this.sensingSetting.stage2LPF = new TdLpfStage2[4];
+            this.sensingSetting.stage1HPF = new TdHpfs[4];
+            this.sensingSetting.enableStatus = new bool[4] { true, true, true, true };
+
+            // Initialize FFT Settings
+            this.fftSetting.fftSizes = FftSizes.Size0064;
+            this.fftSetting.interval = 50;
+            this.fftSetting.windowLoad = FftWindowAutoLoads.Hann100;
+            this.fftSetting.enableWindow = true;
+            this.fftSetting.shiftBits = FftWeightMultiplies.Shift7;
+
+            // Initialize Montage Task
+            this.montageSetting.leadSelection = new bool[4] { true , true, true, true };
+
         }
 
         /// <summary>
@@ -95,6 +130,7 @@ namespace SummitTouretteTask
             if (knownTelemetry.Count == 0)
             {
                 MessageBox.Show("No bonded CTMs found, please plug a CTM in via USB...");
+                this.Summit_Connect.Enabled = true;
                 this.summitManager.Dispose();
                 return;
             }
@@ -115,6 +151,7 @@ namespace SummitTouretteTask
             if (this.summitSystem == null)
             {
                 MessageBox.Show("Cannot connect to known CTMs, please plug a CTM in via USB...");
+                this.Summit_Connect.Enabled = true;
                 this.summitManager.Dispose();
                 return;
             }
@@ -165,6 +202,7 @@ namespace SummitTouretteTask
             display.FormBorderStyle = FormBorderStyle.None;
             display.WindowState = FormWindowState.Maximized;
             display.BackColor = Color.DimGray;
+            display.StartPosition = FormStartPosition.Manual;
             display.Show();
         }
 
@@ -222,6 +260,7 @@ namespace SummitTouretteTask
                 }
             } while (theWarnings.HasFlag(ConnectReturn.InitializationError));
 
+            this.Summit_DiscoverRCS.Enabled = false;
         }
 
         private void Summit_GetStatusButton_Click(object sender, EventArgs e)
@@ -268,7 +307,236 @@ namespace SummitTouretteTask
 
         private void Sensing_GetStatusButton_Click(object sender, EventArgs e)
         {
+            if (this.summitManager == null || this.summitSystem == null)
+            {
+                MessageBox.Show("Read Sensing Configuration Failed... Summit System Not initialized");
+                return;
+            }
 
+            SensingConfiguration theSensingConfig;
+            APIReturnInfo commandReturn = this.summitSystem.ReadSensingSettings(out theSensingConfig);
+            if (commandReturn.RejectCode != 0)
+            {
+                MessageBox.Show("Reading Sensing Configuration Failed... Return Command Code: " + commandReturn.RejectCode);
+                return;
+            }
+
+            ComboBox[] sampleRate = { this.Sensing_SamplingRate01, this.Sensing_SamplingRate02, this.Sensing_SamplingRate03, this.Sensing_SamplingRate04 };
+            ComboBox[] posMux = { this.Sensing_PosMux01, this.Sensing_PosMux02, this.Sensing_PosMux03, this.Sensing_PosMux04 };
+            ComboBox[] negMux = { this.Sensing_NegMux01, this.Sensing_NegMux02, this.Sensing_NegMux03, this.Sensing_NegMux04 };
+            ComboBox[] evokedRes = { this.Sensing_EvokedRes01, this.Sensing_EvokedRes02, this.Sensing_EvokedRes03, this.Sensing_EvokedRes04 };
+            ComboBox[] lpf1 = { this.Sensing_S1LPF01, this.Sensing_S1LPF02, this.Sensing_S1LPF03, this.Sensing_S1LPF04 };
+            ComboBox[] lpf2 = { this.Sensing_S2LPF01, this.Sensing_S2LPF02, this.Sensing_S2LPF03, this.Sensing_S2LPF04 };
+            ComboBox[] hpf = { this.Sensing_S1HPF01, this.Sensing_S1HPF02, this.Sensing_S1HPF03, this.Sensing_S1HPF04 };
+            CheckBox[] enableStatus = { this.Sensing_Enable01, this.Sensing_Enable02, this.Sensing_Enable03, this.Sensing_Enable04 };
+
+            int channelID = 0;
+            foreach (TimeDomainChannel tdChannel in theSensingConfig.TimeDomainChannels)
+            {
+                this.sensingSetting.samplingRate[channelID] = tdChannel.SampleRate;
+                this.sensingSetting.channelMux[channelID, 1] = tdChannel.PlusInput;
+                this.sensingSetting.channelMux[channelID, 2] = tdChannel.MinusInput;
+                this.sensingSetting.evokedResponse[channelID] = tdChannel.EvokedMode;
+                this.sensingSetting.stage1LPF[channelID] = tdChannel.Lpf1;
+                this.sensingSetting.stage2LPF[channelID] = tdChannel.Lpf2;
+                this.sensingSetting.stage1HPF[channelID] = tdChannel.Hpf;
+
+                switch (tdChannel.SampleRate)
+                {
+                    case (TdSampleRates.Sample0250Hz):
+                        sampleRate[channelID].SelectedIndex = 0;
+                        enableStatus[channelID].Checked = true;
+                        break;
+                    case (TdSampleRates.Sample0500Hz):
+                        sampleRate[channelID].SelectedIndex = 1;
+                        enableStatus[channelID].Checked = true;
+                        break;
+                    case (TdSampleRates.Sample1000Hz):
+                        sampleRate[channelID].SelectedIndex = 2;
+                        enableStatus[channelID].Checked = true;
+                        break;
+                    case (TdSampleRates.Disabled):
+                        sampleRate[channelID].SelectedIndex = -1;
+                        enableStatus[channelID].Checked = false;
+                        break;
+                }
+
+                posMux[channelID].SelectedIndex = (int)tdChannel.PlusInput;
+                negMux[channelID].SelectedIndex = (int)tdChannel.MinusInput;
+                
+                switch (tdChannel.EvokedMode)
+                {
+                    case (TdEvokedResponseEnable.Standard):
+                        evokedRes[channelID].SelectedIndex = 0;
+                        break;
+                    case (TdEvokedResponseEnable.Evoked0Input):
+                        evokedRes[channelID].SelectedIndex = 1;
+                        break;
+                    case (TdEvokedResponseEnable.Evoked1Input):
+                        evokedRes[channelID].SelectedIndex = 2;
+                        break;
+                }
+
+                switch (tdChannel.Lpf1)
+                {
+                    case (TdLpfStage1.Lpf450Hz):
+                        lpf1[channelID].SelectedIndex = 0;
+                        break;
+                    case (TdLpfStage1.Lpf100Hz):
+                        lpf1[channelID].SelectedIndex = 1;
+                        break;
+                    case (TdLpfStage1.Lpf50Hz):
+                        lpf1[channelID].SelectedIndex = 2;
+                        break;
+                }
+
+                switch (tdChannel.Lpf2)
+                {
+                    case (TdLpfStage2.Lpf1700Hz):
+                        lpf2[channelID].SelectedIndex = 0;
+                        break;
+                    case (TdLpfStage2.Lpf350Hz):
+                        lpf2[channelID].SelectedIndex = 1;
+                        break;
+                    case (TdLpfStage2.Lpf160Hz):
+                        lpf2[channelID].SelectedIndex = 2;
+                        break;
+                    case (TdLpfStage2.Lpf100Hz):
+                        lpf2[channelID].SelectedIndex = 3;
+                        break;
+                }
+
+                switch (tdChannel.Hpf)
+                {
+                    case (TdHpfs.Hpf0_85Hz):
+                        hpf[channelID].SelectedIndex = 0;
+                        break;
+                    case (TdHpfs.Hpf1_2Hz):
+                        hpf[channelID].SelectedIndex = 1;
+                        break;
+                    case (TdHpfs.Hpf3_3Hz):
+                        hpf[channelID].SelectedIndex = 2;
+                        break;
+                    case (TdHpfs.Hpf8_6Hz):
+                        hpf[channelID].SelectedIndex = 3;
+                        break;
+                }
+
+                channelID++;
+            }
+        }
+
+        private void Sensing_UpdateStatusButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Sensing_MatchComplete_Click(object sender, EventArgs e)
+        {
+            if (this.Sensing_SamplingRate01.SelectedIndex > -1)
+            {
+                this.Sensing_SamplingRate02.SelectedIndex = this.Sensing_SamplingRate01.SelectedIndex;
+                this.Sensing_SamplingRate03.SelectedIndex = this.Sensing_SamplingRate01.SelectedIndex;
+                this.Sensing_SamplingRate04.SelectedIndex = this.Sensing_SamplingRate01.SelectedIndex;
+            }
+            if (this.Sensing_EvokedRes01.SelectedIndex > -1)
+            {
+                this.Sensing_EvokedRes02.SelectedIndex = this.Sensing_EvokedRes01.SelectedIndex;
+                this.Sensing_EvokedRes03.SelectedIndex = this.Sensing_EvokedRes01.SelectedIndex;
+                this.Sensing_EvokedRes04.SelectedIndex = this.Sensing_EvokedRes01.SelectedIndex;
+            }
+            if (this.Sensing_S1LPF01.SelectedIndex > -1)
+            {
+                this.Sensing_S1LPF02.SelectedIndex = this.Sensing_S1LPF01.SelectedIndex;
+                this.Sensing_S1LPF03.SelectedIndex = this.Sensing_S1LPF01.SelectedIndex;
+                this.Sensing_S1LPF04.SelectedIndex = this.Sensing_S1LPF01.SelectedIndex;
+            }
+            if (this.Sensing_S2LPF01.SelectedIndex > -1)
+            {
+                this.Sensing_S2LPF02.SelectedIndex = this.Sensing_S2LPF01.SelectedIndex;
+                this.Sensing_S2LPF03.SelectedIndex = this.Sensing_S2LPF01.SelectedIndex;
+                this.Sensing_S2LPF04.SelectedIndex = this.Sensing_S2LPF01.SelectedIndex;
+            }
+            if (this.Sensing_S1HPF01.SelectedIndex > -1)
+            {
+                this.Sensing_S1HPF02.SelectedIndex = this.Sensing_S1HPF01.SelectedIndex;
+                this.Sensing_S1HPF03.SelectedIndex = this.Sensing_S1HPF01.SelectedIndex;
+                this.Sensing_S1HPF04.SelectedIndex = this.Sensing_S1HPF01.SelectedIndex;
+            }
+        }
+
+        private void Sensing_GetFFTStatus_Click(object sender, EventArgs e)
+        {
+            if (this.summitManager == null || this.summitSystem == null)
+            {
+                MessageBox.Show("Read Sensing Configuration Failed... Summit System Not initialized");
+                return;
+            }
+
+            SensingConfiguration theSensingConfig;
+            APIReturnInfo commandReturn = this.summitSystem.ReadSensingSettings(out theSensingConfig);
+            if (commandReturn.RejectCode != 0)
+            {
+                MessageBox.Show("Reading Sensing Configuration Failed... Return Command Code: " + commandReturn.RejectCode);
+                return;
+            }
+
+            switch(theSensingConfig.FftConfig.Size)
+            {
+                case (FftSizes.Size0064):
+                    break;
+            }
+        }
+
+        private void Sensing_UpdateFFTStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Sensing_FFTSize_Changed(object sender, EventArgs e)
+        {
+            if (!this.configurationCheck[0])
+            {
+                Debug.WriteLine("The Time Channel configuration is not set");
+                return;
+            }
+
+            double samplingRate = 500;
+            switch (this.sensingSetting.samplingRate[0])
+            {
+                case (TdSampleRates.Sample0250Hz):
+                    samplingRate = 250;
+                    break;
+                case (TdSampleRates.Sample0500Hz):
+                    samplingRate = 500;
+                    break;
+                case (TdSampleRates.Sample1000Hz):
+                    samplingRate = 1000;
+                    break;
+            }
+
+            switch(this.Sensing_FFTSize.SelectedIndex)
+            {
+                case 0:
+                    this.fftSetting.binSize = samplingRate / 64.0;
+                    break;
+                case 1:
+                    this.fftSetting.binSize = samplingRate / 512.0;
+                    break;
+                case 2:
+                    this.fftSetting.binSize = samplingRate / 1024.0;
+                    break;
+            }
+            
+        }
+
+        private void Sensing_SamplingRate_Changed(object sender, EventArgs e)
+        {
+            ComboBox selectedBox = (ComboBox)sender;
+            this.Sensing_SamplingRate01.SelectedIndex = selectedBox.SelectedIndex;
+            this.Sensing_SamplingRate02.SelectedIndex = selectedBox.SelectedIndex;
+            this.Sensing_SamplingRate03.SelectedIndex = selectedBox.SelectedIndex;
+            this.Sensing_SamplingRate04.SelectedIndex = selectedBox.SelectedIndex;
         }
     }
 }
