@@ -48,6 +48,8 @@ namespace SummitTouretteTask
         public FftWeightMultiplies shiftBits;
 
         public double binSize;
+
+        public List<PowerChannel> powerChannels;
     };
     
     public partial class Mainpage : Form
@@ -93,9 +95,18 @@ namespace SummitTouretteTask
             this.fftSetting.windowLoad = FftWindowAutoLoads.Hann100;
             this.fftSetting.enableWindow = true;
             this.fftSetting.shiftBits = FftWeightMultiplies.Shift7;
+            this.fftSetting.binSize = -1;
+            this.fftSetting.powerChannels = new List<PowerChannel>(4);
+            for (int i = 0; i < 4; i++)
+            {
+                this.fftSetting.powerChannels.Add(new PowerChannel());
+            }
 
             // Initialize Montage Task
             this.montageSetting.leadSelection = new bool[4] { true , true, true, true };
+
+            // Setup ORCA Repository
+            this.ORCA_ProjectName.Text = "projecTourette"
 
         }
 
@@ -261,6 +272,7 @@ namespace SummitTouretteTask
             } while (theWarnings.HasFlag(ConnectReturn.InitializationError));
 
             this.Summit_DiscoverRCS.Enabled = false;
+            this.Summit_GetStatusButton.Enabled = true;
         }
 
         private void Summit_GetStatusButton_Click(object sender, EventArgs e)
@@ -481,10 +493,105 @@ namespace SummitTouretteTask
                 return;
             }
 
-            switch(theSensingConfig.FftConfig.Size)
+            this.fftSetting.fftSizes = theSensingConfig.FftConfig.Size;
+            switch (theSensingConfig.FftConfig.Size)
             {
-                case (FftSizes.Size0064):
+                case FftSizes.Size0064:
+                    this.Sensing_FFTSize.SelectedIndex = 0;
                     break;
+                case FftSizes.Size0256:
+                    this.Sensing_FFTSize.SelectedIndex = 1;
+                    break;
+                case FftSizes.Size1024:
+                    this.Sensing_FFTSize.SelectedIndex = 2;
+                    break;
+            }
+
+            this.fftSetting.enableWindow = theSensingConfig.FftConfig.WindowEnabled;
+            this.fftSetting.windowLoad = theSensingConfig.FftConfig.WindowLoad;
+            if (!theSensingConfig.FftConfig.WindowEnabled)
+            {
+                this.Sensing_FFTWindow.SelectedIndex = 3;
+            }
+            else
+            {
+                switch (theSensingConfig.FftConfig.WindowLoad)
+                {
+                    case FftWindowAutoLoads.Hann100:
+                        this.Sensing_FFTWindow.SelectedIndex = 0;
+                        break;
+                    case FftWindowAutoLoads.Hann50:
+                        this.Sensing_FFTWindow.SelectedIndex = 1;
+                        break;
+                    case FftWindowAutoLoads.Hann25:
+                        this.Sensing_FFTWindow.SelectedIndex = 2;
+                        break;
+                }
+            }
+
+            this.fftSetting.binSize = -1;
+            int i = 0;
+            do
+            {
+                this.fftSetting.binSize = Sensing_GetFFTBinSize(theSensingConfig.TimeDomainChannels[i++].SampleRate, theSensingConfig.FftConfig.Size);
+                if (i > 3) break;
+            } while (this.fftSetting.binSize < 0);
+            Debug.WriteLine("The FFT Bin Size is " + this.fftSetting.binSize.ToString() + " Hz.");
+
+            this.fftSetting.shiftBits = theSensingConfig.FftConfig.BandFormationConfig;
+            this.Sensing_FFTBitShift.SelectedIndex = (int)theSensingConfig.FftConfig.BandFormationConfig - 8;
+
+            this.fftSetting.interval = theSensingConfig.FftConfig.Interval;
+            this.Sensing_FFTInterval.Value = theSensingConfig.FftConfig.Interval;
+            
+            if ((theSensingConfig.BandEnable & BandEnables.Ch0Band0Enabled) > 0) this.Sensing_FFTCh1Band1Enable.Checked = true;
+            else this.Sensing_FFTCh1Band1Enable.Checked = false;
+            if ((theSensingConfig.BandEnable & BandEnables.Ch0Band1Enabled) > 0) this.Sensing_FFTCh1Band2Enable.Checked = true;
+            else this.Sensing_FFTCh1Band2Enable.Checked = false;
+            if ((theSensingConfig.BandEnable & BandEnables.Ch1Band0Enabled) > 0) this.Sensing_FFTCh2Band1Enable.Checked = true;
+            else this.Sensing_FFTCh2Band1Enable.Checked = false;
+            if ((theSensingConfig.BandEnable & BandEnables.Ch1Band1Enabled) > 0) this.Sensing_FFTCh2Band2Enable.Checked = true;
+            else this.Sensing_FFTCh2Band2Enable.Checked = false;
+            if ((theSensingConfig.BandEnable & BandEnables.Ch2Band0Enabled) > 0) this.Sensing_FFTCh3Band1Enable.Checked = true;
+            else this.Sensing_FFTCh3Band1Enable.Checked = false;
+            if ((theSensingConfig.BandEnable & BandEnables.Ch2Band1Enabled) > 0) this.Sensing_FFTCh3Band2Enable.Checked = true;
+            else this.Sensing_FFTCh3Band2Enable.Checked = false;
+            if ((theSensingConfig.BandEnable & BandEnables.Ch3Band0Enabled) > 0) this.Sensing_FFTCh4Band1Enable.Checked = true;
+            else this.Sensing_FFTCh4Band1Enable.Checked = false;
+            if ((theSensingConfig.BandEnable & BandEnables.Ch3Band1Enabled) > 0) this.Sensing_FFTCh4Band2Enable.Checked = true;
+            else this.Sensing_FFTCh4Band2Enable.Checked = false;
+
+            i = 0;
+            foreach (PowerChannel powerChan in theSensingConfig.PowerChannels)
+            {
+                switch (i)
+                {
+                    case 0:
+                        this.Sensing_FFTCh1Band1.Value = (decimal)powerChan.Band0Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh1Band2.Value = (decimal)powerChan.Band0Stop * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh1Band3.Value = (decimal)powerChan.Band1Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh1Band4.Value = (decimal)powerChan.Band1Stop * (decimal)this.fftSetting.binSize;
+                        break;
+                    case 1:
+                        this.Sensing_FFTCh2Band1.Value = (decimal)powerChan.Band0Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh2Band2.Value = (decimal)powerChan.Band0Stop * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh2Band3.Value = (decimal)powerChan.Band1Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh2Band4.Value = (decimal)powerChan.Band1Stop * (decimal)this.fftSetting.binSize;
+                        break;
+                    case 2:
+                        this.Sensing_FFTCh3Band1.Value = (decimal)powerChan.Band0Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh3Band2.Value = (decimal)powerChan.Band0Stop * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh3Band3.Value = (decimal)powerChan.Band1Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh3Band4.Value = (decimal)powerChan.Band1Stop * (decimal)this.fftSetting.binSize;
+                        break;
+                    case 3:
+                        this.Sensing_FFTCh4Band1.Value = (decimal)powerChan.Band0Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh4Band2.Value = (decimal)powerChan.Band0Stop * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh4Band3.Value = (decimal)powerChan.Band1Start * (decimal)this.fftSetting.binSize;
+                        this.Sensing_FFTCh4Band4.Value = (decimal)powerChan.Band1Stop * (decimal)this.fftSetting.binSize;
+                        break;
+                }
+                i++;
             }
         }
 
@@ -501,33 +608,59 @@ namespace SummitTouretteTask
                 return;
             }
 
-            double samplingRate = 500;
-            switch (this.sensingSetting.samplingRate[0])
+            this.fftSetting.binSize = -1;
+            int i = 0;
+            do
             {
-                case (TdSampleRates.Sample0250Hz):
+                switch (this.Sensing_FFTSize.SelectedIndex)
+                {
+                    case 0:
+                        this.fftSetting.binSize = Sensing_GetFFTBinSize(this.sensingSetting.samplingRate[i++], FftSizes.Size0064);
+                        break;
+                    case 1:
+                        this.fftSetting.binSize = Sensing_GetFFTBinSize(this.sensingSetting.samplingRate[i++], FftSizes.Size0256);
+                        break;
+                    case 2:
+                        this.fftSetting.binSize = Sensing_GetFFTBinSize(this.sensingSetting.samplingRate[i++], FftSizes.Size1024);
+                        break;
+                }
+                
+                if (i > 3)
+                {
+                    break;
+                }
+            } while (this.fftSetting.binSize < 0);
+            Debug.WriteLine("The FFT Bin Size is " + this.fftSetting.binSize.ToString() + " Hz.");
+        }
+
+        private double Sensing_GetFFTBinSize(TdSampleRates sampleRate, FftSizes fftSizes)
+        {
+            double samplingRate = 1000;
+            switch (sampleRate)
+            {
+                case TdSampleRates.Sample0250Hz:
                     samplingRate = 250;
                     break;
-                case (TdSampleRates.Sample0500Hz):
+                case TdSampleRates.Sample0500Hz:
                     samplingRate = 500;
                     break;
-                case (TdSampleRates.Sample1000Hz):
+                case TdSampleRates.Sample1000Hz:
                     samplingRate = 1000;
                     break;
+                case TdSampleRates.Disabled:
+                    return -1;
             }
 
-            switch(this.Sensing_FFTSize.SelectedIndex)
+            switch (fftSizes)
             {
-                case 0:
-                    this.fftSetting.binSize = samplingRate / 64.0;
-                    break;
-                case 1:
-                    this.fftSetting.binSize = samplingRate / 512.0;
-                    break;
-                case 2:
-                    this.fftSetting.binSize = samplingRate / 1024.0;
-                    break;
+                case FftSizes.Size0064:
+                    return samplingRate / 64.0;
+                case FftSizes.Size0256:
+                    return samplingRate / 256.0;
+                case FftSizes.Size1024:
+                    return samplingRate / 1024.0;
             }
-            
+            return -2;
         }
 
         private void Sensing_SamplingRate_Changed(object sender, EventArgs e)
@@ -538,5 +671,6 @@ namespace SummitTouretteTask
             this.Sensing_SamplingRate03.SelectedIndex = selectedBox.SelectedIndex;
             this.Sensing_SamplingRate04.SelectedIndex = selectedBox.SelectedIndex;
         }
+
     }
 }

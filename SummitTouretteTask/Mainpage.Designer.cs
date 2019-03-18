@@ -128,9 +128,33 @@
             this.label9 = new System.Windows.Forms.Label();
             this.Sensing_GetStatusButton = new System.Windows.Forms.Button();
             this.ConfigFFT_Tab = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.Sensing_FFTCh2Band2Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh2Band1Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh2Band4 = new System.Windows.Forms.NumericUpDown();
+            this.label45 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh2Band3 = new System.Windows.Forms.NumericUpDown();
+            this.label46 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh2Band2 = new System.Windows.Forms.NumericUpDown();
+            this.label47 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh2Band1 = new System.Windows.Forms.NumericUpDown();
+            this.label48 = new System.Windows.Forms.Label();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.Sensing_FFTCh1Band2Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh1Band1Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh1Band4 = new System.Windows.Forms.NumericUpDown();
+            this.label43 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh1Band3 = new System.Windows.Forms.NumericUpDown();
+            this.label44 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh1Band2 = new System.Windows.Forms.NumericUpDown();
+            this.label42 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh1Band1 = new System.Windows.Forms.NumericUpDown();
+            this.label41 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.Sensing_FFTInterval = new System.Windows.Forms.NumericUpDown();
             this.label40 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.Sensing_FFTWindow = new System.Windows.Forms.ComboBox();
             this.label39 = new System.Windows.Forms.Label();
             this.Sensing_FFTBitShift = new System.Windows.Forms.ComboBox();
             this.label38 = new System.Windows.Forms.Label();
@@ -139,30 +163,32 @@
             this.Sensing_UpdateFFTStatus = new System.Windows.Forms.Button();
             this.Sensing_GetFFTStatus = new System.Windows.Forms.Button();
             this.Task_Tab = new System.Windows.Forms.TabPage();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label41 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.label42 = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.label43 = new System.Windows.Forms.Label();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.label44 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.Sensing_PowerCh2Enable = new System.Windows.Forms.CheckBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.Sensing_FFTCh3Band2Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh3Band1Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh3Band4 = new System.Windows.Forms.NumericUpDown();
+            this.label49 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh3Band3 = new System.Windows.Forms.NumericUpDown();
+            this.label50 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh3Band2 = new System.Windows.Forms.NumericUpDown();
+            this.label51 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh3Band1 = new System.Windows.Forms.NumericUpDown();
+            this.label52 = new System.Windows.Forms.Label();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            this.label45 = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.label46 = new System.Windows.Forms.Label();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.label47 = new System.Windows.Forms.Label();
-            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
-            this.label48 = new System.Windows.Forms.Label();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.Sensing_FFTCh4Band2Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh4Band1Enable = new System.Windows.Forms.CheckBox();
+            this.Sensing_FFTCh4Band4 = new System.Windows.Forms.NumericUpDown();
+            this.label53 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh4Band3 = new System.Windows.Forms.NumericUpDown();
+            this.label54 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh4Band2 = new System.Windows.Forms.NumericUpDown();
+            this.label55 = new System.Windows.Forms.Label();
+            this.Sensing_FFTCh4Band1 = new System.Windows.Forms.NumericUpDown();
+            this.label56 = new System.Windows.Forms.Label();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.ConfigInertia_Tab = new System.Windows.Forms.TabPage();
+            this.ConfigMisc_Tab = new System.Windows.Forms.TabPage();
             this.Sensing_GetFFTStatusButton.SuspendLayout();
             this.Welcome_Tab.SuspendLayout();
             this.Montage_Tab.SuspendLayout();
@@ -175,17 +201,27 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.ConfigFFT_Tab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTInterval)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band1)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTInterval)).BeginInit();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band1)).BeginInit();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band1)).BeginInit();
             this.SuspendLayout();
             // 
             // Sensing_GetFFTStatusButton
@@ -197,6 +233,8 @@
             this.Sensing_GetFFTStatusButton.Controls.Add(this.Montage_Tab);
             this.Sensing_GetFFTStatusButton.Controls.Add(this.ConfigTdSensing_Tab);
             this.Sensing_GetFFTStatusButton.Controls.Add(this.ConfigFFT_Tab);
+            this.Sensing_GetFFTStatusButton.Controls.Add(this.ConfigInertia_Tab);
+            this.Sensing_GetFFTStatusButton.Controls.Add(this.ConfigMisc_Tab);
             this.Sensing_GetFFTStatusButton.Controls.Add(this.Task_Tab);
             this.Sensing_GetFFTStatusButton.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sensing_GetFFTStatusButton.Location = new System.Drawing.Point(40, 23);
@@ -1661,11 +1699,13 @@
             // 
             // ConfigFFT_Tab
             // 
+            this.ConfigFFT_Tab.Controls.Add(this.groupBox8);
+            this.ConfigFFT_Tab.Controls.Add(this.groupBox7);
             this.ConfigFFT_Tab.Controls.Add(this.groupBox6);
             this.ConfigFFT_Tab.Controls.Add(this.groupBox5);
             this.ConfigFFT_Tab.Controls.Add(this.Sensing_FFTInterval);
             this.ConfigFFT_Tab.Controls.Add(this.label40);
-            this.ConfigFFT_Tab.Controls.Add(this.comboBox1);
+            this.ConfigFFT_Tab.Controls.Add(this.Sensing_FFTWindow);
             this.ConfigFFT_Tab.Controls.Add(this.label39);
             this.ConfigFFT_Tab.Controls.Add(this.Sensing_FFTBitShift);
             this.ConfigFFT_Tab.Controls.Add(this.label38);
@@ -1680,6 +1720,282 @@
             this.ConfigFFT_Tab.Text = "FFT Configuration";
             this.ConfigFFT_Tab.UseVisualStyleBackColor = true;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.Sensing_FFTCh2Band2Enable);
+            this.groupBox6.Controls.Add(this.Sensing_FFTCh2Band1Enable);
+            this.groupBox6.Controls.Add(this.Sensing_FFTCh2Band4);
+            this.groupBox6.Controls.Add(this.label45);
+            this.groupBox6.Controls.Add(this.Sensing_FFTCh2Band3);
+            this.groupBox6.Controls.Add(this.label46);
+            this.groupBox6.Controls.Add(this.Sensing_FFTCh2Band2);
+            this.groupBox6.Controls.Add(this.label47);
+            this.groupBox6.Controls.Add(this.Sensing_FFTCh2Band1);
+            this.groupBox6.Controls.Add(this.label48);
+            this.groupBox6.Controls.Add(this.checkBox5);
+            this.groupBox6.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox6.Location = new System.Drawing.Point(228, 178);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(206, 227);
+            this.groupBox6.TabIndex = 38;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Ch2 Left Cortex";
+            // 
+            // Sensing_FFTCh2Band2Enable
+            // 
+            this.Sensing_FFTCh2Band2Enable.AutoSize = true;
+            this.Sensing_FFTCh2Band2Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh2Band2Enable.Location = new System.Drawing.Point(72, 203);
+            this.Sensing_FFTCh2Band2Enable.Name = "Sensing_FFTCh2Band2Enable";
+            this.Sensing_FFTCh2Band2Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh2Band2Enable.TabIndex = 37;
+            this.Sensing_FFTCh2Band2Enable.Text = "Enable";
+            this.Sensing_FFTCh2Band2Enable.UseVisualStyleBackColor = true;
+            // 
+            // Sensing_FFTCh2Band1Enable
+            // 
+            this.Sensing_FFTCh2Band1Enable.AutoSize = true;
+            this.Sensing_FFTCh2Band1Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh2Band1Enable.Location = new System.Drawing.Point(73, 103);
+            this.Sensing_FFTCh2Band1Enable.Name = "Sensing_FFTCh2Band1Enable";
+            this.Sensing_FFTCh2Band1Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh2Band1Enable.TabIndex = 36;
+            this.Sensing_FFTCh2Band1Enable.Text = "Enable";
+            this.Sensing_FFTCh2Band1Enable.UseVisualStyleBackColor = true;
+            // 
+            // Sensing_FFTCh2Band4
+            // 
+            this.Sensing_FFTCh2Band4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh2Band4.Location = new System.Drawing.Point(125, 168);
+            this.Sensing_FFTCh2Band4.Name = "Sensing_FFTCh2Band4";
+            this.Sensing_FFTCh2Band4.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh2Band4.TabIndex = 35;
+            this.Sensing_FFTCh2Band4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh2Band4.ThousandsSeparator = true;
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label45.Location = new System.Drawing.Point(1, 171);
+            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(118, 21);
+            this.label45.TabIndex = 34;
+            this.label45.Text = "Band2 Up (Hz):";
+            // 
+            // Sensing_FFTCh2Band3
+            // 
+            this.Sensing_FFTCh2Band3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh2Band3.Location = new System.Drawing.Point(125, 133);
+            this.Sensing_FFTCh2Band3.Name = "Sensing_FFTCh2Band3";
+            this.Sensing_FFTCh2Band3.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh2Band3.TabIndex = 33;
+            this.Sensing_FFTCh2Band3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh2Band3.ThousandsSeparator = true;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label46.Location = new System.Drawing.Point(1, 136);
+            this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(127, 21);
+            this.label46.TabIndex = 32;
+            this.label46.Text = "Band2 Low (Hz):";
+            // 
+            // Sensing_FFTCh2Band2
+            // 
+            this.Sensing_FFTCh2Band2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh2Band2.Location = new System.Drawing.Point(125, 68);
+            this.Sensing_FFTCh2Band2.Name = "Sensing_FFTCh2Band2";
+            this.Sensing_FFTCh2Band2.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh2Band2.TabIndex = 31;
+            this.Sensing_FFTCh2Band2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh2Band2.ThousandsSeparator = true;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label47.Location = new System.Drawing.Point(1, 71);
+            this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(115, 21);
+            this.label47.TabIndex = 30;
+            this.label47.Text = "Band1 Up (Hz):";
+            // 
+            // Sensing_FFTCh2Band1
+            // 
+            this.Sensing_FFTCh2Band1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh2Band1.Location = new System.Drawing.Point(125, 33);
+            this.Sensing_FFTCh2Band1.Name = "Sensing_FFTCh2Band1";
+            this.Sensing_FFTCh2Band1.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh2Band1.TabIndex = 29;
+            this.Sensing_FFTCh2Band1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh2Band1.ThousandsSeparator = true;
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label48.Location = new System.Drawing.Point(1, 36);
+            this.label48.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(124, 21);
+            this.label48.TabIndex = 28;
+            this.label48.Text = "Band1 Low (Hz):";
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.checkBox5.Location = new System.Drawing.Point(64, 265);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(69, 23);
+            this.checkBox5.TabIndex = 26;
+            this.checkBox5.Text = "Enable";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.Sensing_FFTCh1Band2Enable);
+            this.groupBox5.Controls.Add(this.Sensing_FFTCh1Band1Enable);
+            this.groupBox5.Controls.Add(this.Sensing_FFTCh1Band4);
+            this.groupBox5.Controls.Add(this.label43);
+            this.groupBox5.Controls.Add(this.Sensing_FFTCh1Band3);
+            this.groupBox5.Controls.Add(this.label44);
+            this.groupBox5.Controls.Add(this.Sensing_FFTCh1Band2);
+            this.groupBox5.Controls.Add(this.label42);
+            this.groupBox5.Controls.Add(this.Sensing_FFTCh1Band1);
+            this.groupBox5.Controls.Add(this.label41);
+            this.groupBox5.Controls.Add(this.checkBox1);
+            this.groupBox5.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox5.Location = new System.Drawing.Point(16, 178);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(206, 227);
+            this.groupBox5.TabIndex = 27;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Ch1 Left Thalamus";
+            // 
+            // Sensing_FFTCh1Band2Enable
+            // 
+            this.Sensing_FFTCh1Band2Enable.AutoSize = true;
+            this.Sensing_FFTCh1Band2Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh1Band2Enable.Location = new System.Drawing.Point(72, 203);
+            this.Sensing_FFTCh1Band2Enable.Name = "Sensing_FFTCh1Band2Enable";
+            this.Sensing_FFTCh1Band2Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh1Band2Enable.TabIndex = 37;
+            this.Sensing_FFTCh1Band2Enable.Text = "Enable";
+            this.Sensing_FFTCh1Band2Enable.UseVisualStyleBackColor = true;
+            // 
+            // Sensing_FFTCh1Band1Enable
+            // 
+            this.Sensing_FFTCh1Band1Enable.AutoSize = true;
+            this.Sensing_FFTCh1Band1Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh1Band1Enable.Location = new System.Drawing.Point(73, 103);
+            this.Sensing_FFTCh1Band1Enable.Name = "Sensing_FFTCh1Band1Enable";
+            this.Sensing_FFTCh1Band1Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh1Band1Enable.TabIndex = 36;
+            this.Sensing_FFTCh1Band1Enable.Text = "Enable";
+            this.Sensing_FFTCh1Band1Enable.UseVisualStyleBackColor = true;
+            // 
+            // Sensing_FFTCh1Band4
+            // 
+            this.Sensing_FFTCh1Band4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh1Band4.Location = new System.Drawing.Point(125, 168);
+            this.Sensing_FFTCh1Band4.Name = "Sensing_FFTCh1Band4";
+            this.Sensing_FFTCh1Band4.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh1Band4.TabIndex = 35;
+            this.Sensing_FFTCh1Band4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh1Band4.ThousandsSeparator = true;
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label43.Location = new System.Drawing.Point(1, 171);
+            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(118, 21);
+            this.label43.TabIndex = 34;
+            this.label43.Text = "Band2 Up (Hz):";
+            // 
+            // Sensing_FFTCh1Band3
+            // 
+            this.Sensing_FFTCh1Band3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh1Band3.Location = new System.Drawing.Point(125, 133);
+            this.Sensing_FFTCh1Band3.Name = "Sensing_FFTCh1Band3";
+            this.Sensing_FFTCh1Band3.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh1Band3.TabIndex = 33;
+            this.Sensing_FFTCh1Band3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh1Band3.ThousandsSeparator = true;
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label44.Location = new System.Drawing.Point(1, 136);
+            this.label44.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(127, 21);
+            this.label44.TabIndex = 32;
+            this.label44.Text = "Band2 Low (Hz):";
+            // 
+            // Sensing_FFTCh1Band2
+            // 
+            this.Sensing_FFTCh1Band2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh1Band2.Location = new System.Drawing.Point(125, 68);
+            this.Sensing_FFTCh1Band2.Name = "Sensing_FFTCh1Band2";
+            this.Sensing_FFTCh1Band2.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh1Band2.TabIndex = 31;
+            this.Sensing_FFTCh1Band2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh1Band2.ThousandsSeparator = true;
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label42.Location = new System.Drawing.Point(1, 71);
+            this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(115, 21);
+            this.label42.TabIndex = 30;
+            this.label42.Text = "Band1 Up (Hz):";
+            // 
+            // Sensing_FFTCh1Band1
+            // 
+            this.Sensing_FFTCh1Band1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh1Band1.Location = new System.Drawing.Point(125, 33);
+            this.Sensing_FFTCh1Band1.Name = "Sensing_FFTCh1Band1";
+            this.Sensing_FFTCh1Band1.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh1Band1.TabIndex = 29;
+            this.Sensing_FFTCh1Band1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh1Band1.ThousandsSeparator = true;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label41.Location = new System.Drawing.Point(1, 36);
+            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(124, 21);
+            this.label41.TabIndex = 28;
+            this.label41.Text = "Band1 Low (Hz):";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.checkBox1.Location = new System.Drawing.Point(64, 265);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(69, 23);
+            this.checkBox1.TabIndex = 26;
+            this.checkBox1.Text = "Enable";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Sensing_FFTInterval
             // 
             this.Sensing_FFTInterval.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1688,7 +2004,7 @@
             0,
             0,
             0});
-            this.Sensing_FFTInterval.Location = new System.Drawing.Point(625, 90);
+            this.Sensing_FFTInterval.Location = new System.Drawing.Point(629, 89);
             this.Sensing_FFTInterval.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1714,35 +2030,35 @@
             // 
             this.label40.AutoSize = true;
             this.label40.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label40.Location = new System.Drawing.Point(439, 92);
+            this.label40.Location = new System.Drawing.Point(443, 91);
             this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(136, 21);
             this.label40.TabIndex = 24;
             this.label40.Text = "FFT Inverval (ms):";
             // 
-            // comboBox1
+            // Sensing_FFTWindow
             // 
-            this.comboBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.Sensing_FFTWindow.BackColor = System.Drawing.SystemColors.Window;
+            this.Sensing_FFTWindow.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Sensing_FFTWindow.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Sensing_FFTWindow.FormattingEnabled = true;
+            this.Sensing_FFTWindow.Items.AddRange(new object[] {
             "100% Hann",
             "50% Hann",
             "25% Hann",
             "Disable"});
-            this.comboBox1.Location = new System.Drawing.Point(299, 120);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(107, 29);
-            this.comboBox1.TabIndex = 23;
+            this.Sensing_FFTWindow.Location = new System.Drawing.Point(321, 121);
+            this.Sensing_FFTWindow.Margin = new System.Windows.Forms.Padding(2);
+            this.Sensing_FFTWindow.Name = "Sensing_FFTWindow";
+            this.Sensing_FFTWindow.Size = new System.Drawing.Size(107, 29);
+            this.Sensing_FFTWindow.TabIndex = 23;
             // 
             // label39
             // 
             this.label39.AutoSize = true;
             this.label39.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label39.Location = new System.Drawing.Point(113, 123);
+            this.label39.Location = new System.Drawing.Point(170, 124);
             this.label39.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(143, 21);
@@ -1764,7 +2080,7 @@
             "Shift2",
             "Shift1",
             "Shift0"});
-            this.Sensing_FFTBitShift.Location = new System.Drawing.Point(625, 123);
+            this.Sensing_FFTBitShift.Location = new System.Drawing.Point(629, 122);
             this.Sensing_FFTBitShift.Margin = new System.Windows.Forms.Padding(2);
             this.Sensing_FFTBitShift.Name = "Sensing_FFTBitShift";
             this.Sensing_FFTBitShift.Size = new System.Drawing.Size(107, 29);
@@ -1774,7 +2090,7 @@
             // 
             this.label38.AutoSize = true;
             this.label38.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label38.Location = new System.Drawing.Point(439, 126);
+            this.label38.Location = new System.Drawing.Point(443, 125);
             this.label38.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(181, 21);
@@ -1791,7 +2107,7 @@
             "64 bins",
             "256 bins",
             "1024 bins"});
-            this.Sensing_FFTSize.Location = new System.Drawing.Point(299, 87);
+            this.Sensing_FFTSize.Location = new System.Drawing.Point(321, 88);
             this.Sensing_FFTSize.Margin = new System.Windows.Forms.Padding(2);
             this.Sensing_FFTSize.Name = "Sensing_FFTSize";
             this.Sensing_FFTSize.Size = new System.Drawing.Size(107, 29);
@@ -1802,7 +2118,7 @@
             // 
             this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label37.Location = new System.Drawing.Point(113, 90);
+            this.label37.Location = new System.Drawing.Point(170, 91);
             this.label37.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(76, 21);
@@ -1843,281 +2159,299 @@
             this.Task_Tab.Text = "Task Selection";
             this.Task_Tab.UseVisualStyleBackColor = true;
             // 
-            // groupBox5
+            // groupBox7
             // 
-            this.groupBox5.Controls.Add(this.Sensing_PowerCh2Enable);
-            this.groupBox5.Controls.Add(this.checkBox2);
-            this.groupBox5.Controls.Add(this.numericUpDown3);
-            this.groupBox5.Controls.Add(this.label43);
-            this.groupBox5.Controls.Add(this.numericUpDown4);
-            this.groupBox5.Controls.Add(this.label44);
-            this.groupBox5.Controls.Add(this.numericUpDown2);
-            this.groupBox5.Controls.Add(this.label42);
-            this.groupBox5.Controls.Add(this.numericUpDown1);
-            this.groupBox5.Controls.Add(this.label41);
-            this.groupBox5.Controls.Add(this.checkBox1);
-            this.groupBox5.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(36, 176);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(206, 227);
-            this.groupBox5.TabIndex = 27;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Ch1 Left Thalamus";
+            this.groupBox7.Controls.Add(this.Sensing_FFTCh3Band2Enable);
+            this.groupBox7.Controls.Add(this.Sensing_FFTCh3Band1Enable);
+            this.groupBox7.Controls.Add(this.Sensing_FFTCh3Band4);
+            this.groupBox7.Controls.Add(this.label49);
+            this.groupBox7.Controls.Add(this.Sensing_FFTCh3Band3);
+            this.groupBox7.Controls.Add(this.label50);
+            this.groupBox7.Controls.Add(this.Sensing_FFTCh3Band2);
+            this.groupBox7.Controls.Add(this.label51);
+            this.groupBox7.Controls.Add(this.Sensing_FFTCh3Band1);
+            this.groupBox7.Controls.Add(this.label52);
+            this.groupBox7.Controls.Add(this.checkBox4);
+            this.groupBox7.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox7.Location = new System.Drawing.Point(440, 178);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(206, 227);
+            this.groupBox7.TabIndex = 39;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Ch3 Right Thalamus";
             // 
-            // checkBox1
+            // Sensing_FFTCh3Band2Enable
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.checkBox1.Location = new System.Drawing.Point(64, 265);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(69, 23);
-            this.checkBox1.TabIndex = 26;
-            this.checkBox1.Text = "Enable";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.Sensing_FFTCh3Band2Enable.AutoSize = true;
+            this.Sensing_FFTCh3Band2Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh3Band2Enable.Location = new System.Drawing.Point(72, 203);
+            this.Sensing_FFTCh3Band2Enable.Name = "Sensing_FFTCh3Band2Enable";
+            this.Sensing_FFTCh3Band2Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh3Band2Enable.TabIndex = 37;
+            this.Sensing_FFTCh3Band2Enable.Text = "Enable";
+            this.Sensing_FFTCh3Band2Enable.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown1
+            // Sensing_FFTCh3Band1Enable
             // 
-            this.numericUpDown1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown1.Location = new System.Drawing.Point(125, 33);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown1.TabIndex = 29;
-            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown1.ThousandsSeparator = true;
+            this.Sensing_FFTCh3Band1Enable.AutoSize = true;
+            this.Sensing_FFTCh3Band1Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh3Band1Enable.Location = new System.Drawing.Point(73, 103);
+            this.Sensing_FFTCh3Band1Enable.Name = "Sensing_FFTCh3Band1Enable";
+            this.Sensing_FFTCh3Band1Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh3Band1Enable.TabIndex = 36;
+            this.Sensing_FFTCh3Band1Enable.Text = "Enable";
+            this.Sensing_FFTCh3Band1Enable.UseVisualStyleBackColor = true;
             // 
-            // label41
+            // Sensing_FFTCh3Band4
             // 
-            this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label41.Location = new System.Drawing.Point(1, 36);
-            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(124, 21);
-            this.label41.TabIndex = 28;
-            this.label41.Text = "Band1 Low (Hz):";
+            this.Sensing_FFTCh3Band4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh3Band4.Location = new System.Drawing.Point(125, 168);
+            this.Sensing_FFTCh3Band4.Name = "Sensing_FFTCh3Band4";
+            this.Sensing_FFTCh3Band4.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh3Band4.TabIndex = 35;
+            this.Sensing_FFTCh3Band4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh3Band4.ThousandsSeparator = true;
             // 
-            // numericUpDown2
+            // label49
             // 
-            this.numericUpDown2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown2.Location = new System.Drawing.Point(125, 68);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown2.TabIndex = 31;
-            this.numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown2.ThousandsSeparator = true;
+            this.label49.AutoSize = true;
+            this.label49.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label49.Location = new System.Drawing.Point(1, 171);
+            this.label49.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(118, 21);
+            this.label49.TabIndex = 34;
+            this.label49.Text = "Band2 Up (Hz):";
             // 
-            // label42
+            // Sensing_FFTCh3Band3
             // 
-            this.label42.AutoSize = true;
-            this.label42.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label42.Location = new System.Drawing.Point(1, 71);
-            this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(115, 21);
-            this.label42.TabIndex = 30;
-            this.label42.Text = "Band1 Up (Hz):";
+            this.Sensing_FFTCh3Band3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh3Band3.Location = new System.Drawing.Point(125, 133);
+            this.Sensing_FFTCh3Band3.Name = "Sensing_FFTCh3Band3";
+            this.Sensing_FFTCh3Band3.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh3Band3.TabIndex = 33;
+            this.Sensing_FFTCh3Band3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh3Band3.ThousandsSeparator = true;
             // 
-            // numericUpDown3
+            // label50
             // 
-            this.numericUpDown3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown3.Location = new System.Drawing.Point(125, 168);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown3.TabIndex = 35;
-            this.numericUpDown3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown3.ThousandsSeparator = true;
+            this.label50.AutoSize = true;
+            this.label50.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label50.Location = new System.Drawing.Point(1, 136);
+            this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(127, 21);
+            this.label50.TabIndex = 32;
+            this.label50.Text = "Band2 Low (Hz):";
             // 
-            // label43
+            // Sensing_FFTCh3Band2
             // 
-            this.label43.AutoSize = true;
-            this.label43.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label43.Location = new System.Drawing.Point(1, 171);
-            this.label43.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(118, 21);
-            this.label43.TabIndex = 34;
-            this.label43.Text = "Band2 Up (Hz):";
+            this.Sensing_FFTCh3Band2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh3Band2.Location = new System.Drawing.Point(125, 68);
+            this.Sensing_FFTCh3Band2.Name = "Sensing_FFTCh3Band2";
+            this.Sensing_FFTCh3Band2.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh3Band2.TabIndex = 31;
+            this.Sensing_FFTCh3Band2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh3Band2.ThousandsSeparator = true;
             // 
-            // numericUpDown4
+            // label51
             // 
-            this.numericUpDown4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown4.Location = new System.Drawing.Point(125, 133);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown4.TabIndex = 33;
-            this.numericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown4.ThousandsSeparator = true;
+            this.label51.AutoSize = true;
+            this.label51.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label51.Location = new System.Drawing.Point(1, 71);
+            this.label51.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(115, 21);
+            this.label51.TabIndex = 30;
+            this.label51.Text = "Band1 Up (Hz):";
             // 
-            // label44
+            // Sensing_FFTCh3Band1
             // 
-            this.label44.AutoSize = true;
-            this.label44.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label44.Location = new System.Drawing.Point(1, 136);
-            this.label44.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(127, 21);
-            this.label44.TabIndex = 32;
-            this.label44.Text = "Band2 Low (Hz):";
+            this.Sensing_FFTCh3Band1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh3Band1.Location = new System.Drawing.Point(125, 33);
+            this.Sensing_FFTCh3Band1.Name = "Sensing_FFTCh3Band1";
+            this.Sensing_FFTCh3Band1.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh3Band1.TabIndex = 29;
+            this.Sensing_FFTCh3Band1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh3Band1.ThousandsSeparator = true;
             // 
-            // checkBox2
+            // label52
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox2.Location = new System.Drawing.Point(73, 103);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(60, 17);
-            this.checkBox2.TabIndex = 36;
-            this.checkBox2.Text = "Enable";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // Sensing_PowerCh2Enable
-            // 
-            this.Sensing_PowerCh2Enable.AutoSize = true;
-            this.Sensing_PowerCh2Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sensing_PowerCh2Enable.Location = new System.Drawing.Point(72, 203);
-            this.Sensing_PowerCh2Enable.Name = "Sensing_PowerCh2Enable";
-            this.Sensing_PowerCh2Enable.Size = new System.Drawing.Size(60, 17);
-            this.Sensing_PowerCh2Enable.TabIndex = 37;
-            this.Sensing_PowerCh2Enable.Text = "Enable";
-            this.Sensing_PowerCh2Enable.UseVisualStyleBackColor = true;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.checkBox3);
-            this.groupBox6.Controls.Add(this.checkBox4);
-            this.groupBox6.Controls.Add(this.numericUpDown5);
-            this.groupBox6.Controls.Add(this.label45);
-            this.groupBox6.Controls.Add(this.numericUpDown6);
-            this.groupBox6.Controls.Add(this.label46);
-            this.groupBox6.Controls.Add(this.numericUpDown7);
-            this.groupBox6.Controls.Add(this.label47);
-            this.groupBox6.Controls.Add(this.numericUpDown8);
-            this.groupBox6.Controls.Add(this.label48);
-            this.groupBox6.Controls.Add(this.checkBox5);
-            this.groupBox6.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox6.Location = new System.Drawing.Point(248, 176);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(206, 227);
-            this.groupBox6.TabIndex = 38;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Ch2 Left Cortex";
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox3.Location = new System.Drawing.Point(72, 203);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(60, 17);
-            this.checkBox3.TabIndex = 37;
-            this.checkBox3.Text = "Enable";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.label52.AutoSize = true;
+            this.label52.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label52.Location = new System.Drawing.Point(1, 36);
+            this.label52.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(124, 21);
+            this.label52.TabIndex = 28;
+            this.label52.Text = "Band1 Low (Hz):";
             // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox4.Location = new System.Drawing.Point(73, 103);
+            this.checkBox4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.checkBox4.Location = new System.Drawing.Point(64, 265);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(60, 17);
-            this.checkBox4.TabIndex = 36;
+            this.checkBox4.Size = new System.Drawing.Size(69, 23);
+            this.checkBox4.TabIndex = 26;
             this.checkBox4.Text = "Enable";
             this.checkBox4.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown5
+            // groupBox8
             // 
-            this.numericUpDown5.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown5.Location = new System.Drawing.Point(125, 168);
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown5.TabIndex = 35;
-            this.numericUpDown5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown5.ThousandsSeparator = true;
+            this.groupBox8.Controls.Add(this.Sensing_FFTCh4Band2Enable);
+            this.groupBox8.Controls.Add(this.Sensing_FFTCh4Band1Enable);
+            this.groupBox8.Controls.Add(this.Sensing_FFTCh4Band4);
+            this.groupBox8.Controls.Add(this.label53);
+            this.groupBox8.Controls.Add(this.Sensing_FFTCh4Band3);
+            this.groupBox8.Controls.Add(this.label54);
+            this.groupBox8.Controls.Add(this.Sensing_FFTCh4Band2);
+            this.groupBox8.Controls.Add(this.label55);
+            this.groupBox8.Controls.Add(this.Sensing_FFTCh4Band1);
+            this.groupBox8.Controls.Add(this.label56);
+            this.groupBox8.Controls.Add(this.checkBox8);
+            this.groupBox8.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox8.Location = new System.Drawing.Point(652, 178);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(206, 227);
+            this.groupBox8.TabIndex = 39;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Ch4 Right Cortex";
             // 
-            // label45
+            // Sensing_FFTCh4Band2Enable
             // 
-            this.label45.AutoSize = true;
-            this.label45.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label45.Location = new System.Drawing.Point(1, 171);
-            this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(118, 21);
-            this.label45.TabIndex = 34;
-            this.label45.Text = "Band2 Up (Hz):";
+            this.Sensing_FFTCh4Band2Enable.AutoSize = true;
+            this.Sensing_FFTCh4Band2Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh4Band2Enable.Location = new System.Drawing.Point(72, 203);
+            this.Sensing_FFTCh4Band2Enable.Name = "Sensing_FFTCh4Band2Enable";
+            this.Sensing_FFTCh4Band2Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh4Band2Enable.TabIndex = 37;
+            this.Sensing_FFTCh4Band2Enable.Text = "Enable";
+            this.Sensing_FFTCh4Band2Enable.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown6
+            // Sensing_FFTCh4Band1Enable
             // 
-            this.numericUpDown6.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown6.Location = new System.Drawing.Point(125, 133);
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown6.TabIndex = 33;
-            this.numericUpDown6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown6.ThousandsSeparator = true;
+            this.Sensing_FFTCh4Band1Enable.AutoSize = true;
+            this.Sensing_FFTCh4Band1Enable.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh4Band1Enable.Location = new System.Drawing.Point(73, 103);
+            this.Sensing_FFTCh4Band1Enable.Name = "Sensing_FFTCh4Band1Enable";
+            this.Sensing_FFTCh4Band1Enable.Size = new System.Drawing.Size(60, 17);
+            this.Sensing_FFTCh4Band1Enable.TabIndex = 36;
+            this.Sensing_FFTCh4Band1Enable.Text = "Enable";
+            this.Sensing_FFTCh4Band1Enable.UseVisualStyleBackColor = true;
             // 
-            // label46
+            // Sensing_FFTCh4Band4
             // 
-            this.label46.AutoSize = true;
-            this.label46.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label46.Location = new System.Drawing.Point(1, 136);
-            this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(127, 21);
-            this.label46.TabIndex = 32;
-            this.label46.Text = "Band2 Low (Hz):";
+            this.Sensing_FFTCh4Band4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh4Band4.Location = new System.Drawing.Point(125, 168);
+            this.Sensing_FFTCh4Band4.Name = "Sensing_FFTCh4Band4";
+            this.Sensing_FFTCh4Band4.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh4Band4.TabIndex = 35;
+            this.Sensing_FFTCh4Band4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh4Band4.ThousandsSeparator = true;
             // 
-            // numericUpDown7
+            // label53
             // 
-            this.numericUpDown7.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown7.Location = new System.Drawing.Point(125, 68);
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown7.TabIndex = 31;
-            this.numericUpDown7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown7.ThousandsSeparator = true;
+            this.label53.AutoSize = true;
+            this.label53.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label53.Location = new System.Drawing.Point(1, 171);
+            this.label53.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(118, 21);
+            this.label53.TabIndex = 34;
+            this.label53.Text = "Band2 Up (Hz):";
             // 
-            // label47
+            // Sensing_FFTCh4Band3
             // 
-            this.label47.AutoSize = true;
-            this.label47.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label47.Location = new System.Drawing.Point(1, 71);
-            this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(115, 21);
-            this.label47.TabIndex = 30;
-            this.label47.Text = "Band1 Up (Hz):";
+            this.Sensing_FFTCh4Band3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh4Band3.Location = new System.Drawing.Point(125, 133);
+            this.Sensing_FFTCh4Band3.Name = "Sensing_FFTCh4Band3";
+            this.Sensing_FFTCh4Band3.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh4Band3.TabIndex = 33;
+            this.Sensing_FFTCh4Band3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh4Band3.ThousandsSeparator = true;
             // 
-            // numericUpDown8
+            // label54
             // 
-            this.numericUpDown8.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown8.Location = new System.Drawing.Point(125, 33);
-            this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.Size = new System.Drawing.Size(78, 29);
-            this.numericUpDown8.TabIndex = 29;
-            this.numericUpDown8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown8.ThousandsSeparator = true;
+            this.label54.AutoSize = true;
+            this.label54.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label54.Location = new System.Drawing.Point(1, 136);
+            this.label54.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(127, 21);
+            this.label54.TabIndex = 32;
+            this.label54.Text = "Band2 Low (Hz):";
             // 
-            // label48
+            // Sensing_FFTCh4Band2
             // 
-            this.label48.AutoSize = true;
-            this.label48.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label48.Location = new System.Drawing.Point(1, 36);
-            this.label48.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(124, 21);
-            this.label48.TabIndex = 28;
-            this.label48.Text = "Band1 Low (Hz):";
+            this.Sensing_FFTCh4Band2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh4Band2.Location = new System.Drawing.Point(125, 68);
+            this.Sensing_FFTCh4Band2.Name = "Sensing_FFTCh4Band2";
+            this.Sensing_FFTCh4Band2.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh4Band2.TabIndex = 31;
+            this.Sensing_FFTCh4Band2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh4Band2.ThousandsSeparator = true;
             // 
-            // checkBox5
+            // label55
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.checkBox5.Location = new System.Drawing.Point(64, 265);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(69, 23);
-            this.checkBox5.TabIndex = 26;
-            this.checkBox5.Text = "Enable";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label55.Location = new System.Drawing.Point(1, 71);
+            this.label55.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(115, 21);
+            this.label55.TabIndex = 30;
+            this.label55.Text = "Band1 Up (Hz):";
+            // 
+            // Sensing_FFTCh4Band1
+            // 
+            this.Sensing_FFTCh4Band1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Sensing_FFTCh4Band1.Location = new System.Drawing.Point(125, 33);
+            this.Sensing_FFTCh4Band1.Name = "Sensing_FFTCh4Band1";
+            this.Sensing_FFTCh4Band1.Size = new System.Drawing.Size(78, 29);
+            this.Sensing_FFTCh4Band1.TabIndex = 29;
+            this.Sensing_FFTCh4Band1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Sensing_FFTCh4Band1.ThousandsSeparator = true;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.label56.Location = new System.Drawing.Point(1, 36);
+            this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(124, 21);
+            this.label56.TabIndex = 28;
+            this.label56.Text = "Band1 Low (Hz):";
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.checkBox8.Location = new System.Drawing.Point(64, 265);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(69, 23);
+            this.checkBox8.TabIndex = 26;
+            this.checkBox8.Text = "Enable";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
+            // ConfigInertia_Tab
+            // 
+            this.ConfigInertia_Tab.Location = new System.Drawing.Point(4, 22);
+            this.ConfigInertia_Tab.Name = "ConfigInertia_Tab";
+            this.ConfigInertia_Tab.Size = new System.Drawing.Size(872, 442);
+            this.ConfigInertia_Tab.TabIndex = 5;
+            this.ConfigInertia_Tab.Text = "Inertia Configuation";
+            this.ConfigInertia_Tab.UseVisualStyleBackColor = true;
+            // 
+            // ConfigMisc_Tab
+            // 
+            this.ConfigMisc_Tab.Location = new System.Drawing.Point(4, 22);
+            this.ConfigMisc_Tab.Name = "ConfigMisc_Tab";
+            this.ConfigMisc_Tab.Size = new System.Drawing.Size(872, 442);
+            this.ConfigMisc_Tab.TabIndex = 6;
+            this.ConfigMisc_Tab.Text = "Misc Configuration";
+            this.ConfigMisc_Tab.UseVisualStyleBackColor = true;
             // 
             // Mainpage
             // 
@@ -2152,19 +2486,31 @@
             this.groupBox1.PerformLayout();
             this.ConfigFFT_Tab.ResumeLayout(false);
             this.ConfigFFT_Tab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTInterval)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh2Band1)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh1Band1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTInterval)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh3Band1)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Sensing_FFTCh4Band1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2276,35 +2622,61 @@
         private System.Windows.Forms.ComboBox Sensing_FFTSize;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox Sensing_FFTWindow;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.ComboBox Sensing_FFTBitShift;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.NumericUpDown Sensing_FFTInterval;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.NumericUpDown numericUpDown5;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh2Band2Enable;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh2Band1Enable;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh2Band4;
         private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh2Band3;
         private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.NumericUpDown numericUpDown7;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh2Band2;
         private System.Windows.Forms.Label label47;
-        private System.Windows.Forms.NumericUpDown numericUpDown8;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh2Band1;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.CheckBox Sensing_PowerCh2Enable;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh1Band2Enable;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh1Band1Enable;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh1Band4;
         private System.Windows.Forms.Label label43;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh1Band3;
         private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh1Band2;
         private System.Windows.Forms.Label label42;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh1Band1;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh4Band2Enable;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh4Band1Enable;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh4Band4;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh4Band3;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh4Band2;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh4Band1;
+        private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh3Band2Enable;
+        private System.Windows.Forms.CheckBox Sensing_FFTCh3Band1Enable;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh3Band4;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh3Band3;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh3Band2;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.NumericUpDown Sensing_FFTCh3Band1;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.TabPage ConfigInertia_Tab;
+        private System.Windows.Forms.TabPage ConfigMisc_Tab;
     }
 }
 
