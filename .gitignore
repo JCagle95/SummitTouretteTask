@@ -18,6 +18,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Release and Debug Folder
+SummitTouretteTask/bin/
+
 # =========================
 # Operating System Files
 # =========================

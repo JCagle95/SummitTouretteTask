@@ -9,9 +9,20 @@ using System.Runtime.InteropServices;
 
 namespace SummitTouretteTask
 {
-    class DataManager
+    public struct TdSenseStruct
+    {
+        public ushort SequenceNumber;
+        public double[] Channel1;
+        public double[] Channel2;
+        public double[] Channel3;
+        public double[] Channel4;
+    };
+
+    public class DataManager
     {
         string storagePath;
+
+        private readonly object threadLocker = new object();
 
         public DataManager()
         {
@@ -25,7 +36,6 @@ namespace SummitTouretteTask
 
         public void WriteTdConfiguration(string filename, TdSensingSetting config)
         {
-
             int size = Marshal.SizeOf(config);
             byte[] rawBytes = new byte[size];
             IntPtr ptr = Marshal.AllocHGlobal(size);
@@ -52,6 +62,17 @@ namespace SummitTouretteTask
                 return File.ReadAllBytes(filename);
             }
             return null;
+        }
+
+        public void WriteBinary_ThreadSafe(string filename, byte[] data)
+        {
+            lock (threadLocker)
+            {
+                var stream = new FileStream(this.storagePath + filename, FileMode.Append);
+                stream.Write(data, 0, data.Length);
+                stream.Close();
+                return;
+            }
         }
     }
 }

@@ -1,25 +1,3 @@
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.Mainpage.resources
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.MontageTask.resources
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.Properties.Resources.resources
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csproj.GenerateResource.Cache
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\SummitTouretteTask.exe.config
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\SummitTouretteTask.exe
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\SummitTouretteTask.pdb
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.NeuroStim.Olympus.dll
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.SummitAPI.dll
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.TelemetryM.dll
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\NLog.dll
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclBluetoothFramework.dll
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommon.dll
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommunication.dll
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.SummitAPI.xml
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\NLog.xml
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclBluetoothFramework.xml
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommon.xml
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommunication.xml
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csprojResolveAssemblyReference.cache
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.exe
-d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.pdb
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csprojAssemblyReference.cache
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.Mainpage.resources
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.MontageTask.resources
@@ -44,3 +22,28 @@ C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\bin\Debug
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommon.xml
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommunication.xml
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csproj.CopyComplete
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.DataAcquisition.resources
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.ExtensiveSampling.resources
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.Mainpage.resources
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.MontageTask.resources
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.Properties.Resources.resources
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.VoluntaryMovement.resources
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csproj.GenerateResource.Cache
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\SummitTouretteTask.exe.config
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\SummitTouretteTask.exe
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\SummitTouretteTask.pdb
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.NeuroStim.Olympus.dll
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.SummitAPI.dll
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.TelemetryM.dll
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\NLog.dll
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclBluetoothFramework.dll
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommon.dll
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommunication.dll
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\Medtronic.SummitAPI.xml
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\NLog.xml
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclBluetoothFramework.xml
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommon.xml
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\bin\Debug\wclCommunication.xml
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.exe
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.pdb
+d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csprojResolveAssemblyReference.cache
