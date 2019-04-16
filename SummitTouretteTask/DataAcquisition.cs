@@ -19,6 +19,7 @@ namespace SummitTouretteTask
     {
         public delegate void SafeCallDelegateString(string text);
         public delegate void SafeCallDelegateColor(Color color);
+        public delegate void SafeCallDelegateImage(Image img, int width, int height);
         public Thread displayThread = null;
         public bool taskCondition = false;
         public DataManager dataManager;
@@ -50,26 +51,32 @@ namespace SummitTouretteTask
                 else
                 {
                     this.instruction.Text = text;
+                    this.instruction.BringToFront();
                 }
             }
         }
         
-        public void DisplayImageSafe(string text)
+        public void DisplayImageSafe(Image img, int width, int height)
         {
             if (this.taskCondition)
             {
                 if (this.instruction.InvokeRequired)
                 {
-                    var d = new SafeCallDelegateString(DisplayTextSafe);
-                    Invoke(d, new object[] { text });
+                    var d = new SafeCallDelegateImage(DisplayImageSafe);
+                    Invoke(d, new object[] { img, width, height });
                 }
                 else
                 {
-                    this.instruction.Text = text;
+                    this.Task_Image.Image = img;
+                    this.Task_Image.Left = Screen.GetWorkingArea(this.Task_Image).Width / 2 - width / 2;
+                    this.Task_Image.Top = Screen.GetWorkingArea(this.Task_Image).Height / 2 - height / 2;
+                    this.Task_Image.Width = width;
+                    this.Task_Image.Height = height;
+                    this.Task_Image.BringToFront();
                 }
             }
         }
-
+        
         public void Delay(float milliseconds)
         {
             System.Timers.Timer delay = new System.Timers.Timer(milliseconds);
@@ -200,10 +207,8 @@ namespace SummitTouretteTask
             rawBytes[3] = tdSenseEvent.Header.GlobalSequence;
 
             // Populate the Headers #2 - Type of Data Td  
-            rawBytes[4] = 84;
-            rawBytes[5] = 100;
-            rawBytes[6] = 32;
-            rawBytes[7] = 32;
+            byte[] dataType = Encoding.ASCII.GetBytes("Td  ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
 
             // Populate the Header #3 - Channels
             rawBytes[8] = (byte) tdSenseEvent.IncludedChannels;
@@ -236,10 +241,8 @@ namespace SummitTouretteTask
             rawBytes[3] = fftSenseEvent.Header.GlobalSequence;
 
             // Populate the Headers #2 - Type of Data FFT 
-            rawBytes[4] = 70;
-            rawBytes[5] = 70;
-            rawBytes[6] = 84;
-            rawBytes[7] = 32;
+            byte[] dataType = Encoding.ASCII.GetBytes("FFT ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
 
             // Populate the Header #3 - Channels
             rawBytes[8] = (byte)fftSenseEvent.Channel;
@@ -274,10 +277,8 @@ namespace SummitTouretteTask
             rawBytes[3] = powerSenseEvent.Header.GlobalSequence;
 
             // Populate the Headers #2 - Type of Data Pwr  
-            rawBytes[4] = 80;
-            rawBytes[5] = 119;
-            rawBytes[6] = 114;
-            rawBytes[7] = 32;
+            byte[] dataType = Encoding.ASCII.GetBytes("Pwr ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
 
             // Populate the Header #3 - Channels
             rawBytes[8] = powerSenseEvent.IsPowerChannelOverrange ? (byte) 1 : (byte) 0;
@@ -311,10 +312,8 @@ namespace SummitTouretteTask
             rawBytes[3] = detectorEvent.Header.GlobalSequence;
 
             // Populate the Headers #2 - Type of Data Det  
-            rawBytes[4] = 68;
-            rawBytes[5] = 101;
-            rawBytes[6] = 116;
-            rawBytes[7] = 32;
+            byte[] dataType = Encoding.ASCII.GetBytes("Det ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
 
             // Populate the Header #3 - Channels
             rawBytes[8] = (byte)detectorEvent.CurrentAdaptiveState;
@@ -364,10 +363,8 @@ namespace SummitTouretteTask
             rawBytes[3] = accelEvent.Header.GlobalSequence;
 
             // Populate the Headers #2 - Type of Data Det  
-            rawBytes[4] = 68;
-            rawBytes[5] = 101;
-            rawBytes[6] = 116;
-            rawBytes[7] = 32;
+            byte[] dataType = Encoding.ASCII.GetBytes("Acc ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
 
             // Populate the Header #3 - Channels
             rawBytes[8] = (byte)xData.Length;
@@ -387,6 +384,28 @@ namespace SummitTouretteTask
             Buffer.BlockCopy(xData, 0, rawBytes, 32, xData.Length * sizeof(double));
             Buffer.BlockCopy(yData, 0, rawBytes, 32 + xData.Length, yData.Length * sizeof(double));
             Buffer.BlockCopy(zData, 0, rawBytes, 32 + xData.Length + yData.Length, zData.Length * sizeof(double));
+            
+            dataManager.WriteBinary_ThreadSafe(storedFileName, rawBytes);
+
+        }
+
+        public void Task_WriteTrigger(object sender, SensingEventAccel accelEvent)
+        {
+            byte[] rawBytes = new byte[32];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+            rawBytes[3] = 0;
+
+            // Populate the Headers #2 - Type of Data Det  
+            byte[] dataType = Encoding.ASCII.GetBytes("Trg ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+            
+            // Populate the Headers #4 - PC 64-bit Ticks
+            byte[] timeBytes = BitConverter.GetBytes(stopWatch.ElapsedMilliseconds);
+            Buffer.BlockCopy(timeBytes, 0, rawBytes, 20, timeBytes.Length);
             
             dataManager.WriteBinary_ThreadSafe(storedFileName, rawBytes);
 

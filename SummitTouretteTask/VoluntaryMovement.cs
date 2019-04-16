@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SummitTouretteTask.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -52,8 +53,20 @@ namespace SummitTouretteTask
             {
                 DisplayTextSafe("+");
                 Delay(10000);
-                DisplayTextSafe("Move Hand");
-                Delay(10000);
+
+                for (int repeat = 0; repeat < 10; repeat++)
+                {
+                    DisplayImageSafe(Resources.HandOpen, Resources.HandOpen.Width, Resources.HandOpen.Height);
+                    Delay(200);
+                    DisplayImageSafe(Resources.HandClosing, Resources.HandClosing.Width, Resources.HandClosing.Height);
+                    Delay(200);
+                    DisplayImageSafe(Resources.HandClose, Resources.HandClose.Width, Resources.HandClose.Height);
+                    Delay(200);
+                    DisplayImageSafe(Resources.HandClosing, Resources.HandClosing.Width, Resources.HandClosing.Height);
+                    Delay(200);
+                    DisplayImageSafe(Resources.HandOpen, Resources.HandOpen.Width, Resources.HandOpen.Height);
+                    Delay(200);
+                }
             }
             
             DisplayTextSafe("Done");

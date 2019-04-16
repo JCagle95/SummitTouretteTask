@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SummitTouretteTask.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace SummitTouretteTask
 {
     public partial class ExtensiveSampling : DataAcquisition
     {
+        
         public ExtensiveSampling()
         {
             InitializeComponent();
@@ -47,7 +49,7 @@ namespace SummitTouretteTask
             }
 
             AcquisitionStart();
-
+            
             for (int i = 0; i < 3600*5; i++)
             {
                 DisplayTextSafe(string.Format("Sampled for {0} sec", i+1));

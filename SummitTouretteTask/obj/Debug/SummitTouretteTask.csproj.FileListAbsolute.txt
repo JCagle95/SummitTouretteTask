@@ -1,4 +1,3 @@
-C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csprojAssemblyReference.cache
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.Mainpage.resources
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.MontageTask.resources
 C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.Properties.Resources.resources
@@ -47,3 +46,6 @@ d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitT
 d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.exe
 d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.pdb
 d:\users\jcagle\documents\visual studio 2015\Projects\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.csprojResolveAssemblyReference.cache
+C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.DataAcquisition.resources
+C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.ExtensiveSampling.resources
+C:\Users\jcagle\Documents\GitHub\SummitTouretteTask\SummitTouretteTask\obj\Debug\SummitTouretteTask.VoluntaryMovement.resources

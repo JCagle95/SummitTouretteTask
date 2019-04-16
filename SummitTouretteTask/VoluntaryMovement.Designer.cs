@@ -32,10 +32,12 @@
             // 
             // VoluntaryMovement
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-            this.ClientSize = new System.Drawing.Size(1574, 829);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.ClientSize = new System.Drawing.Size(787, 431);
             this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.Name = "VoluntaryMovement";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.VoluntaryMovement_KeyPress);
             this.ResumeLayout(false);
 
         }

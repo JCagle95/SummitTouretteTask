@@ -81,6 +81,10 @@ namespace SummitTouretteTask
         bool[] configurationCheck;
         bool[] streamingOptions;
 
+        // Task Monitor Check
+        Screen[] screens;
+        Screen workingMonitor;
+
         DataManager dataManager;
 
         // To Handle ORCA Window
@@ -118,6 +122,16 @@ namespace SummitTouretteTask
 
             // Initialize Montage Task
             this.montageSetting.leadSelection = new bool[4] { true , true, true, true };
+
+            // Initialize Task Monitors
+            screens = Screen.AllScreens;
+            foreach (Screen screen in screens)
+            {
+                this.Task_MonitorPicker.Items.Add(screen.DeviceName);
+            }
+            workingMonitor = screens[0];
+            this.Task_MonitorPicker.SelectedIndex = 0;
+            this.MonitorSizeLabel.Text = screens[0].WorkingArea.Width.ToString() + " x " + screens[0].WorkingArea.Height.ToString();
 
             // Setup ORCA Repository
             this.ORCA_ProjectName.Text = "projectSummitTourette";
@@ -1374,7 +1388,19 @@ namespace SummitTouretteTask
         {
             if (this.summitManager == null || this.summitSystem == null)
             {
-                MessageBox.Show("Read Sensing Configuration Failed... Summit System Not initialized");
+                MessageBox.Show("Entering Debug Mode");
+
+                VoluntaryMovement displayTest = new VoluntaryMovement();
+
+                displayTest.FormBorderStyle = FormBorderStyle.None;
+                displayTest.WindowState = FormWindowState.Maximized;
+                displayTest.summitSystem = this.summitSystem;
+                displayTest.streamingOption = this.streamingOptions;
+                displayTest.StartPosition = FormStartPosition.Manual;
+                displayTest.Location = this.workingMonitor.WorkingArea.Location;
+                displayTest.debugMode = true;
+                displayTest.Show();
+
                 return;
             }
 
@@ -1391,6 +1417,8 @@ namespace SummitTouretteTask
             display.summitSystem = this.summitSystem;
             display.streamingOption = this.streamingOptions;
             display.StartPosition = FormStartPosition.Manual;
+            display.Location = this.workingMonitor.WorkingArea.Location;
+            display.debugMode = false;
             display.Show();
         }
 
@@ -1401,12 +1429,13 @@ namespace SummitTouretteTask
                 MessageBox.Show("Entering Debug Mode");
                 
                 ExtensiveSampling displayTest = new ExtensiveSampling();
-
-                displayTest.FormBorderStyle = FormBorderStyle.None;
-                displayTest.WindowState = FormWindowState.Maximized;
+                
                 displayTest.summitSystem = this.summitSystem;
                 displayTest.streamingOption = this.streamingOptions;
                 displayTest.StartPosition = FormStartPosition.Manual;
+                displayTest.Location = this.workingMonitor.WorkingArea.Location;
+                displayTest.WindowState = FormWindowState.Maximized;
+                displayTest.FormBorderStyle = FormBorderStyle.None;
                 displayTest.debugMode = true;
                 displayTest.Show();
 
@@ -1426,6 +1455,7 @@ namespace SummitTouretteTask
             display.summitSystem = this.summitSystem;
             display.streamingOption = this.streamingOptions;
             display.StartPosition = FormStartPosition.Manual;
+            display.Location = this.workingMonitor.WorkingArea.Location;
             display.debugMode = false;
             display.Show();
 
@@ -1461,7 +1491,7 @@ namespace SummitTouretteTask
                         }
                     } 
                     Thread.Sleep(1000);
-                } while (!ORCA_TaskComplete && actionCounter < 10);
+                } while (!ORCA_TaskComplete && actionCounter < 20);
             }
             catch (Exception exception)
             {
@@ -1469,31 +1499,10 @@ namespace SummitTouretteTask
             }
         }
 
-        private void ORCA_ProcessClose_Click(object sender, EventArgs e)
+        private void Task_MonitorPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                Process[] processList = Process.GetProcesses();
-                foreach (Process myProcess in processList)
-                {
-                    if (!String.IsNullOrEmpty(myProcess.MainWindowTitle))
-                    {
-                        Debug.WriteLine("Process: {0}, ID: {1}, Window Title: {2}", myProcess.ProcessName, myProcess.Id, myProcess.MainWindowTitle);
-                    }
-
-                    if (!String.IsNullOrEmpty(myProcess.MainWindowTitle))
-                    {
-                        if (myProcess.ProcessName == "Annotator")
-                        {
-                            ShowWindow(myProcess.MainWindowHandle.ToInt32(), 6);
-                        }
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.Message);
-            }
+            this.workingMonitor = screens[this.Task_MonitorPicker.SelectedIndex];
+            this.MonitorSizeLabel.Text = this.workingMonitor.WorkingArea.Width.ToString() + " x " + this.workingMonitor.WorkingArea.Height.ToString();
         }
     }
 }
