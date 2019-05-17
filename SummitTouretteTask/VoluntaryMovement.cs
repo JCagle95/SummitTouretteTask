@@ -25,7 +25,7 @@ namespace SummitTouretteTask
             if (key.KeyChar.ToString() == "q")
             {
                 this.taskCondition = false;
-                this.displayThread.Join();
+                if (this.displayThread != null) this.displayThread.Join();
                 this.Close();
             }
 
@@ -47,15 +47,18 @@ namespace SummitTouretteTask
                 Delay(1000);
             }
 
+            Task_WriteConfigurations();
             AcquisitionStart();
             
             for (int i = 0; i < 8; i++)
             {
+                Task_WriteTrigger("REST");
                 DisplayTextSafe("+");
                 Delay(10000);
 
                 for (int repeat = 0; repeat < 10; repeat++)
                 {
+                    Task_WriteTrigger("Move Start");
                     DisplayImageSafe(Resources.HandOpen, Resources.HandOpen.Width, Resources.HandOpen.Height);
                     Delay(200);
                     DisplayImageSafe(Resources.HandClosing, Resources.HandClosing.Width, Resources.HandClosing.Height);
