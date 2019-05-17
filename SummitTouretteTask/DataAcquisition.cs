@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace SummitTouretteTask
 {
@@ -24,10 +25,15 @@ namespace SummitTouretteTask
         public bool taskCondition = false;
         public DataManager dataManager;
 
+        public TdSensingSetting tdSettings;
+        public FFTSensingSetting fftSettings;
+        public MISCSensingSetting miscSettings;
+
         public SummitSystem summitSystem;
         public bool[] streamingOption;
 
         public string storedFileName;
+        public string configurationFileName;
         public Stopwatch stopWatch;
 
         public bool debugMode;
@@ -36,6 +42,7 @@ namespace SummitTouretteTask
         {
             InitializeComponent();
             storedFileName = DateTime.Now.ToString("[yyyy-MM-dd-hh-mm-ss]") + "DataAccquisitionTest.dat";
+            configurationFileName = DateTime.Now.ToString("[yyyy-MM-dd-hh-mm-ss]") + "DataAccquisitionTest.config";
             stopWatch = new Stopwatch();
         }
         
@@ -382,14 +389,14 @@ namespace SummitTouretteTask
 
             // Write Data
             Buffer.BlockCopy(xData, 0, rawBytes, 32, xData.Length * sizeof(double));
-            Buffer.BlockCopy(yData, 0, rawBytes, 32 + xData.Length, yData.Length * sizeof(double));
-            Buffer.BlockCopy(zData, 0, rawBytes, 32 + xData.Length + yData.Length, zData.Length * sizeof(double));
+            Buffer.BlockCopy(yData, 0, rawBytes, 32 + xData.Length * sizeof(double), yData.Length * sizeof(double));
+            Buffer.BlockCopy(zData, 0, rawBytes, 32 + (xData.Length + yData.Length) * sizeof(double), zData.Length * sizeof(double));
             
             dataManager.WriteBinary_ThreadSafe(storedFileName, rawBytes);
 
         }
 
-        public void Task_WriteTrigger(object sender, SensingEventAccel accelEvent)
+        public void Task_WriteTrigger(string trigger)
         {
             byte[] rawBytes = new byte[32];
 
@@ -402,13 +409,128 @@ namespace SummitTouretteTask
             // Populate the Headers #2 - Type of Data Det  
             byte[] dataType = Encoding.ASCII.GetBytes("Trg ");
             Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
-            
+
+            // Write Trigger Values
+            byte[] triggerBytes = Encoding.ASCII.GetBytes(trigger);
+            Buffer.BlockCopy(triggerBytes, 0, rawBytes, 8, triggerBytes.Length);
+
             // Populate the Headers #4 - PC 64-bit Ticks
             byte[] timeBytes = BitConverter.GetBytes(stopWatch.ElapsedMilliseconds);
             Buffer.BlockCopy(timeBytes, 0, rawBytes, 20, timeBytes.Length);
             
             dataManager.WriteBinary_ThreadSafe(storedFileName, rawBytes);
 
+        }
+
+        // To Handle Configuration Files
+        public byte[] GetByteArrayFromStruct(TdSensingSetting str)
+        {
+            byte[] rawBytes = new byte[44];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+
+            // Starting on 5th byte - Configuration Type - 8 bytes total
+            byte[] dataType = Encoding.ASCII.GetBytes("Td Conf ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            // The data format is all in bytes. All data are converted to single byte in set of 4, representing each of the 4 channels
+            for (int i = 0; i < 4; i++)
+            {
+                rawBytes[12 + i] = (byte)str.channelMux[i, 0];
+                rawBytes[16 + i] = (byte)str.channelMux[i, 1];
+                rawBytes[20 + i] = (byte)str.samplingRate[i];
+                rawBytes[24 + i] = (byte)str.evokedResponse[i];
+                rawBytes[28 + i] = (byte)str.stage1LPF[i];
+                rawBytes[32 + i] = (byte)str.stage2LPF[i];
+                rawBytes[36 + i] = (byte)str.stage1HPF[i];
+                rawBytes[40 + i] = Convert.ToByte(str.enableStatus[i]);
+            }
+
+            return rawBytes;
+        }
+
+        public byte[] GetByteArrayFromStruct(FFTSensingSetting str)
+        {
+            byte[] rawBytes = new byte[60];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+
+            // Starting on 5th byte - Configuration Type - 8 bytes total
+            byte[] dataType = Encoding.ASCII.GetBytes("FFTConf ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            // The data format is all in bytes. dumpping them in in order
+            rawBytes[12] = (byte)str.fftSizes;
+            rawBytes[13] = (byte)str.windowLoad;
+            rawBytes[14] = (byte)str.shiftBits;
+            rawBytes[15] = Convert.ToByte(str.enableWindow);
+
+            // The bin size is actually calculable from other configurations. But it is kept here just to be safe
+            byte[] detailedBinSize = BitConverter.GetBytes(str.binSize);
+            Buffer.BlockCopy(detailedBinSize, 0, rawBytes, 16, detailedBinSize.Length);
+
+            // This is the last information.
+            byte[] intervalBytes = BitConverter.GetBytes(str.interval);
+            Buffer.BlockCopy(intervalBytes, 0, rawBytes, 24, intervalBytes.Length);
+            rawBytes[26] = (byte)str.fftChannel;
+            rawBytes[27] = (byte)str.powerbandEnables;
+
+            // This is the Power Band settings
+            for (int i = 0; i < 4; i++)
+            {
+                byte[] tempBytes;
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band0Start);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 28 + i * 8, tempBytes.Length);
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band0Stop);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 30 + i * 8, tempBytes.Length);
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band1Start);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 32 + i * 8, tempBytes.Length);
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band1Stop);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 34 + i * 8, tempBytes.Length);
+            }
+
+            return rawBytes;
+        }
+
+        public byte[] GetByteArrayFromStruct(MISCSensingSetting str)
+        {
+            byte[] rawBytes = new byte[20];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+
+            // Starting on 5th byte - Configuration Type - 8 bytes total
+            byte[] dataType = Encoding.ASCII.GetBytes("MiscConf");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            // The data format is all in bytes. dumpping them in in order
+            rawBytes[12] = (byte)str.bridging;
+            rawBytes[13] = (byte)str.streamRate;
+            rawBytes[14] = (byte)str.lrTrigger;
+            rawBytes[15] = (byte)str.accSampleRate;
+
+            byte[] loopRecorderBufferBytes = BitConverter.GetBytes(str.lrBuffer);
+            Buffer.BlockCopy(loopRecorderBufferBytes, 0, rawBytes, 16, loopRecorderBufferBytes.Length);
+
+            return rawBytes;
+        }
+        
+        public void Task_WriteConfigurations()
+        {
+            byte[] tdConfiguration = GetByteArrayFromStruct(tdSettings);
+            dataManager.WriteBinary_ThreadSafe(configurationFileName, tdConfiguration);
+            byte[] fftConfiguration = GetByteArrayFromStruct(fftSettings);
+            dataManager.WriteBinary_ThreadSafe(configurationFileName, fftConfiguration);
+            byte[] miscConfiguration = GetByteArrayFromStruct(miscSettings);
+            dataManager.WriteBinary_ThreadSafe(configurationFileName, miscConfiguration);
         }
     }
 }

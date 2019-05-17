@@ -17,6 +17,7 @@ using Medtronic.TelemetryM;
 using Medtronic.NeuroStim.Olympus.DataTypes.PowerManagement;
 using Medtronic.NeuroStim.Olympus.DataTypes.DeviceManagement;
 using Medtronic.NeuroStim.Olympus.DataTypes.Sensing;
+using System.IO;
 
 namespace SummitTouretteTask
 {
@@ -47,6 +48,10 @@ namespace SummitTouretteTask
         public FftWindowAutoLoads windowLoad;
         public bool enableWindow;
         public FftWeightMultiplies shiftBits;
+        public SenseTimeDomainChannel fftChannel;
+
+        public List<PowerChannel> powerbandSetting;
+        public BandEnables powerbandEnables;
 
         public double binSize;
     };
@@ -76,7 +81,7 @@ namespace SummitTouretteTask
         TdSensingSetting sensingSetting;
         FFTSensingSetting fftSetting;
         MISCSensingSetting miscSetting;
-
+        
         // Configuration Check
         bool[] configurationCheck;
         bool[] streamingOptions;
@@ -93,6 +98,172 @@ namespace SummitTouretteTask
         private Thread ORCA_Thread = null;
         private int ORCA_Task;
         private bool ORCA_TaskComplete;
+
+        // To Handle Configuration Files
+        public byte[] GetByteArrayFromStruct(TdSensingSetting str)
+        {
+            byte[] rawBytes = new byte[44];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+
+            // Starting on 5th byte - Configuration Type - 8 bytes total
+            byte[] dataType = Encoding.ASCII.GetBytes("Td Conf ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            // The data format is all in bytes. All data are converted to single byte in set of 4, representing each of the 4 channels
+            for (int i = 0; i < 4; i++)
+            {
+                rawBytes[12 + i] = (byte)str.channelMux[i, 0];
+                rawBytes[16 + i] = (byte)str.channelMux[i, 1];
+                rawBytes[20 + i] = (byte)str.samplingRate[i];
+                rawBytes[24 + i] = (byte)str.evokedResponse[i];
+                rawBytes[28 + i] = (byte)str.stage1LPF[i];
+                rawBytes[32 + i] = (byte)str.stage2LPF[i];
+                rawBytes[36 + i] = (byte)str.stage1HPF[i];
+                rawBytes[40 + i] = Convert.ToByte(str.enableStatus[i]);
+            }
+
+            return rawBytes;
+        }
+
+        public TdSensingSetting GetTimeDomainSetting(byte[] array)
+        {
+            TdSensingSetting str = new TdSensingSetting();
+            str.samplingRate = new TdSampleRates[4];
+            str.channelMux = new TdMuxInputs[4, 2];
+            str.evokedResponse = new TdEvokedResponseEnable[4];
+            str.stage1LPF = new TdLpfStage1[4];
+            str.stage2LPF = new TdLpfStage2[4];
+            str.stage1HPF = new TdHpfs[4];
+            str.enableStatus = new bool[4] { true, true, true, true };
+            
+            for (int i = 0; i < 4; i++)
+            {
+                str.channelMux[i,0] = (TdMuxInputs) array[12 + i];
+                str.channelMux[i,1] = (TdMuxInputs)array[16 + i];
+                str.samplingRate[i] = (TdSampleRates)array[20 + i];
+                str.evokedResponse[i] = (TdEvokedResponseEnable) array[24 + i];
+                str.stage1LPF[i] = (TdLpfStage1) array[28 + i];
+                str.stage2LPF[i] = (TdLpfStage2)array[32 + i];
+                str.stage1HPF[i] = (TdHpfs)array[36 + i];
+                str.enableStatus[i] = Convert.ToBoolean(array[40 + i]); 
+            }
+
+            return str;
+        }
+
+        public byte[] GetByteArrayFromStruct(FFTSensingSetting str)
+        {
+            byte[] rawBytes = new byte[60];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+
+            // Starting on 5th byte - Configuration Type - 8 bytes total
+            byte[] dataType = Encoding.ASCII.GetBytes("FFTConf ");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            // The data format is all in bytes. dumpping them in in order
+            rawBytes[12] = (byte)str.fftSizes;
+            rawBytes[13] = (byte)str.windowLoad;
+            rawBytes[14] = (byte)str.shiftBits;
+            rawBytes[15] = Convert.ToByte(str.enableWindow);
+
+            // The bin size is actually calculable from other configurations. But it is kept here just to be safe
+            byte[] detailedBinSize = BitConverter.GetBytes(str.binSize);
+            Buffer.BlockCopy(detailedBinSize, 0, rawBytes, 16, detailedBinSize.Length);
+
+            // This is the last information.
+            byte[] intervalBytes = BitConverter.GetBytes(str.interval);
+            Buffer.BlockCopy(intervalBytes, 0, rawBytes, 24, intervalBytes.Length);
+            rawBytes[26] = (byte)str.fftChannel;
+            rawBytes[27] = (byte)str.powerbandEnables;
+
+            // This is the Power Band settings
+            for (int i = 0; i < 4; i++)
+            {
+                byte[] tempBytes;
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band0Start);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 28 + i*8, tempBytes.Length);
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band0Stop);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 30 + i*8, tempBytes.Length);
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band1Start);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 32 + i*8, tempBytes.Length);
+                tempBytes = BitConverter.GetBytes(str.powerbandSetting[i].Band1Stop);
+                Buffer.BlockCopy(tempBytes, 0, rawBytes, 34 + i*8, tempBytes.Length);
+            }
+            
+            return rawBytes;
+        }
+
+        public FFTSensingSetting GetFFTSetting(byte[] array)
+        {
+            FFTSensingSetting str = new FFTSensingSetting();
+            str.fftSizes = (FftSizes)array[12];
+            str.windowLoad = (FftWindowAutoLoads)array[13];
+            str.shiftBits = (FftWeightMultiplies)array[14];
+            str.enableWindow = Convert.ToBoolean(array[15]);
+            str.interval = BitConverter.ToUInt16(array, 24);
+            str.binSize = BitConverter.ToDouble(array, 16);
+
+            str.powerbandSetting = new List<PowerChannel>(4);
+            for (int i = 0; i < 4; i++)
+            {
+                str.powerbandSetting.Add(new PowerChannel(
+                    BitConverter.ToUInt16(array, 28 + i * 8),
+                    BitConverter.ToUInt16(array, 30 + i * 8),
+                    BitConverter.ToUInt16(array, 32 + i * 8),
+                    BitConverter.ToUInt16(array, 34 + i * 8)
+                    ));
+            }
+            str.fftChannel = (SenseTimeDomainChannel)array[26];
+            str.powerbandEnables = (BandEnables)array[27];
+
+            return str;
+        }
+
+        public byte[] GetByteArrayFromStruct(MISCSensingSetting str)
+        {
+            byte[] rawBytes = new byte[20];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+
+            // Starting on 5th byte - Configuration Type - 8 bytes total
+            byte[] dataType = Encoding.ASCII.GetBytes("MiscConf");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            // The data format is all in bytes. dumpping them in in order
+            rawBytes[12] = (byte)str.bridging;
+            rawBytes[13] = (byte)str.streamRate;
+            rawBytes[14] = (byte)str.lrTrigger;
+            rawBytes[15] = (byte)str.accSampleRate;
+
+            byte[] loopRecorderBufferBytes = BitConverter.GetBytes(str.lrBuffer);
+            Buffer.BlockCopy(loopRecorderBufferBytes, 0, rawBytes, 16, loopRecorderBufferBytes.Length);
+            
+            return rawBytes;
+        }
+
+        public MISCSensingSetting GetMISCSetting(byte[] array)
+        {
+            MISCSensingSetting str = new MISCSensingSetting();
+
+            str.bridging = (BridgingConfig)array[12];
+            str.streamRate = (StreamingFrameRate)array[13];
+            str.lrTrigger = (LoopRecordingTriggers)array[14];
+            str.accSampleRate = (AccelSampleRate)array[15];
+            str.lrBuffer = BitConverter.ToUInt16(array, 16);
+            
+            return str;
+        }
 
         public Mainpage()
         {
@@ -119,6 +290,11 @@ namespace SummitTouretteTask
             this.fftSetting.enableWindow = true;
             this.fftSetting.shiftBits = FftWeightMultiplies.Shift7;
             this.fftSetting.binSize = -1;
+            this.fftSetting.powerbandSetting = new List<PowerChannel>(4);
+            this.fftSetting.powerbandEnables = 0;
+
+            // Initialize Accelerometer
+            this.miscSetting.accSampleRate = AccelSampleRate.Disabled;
 
             // Initialize Montage Task
             this.montageSetting.leadSelection = new bool[4] { true , true, true, true };
@@ -339,6 +515,7 @@ namespace SummitTouretteTask
 
             this.Summit_DiscoverRCS.Enabled = false;
             this.Summit_GetStatusButton.Enabled = true;
+            this.Summit_LoadConfigurations.Enabled = true;
         }
 
         private void Summit_GetStatusButton_Click(object sender, EventArgs e)
@@ -357,8 +534,8 @@ namespace SummitTouretteTask
                 string untilEOS = generalData.DaysUntilEos.ToString();
                 this.Summit_UntilEOS.Text = "Days until EOS: " + untilEOS + " Days";
 
-                string serialNumber = generalData.DeviceSerialNumber[0].ToString();
-                this.Summit_SerialNumber.Text = "Serial Number: " + serialNumber;
+                string serialNumber = "Serial Number: " + BitConverter.ToString(generalData.DeviceSerialNumber.ToArray());
+                this.Summit_SerialNumber.Text = serialNumber;
 
                 string stimStatus = generalData.TherapyStatusData.TherapyStatus.ToString();
                 this.Summit_StimStatus.Text = "Stimulation Status: " + stimStatus;
@@ -380,7 +557,192 @@ namespace SummitTouretteTask
             {
                 MessageBox.Show("Read Sensing Status Failed...");
             }
-            
+        }
+
+        // Load Previous Confiugrations
+        private void Summit_LoadConfigurations_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileSelector = new OpenFileDialog();
+            if (fileSelector.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    Debug.WriteLine(fileSelector.FileName);
+                    byte[] rawBytes = File.ReadAllBytes(fileSelector.FileName);
+                    
+                    if (rawBytes.Length != 124)
+                    {
+                        MessageBox.Show("Cannot Load MISC Setting. Incorrect data length");
+                        return;
+                    }
+
+                    string magic = BitConverter.ToString(rawBytes.Skip(0).Take(3).ToArray());
+                    Debug.WriteLine(magic);
+                    if (string.Equals(magic,"BML"))
+                    {
+                        MessageBox.Show("Cannot Load MISC Setting. Incorrect magic number");
+                        return;
+                    }
+                    magic = BitConverter.ToString(rawBytes.Skip(44).Take(3).ToArray());
+                    Debug.WriteLine(magic);
+                    if (string.Equals(magic, "BML"))
+                    {
+                        MessageBox.Show("Cannot Load MISC Setting. Incorrect magic number");
+                        return;
+                    }
+                    magic = BitConverter.ToString(rawBytes.Skip(104).Take(3).ToArray());
+                    Debug.WriteLine(magic);
+                    if (string.Equals(magic, "BML"))
+                    {
+                        MessageBox.Show("Cannot Load MISC Setting. Incorrect magic number");
+                        return;
+                    }
+
+                    this.sensingSetting = GetTimeDomainSetting(rawBytes.Skip(0).Take(44).ToArray());
+                    // Time Channel Settings
+                    List<TimeDomainChannel> TimeDomainChannels = new List<TimeDomainChannel>(4);
+                    for (int channel = 0; channel < 4; channel++)
+                    {
+                        if (this.sensingSetting.enableStatus[channel])
+                        {
+                            Debug.WriteLine("Channel" + channel.ToString() + " State: Enable");
+                            TimeDomainChannels.Add(new TimeDomainChannel(
+                                this.sensingSetting.samplingRate[channel],
+                                this.sensingSetting.channelMux[channel, 1],
+                                this.sensingSetting.channelMux[channel, 0],
+                                this.sensingSetting.evokedResponse[channel],
+                                this.sensingSetting.stage1LPF[channel],
+                                this.sensingSetting.stage2LPF[channel],
+                                this.sensingSetting.stage1HPF[channel]));
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Channel" + channel.ToString() + " State: Disable");
+                            TimeDomainChannels.Add(new TimeDomainChannel(
+                                TdSampleRates.Disabled,
+                                this.sensingSetting.channelMux[channel, 1],
+                                this.sensingSetting.channelMux[channel, 0],
+                                this.sensingSetting.evokedResponse[channel],
+                                this.sensingSetting.stage1LPF[channel],
+                                this.sensingSetting.stage2LPF[channel],
+                                this.sensingSetting.stage1HPF[channel]));
+                        }
+                    }
+
+                    APIReturnInfo returnInfoBuffer = this.summitSystem.WriteSensingTimeDomainChannels(TimeDomainChannels);
+                    if (returnInfoBuffer.RejectCode != 0)
+                    {
+                        MessageBox.Show("Fail to Update TD Configuration: " + returnInfoBuffer.Descriptor);
+                        return;
+                    }
+                    this.configurationCheck[0] = true;
+                    Debug.WriteLine("Configured TD Channels: " + returnInfoBuffer.Descriptor);
+
+                    // FFT Configurations
+                    this.fftSetting = GetFFTSetting(rawBytes.Skip(44).Take(60).ToArray());
+                    FftConfiguration fftChannel = new FftConfiguration(
+                        this.fftSetting.fftSizes,
+                        this.fftSetting.interval,
+                        this.fftSetting.windowLoad,
+                        this.fftSetting.enableWindow,
+                        this.fftSetting.shiftBits);
+
+                    returnInfoBuffer = this.summitSystem.WriteSensingFftSettings(fftChannel);
+                    if (returnInfoBuffer.RejectCode != 0)
+                    {
+                        MessageBox.Show("Fail to Update FFT Configuration: " + returnInfoBuffer.Descriptor);
+                        return;
+                    }
+                    this.configurationCheck[1] = true;
+                    Debug.WriteLine("Configured FFT Channels: " + returnInfoBuffer.Descriptor);
+                    
+                    returnInfoBuffer = this.summitSystem.WriteSensingPowerChannels(this.fftSetting.powerbandEnables, this.fftSetting.powerbandSetting);
+                    if (returnInfoBuffer.RejectCode != 0)
+                    {
+                        MessageBox.Show("Fail to Update Power Configuration: " + returnInfoBuffer.Descriptor);
+                        return;
+                    }
+                    this.configurationCheck[2] = true;
+                    
+                    this.miscSetting = GetMISCSetting(rawBytes.Skip(104).Take(20).ToArray());
+                    MiscellaneousSensing miscSettings = new MiscellaneousSensing();
+                    miscSettings.Bridging = this.miscSetting.bridging;
+                    miscSettings.StreamingRate = this.miscSetting.streamRate;
+                    miscSettings.LrTriggers = this.miscSetting.lrTrigger;
+                    miscSettings.LrPostBufferTime = this.miscSetting.lrBuffer;
+
+                    returnInfoBuffer = this.summitSystem.WriteSensingMiscSettings(miscSettings);
+                    if (returnInfoBuffer.RejectCode != 0)
+                    {
+                        MessageBox.Show("Fail to Update MISC Configuration: " + returnInfoBuffer.Descriptor);
+                        return;
+                    }
+                    Debug.WriteLine("Configured MISC Channels: " + returnInfoBuffer.Descriptor);
+
+                    returnInfoBuffer = this.summitSystem.WriteSensingAccelSettings(this.miscSetting.accSampleRate);
+                    if (returnInfoBuffer.RejectCode != 0)
+                    {
+                        MessageBox.Show("Fail to Update Accelerometer Configuration: " + returnInfoBuffer.Descriptor);
+                        return;
+                    }
+                    Debug.WriteLine("Configured Accelerometer Channels: " + returnInfoBuffer.Descriptor);
+                    this.configurationCheck[3] = true;
+                    
+                    Sensing_GetStatusButton_Click(null, null);
+                    Sensing_GetFFTStatus_Click(null, null);
+                    Sensing_GetMISCStatus_Click(null, null);
+
+                    // This is specifically used because RC+S do not have sensing logs for Accelerometer
+                    switch (this.miscSetting.accSampleRate)
+                    {
+                        case AccelSampleRate.Sample64:
+                            this.Sensing_AccSampleRate.SelectedIndex = 0;
+                            break;
+                        case AccelSampleRate.Sample32:
+                            this.Sensing_AccSampleRate.SelectedIndex = 1;
+                            break;
+                        case AccelSampleRate.Sample16:
+                            this.Sensing_AccSampleRate.SelectedIndex = 2;
+                            break;
+                        case AccelSampleRate.Sample08:
+                            this.Sensing_AccSampleRate.SelectedIndex = 3;
+                            break;
+                        case AccelSampleRate.Sample04:
+                            this.Sensing_AccSampleRate.SelectedIndex = 4;
+                            break;
+                        case AccelSampleRate.Disabled:
+                            this.Sensing_AccSampleRate.SelectedIndex = 5;
+                            break;
+                        default:
+                            this.Sensing_AccSampleRate.SelectedIndex = 5;
+                            break;
+                    }
+                    
+                    switch (this.fftSetting.fftChannel)
+                    {
+                        case SenseTimeDomainChannel.Ch0:
+                            this.Sensing_FFTStream.SelectedIndex = 0;
+                            break;
+                        case SenseTimeDomainChannel.Ch1:
+                            this.Sensing_FFTStream.SelectedIndex = 1;
+                            break;
+                        case SenseTimeDomainChannel.Ch2:
+                            this.Sensing_FFTStream.SelectedIndex = 2;
+                            break;
+                        case SenseTimeDomainChannel.Ch3:
+                            this.Sensing_FFTStream.SelectedIndex = 3;
+                            break;
+                        default:
+                            this.Sensing_FFTStream.SelectedIndex = -1;
+                            break;
+                    }
+                    MessageBox.Show("Load Successfully");
+                }
+                catch (System.Security.SecurityException ex)
+                {
+                    MessageBox.Show("Security Error");
+                }
+            }
         }
 
         private void Sensing_GetStatusButton_Click(object sender, EventArgs e)
@@ -438,8 +800,23 @@ namespace SummitTouretteTask
                         break;
                 }
 
-                posMux[channelID].SelectedIndex = (int)tdChannel.PlusInput;
-                negMux[channelID].SelectedIndex = (int)tdChannel.MinusInput;
+                if (tdChannel.PlusInput == TdMuxInputs.Floating)
+                {
+                    posMux[channelID].SelectedIndex = 0;
+                }
+                else
+                {
+                    posMux[channelID].SelectedIndex = (int)Math.Log((double)tdChannel.PlusInput, 2) + 1;
+                }
+
+                if (tdChannel.MinusInput == TdMuxInputs.Floating)
+                {
+                    negMux[channelID].SelectedIndex = 0;
+                }
+                else
+                {
+                    negMux[channelID].SelectedIndex = (int)Math.Log((double)tdChannel.MinusInput, 2) + 1;
+                }
                 
                 switch (tdChannel.EvokedMode)
                 {
@@ -563,8 +940,23 @@ namespace SummitTouretteTask
                         break;
                 }
 
-                this.sensingSetting.channelMux[channel, 0] = (TdMuxInputs) posMux[channel].SelectedIndex;
-                this.sensingSetting.channelMux[channel, 1] = (TdMuxInputs) negMux[channel].SelectedIndex;
+                if (posMux[channel].SelectedIndex == 0)
+                {
+                    this.sensingSetting.channelMux[channel, 0] = TdMuxInputs.Floating;
+                }
+                else
+                {
+                    this.sensingSetting.channelMux[channel, 0] = (TdMuxInputs)Math.Pow(2, posMux[channel].SelectedIndex - 1);
+                }
+
+                if (negMux[channel].SelectedIndex == 0)
+                {
+                    this.sensingSetting.channelMux[channel, 1] = TdMuxInputs.Floating;
+                }
+                else
+                {
+                    this.sensingSetting.channelMux[channel, 1] = (TdMuxInputs)Math.Pow(2, negMux[channel].SelectedIndex - 1);
+                }
 
                 switch (evokedRes[channel].SelectedIndex)
                 {
@@ -768,7 +1160,10 @@ namespace SummitTouretteTask
 
             this.fftSetting.interval = theSensingConfig.FftConfig.Interval;
             this.Sensing_FFTInterval.Value = theSensingConfig.FftConfig.Interval;
-            
+
+            this.fftSetting.powerbandEnables = theSensingConfig.BandEnable;
+            this.fftSetting.powerbandSetting = theSensingConfig.PowerChannels;
+
             if ((theSensingConfig.BandEnable & BandEnables.Ch0Band0Enabled) > 0) this.Sensing_FFTCh1Band1Enable.Checked = true;
             else this.Sensing_FFTCh1Band1Enable.Checked = false;
             if ((theSensingConfig.BandEnable & BandEnables.Ch0Band1Enabled) > 0) this.Sensing_FFTCh1Band2Enable.Checked = true;
@@ -1386,31 +1781,11 @@ namespace SummitTouretteTask
 
         private void DataAcquisition_Run_Click(object sender, EventArgs e)
         {
-            if (this.summitManager == null || this.summitSystem == null)
-            {
-                MessageBox.Show("Entering Debug Mode");
-
-                VoluntaryMovement displayTest = new VoluntaryMovement();
-
-                displayTest.FormBorderStyle = FormBorderStyle.None;
-                displayTest.WindowState = FormWindowState.Maximized;
-                displayTest.summitSystem = this.summitSystem;
-                displayTest.streamingOption = this.streamingOptions;
-                displayTest.StartPosition = FormStartPosition.Manual;
-                displayTest.Location = this.workingMonitor.WorkingArea.Location;
-                displayTest.debugMode = true;
-                displayTest.Show();
-
-                return;
-            }
-
-            if (!this.configurationCheck.All(configuration => configuration == true))
-            {
-                MessageBox.Show("Not all configuration checked.");
-                return;
-            }
-
             VoluntaryMovement display = new VoluntaryMovement();
+
+            display.tdSettings = this.sensingSetting;
+            display.fftSettings = this.fftSetting;
+            display.miscSettings = this.miscSetting;
 
             display.FormBorderStyle = FormBorderStyle.None;
             display.WindowState = FormWindowState.Maximized;
@@ -1418,26 +1793,13 @@ namespace SummitTouretteTask
             display.streamingOption = this.streamingOptions;
             display.StartPosition = FormStartPosition.Manual;
             display.Location = this.workingMonitor.WorkingArea.Location;
-            display.debugMode = false;
-            display.Show();
-        }
 
-        private void ExtensiveSampling_Run_Click(object sender, EventArgs e)
-        {
             if (this.summitManager == null || this.summitSystem == null)
             {
                 MessageBox.Show("Entering Debug Mode");
-                
-                ExtensiveSampling displayTest = new ExtensiveSampling();
-                
-                displayTest.summitSystem = this.summitSystem;
-                displayTest.streamingOption = this.streamingOptions;
-                displayTest.StartPosition = FormStartPosition.Manual;
-                displayTest.Location = this.workingMonitor.WorkingArea.Location;
-                displayTest.WindowState = FormWindowState.Maximized;
-                displayTest.FormBorderStyle = FormBorderStyle.None;
-                displayTest.debugMode = true;
-                displayTest.Show();
+
+                display.debugMode = true;
+                display.Show();
 
                 return;
             }
@@ -1447,7 +1809,13 @@ namespace SummitTouretteTask
                 MessageBox.Show("Not all configuration checked.");
                 return;
             }
+            
+            display.debugMode = false;
+            display.Show();
+        }
 
+        private void ExtensiveSampling_Run_Click(object sender, EventArgs e)
+        {
             ExtensiveSampling display = new ExtensiveSampling();
 
             display.FormBorderStyle = FormBorderStyle.None;
@@ -1456,6 +1824,23 @@ namespace SummitTouretteTask
             display.streamingOption = this.streamingOptions;
             display.StartPosition = FormStartPosition.Manual;
             display.Location = this.workingMonitor.WorkingArea.Location;
+
+            if (this.summitManager == null || this.summitSystem == null)
+            {
+                MessageBox.Show("Entering Debug Mode");
+
+                display.debugMode = true;
+                display.Show();
+
+                return;
+            }
+
+            if (!this.configurationCheck.All(configuration => configuration == true))
+            {
+                MessageBox.Show("Not all configuration checked.");
+                return;
+            }
+            
             display.debugMode = false;
             display.Show();
 
@@ -1469,7 +1854,6 @@ namespace SummitTouretteTask
 
                 do
                 {
-                    Debug.WriteLine("Start Process Handler");
                     Process[] processList = Process.GetProcesses();
                     foreach (Process myProcess in processList)
                     {
@@ -1504,5 +1888,6 @@ namespace SummitTouretteTask
             this.workingMonitor = screens[this.Task_MonitorPicker.SelectedIndex];
             this.MonitorSizeLabel.Text = this.workingMonitor.WorkingArea.Width.ToString() + " x " + this.workingMonitor.WorkingArea.Height.ToString();
         }
+
     }
 }

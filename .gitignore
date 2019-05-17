@@ -19,9 +19,10 @@ $RECYCLE.BIN/
 *.lnk
 
 # Release and Debug Folder
-SummitTouretteTask/bin/
+SummitTouretteTask/bin/*
+SummitTouretteTask/obj/*
+.vs/*
 
 # =========================
 # Operating System Files
 # =========================
-*.png
