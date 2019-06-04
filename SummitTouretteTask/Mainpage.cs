@@ -18,6 +18,7 @@ using Medtronic.NeuroStim.Olympus.DataTypes.PowerManagement;
 using Medtronic.NeuroStim.Olympus.DataTypes.DeviceManagement;
 using Medtronic.NeuroStim.Olympus.DataTypes.Sensing;
 using System.IO;
+using Medtronic.NeuroStim.Olympus.DataTypes.Therapy;
 
 namespace SummitTouretteTask
 {
@@ -65,7 +66,7 @@ namespace SummitTouretteTask
 
         public AccelSampleRate accSampleRate;
     };
-
+    
     public partial class Mainpage : Form
     {
 
@@ -81,6 +82,9 @@ namespace SummitTouretteTask
         TdSensingSetting sensingSetting;
         FFTSensingSetting fftSetting;
         MISCSensingSetting miscSetting;
+
+        // Stimulation Setting
+        TherapyGroup[] therapyGroups;
         
         // Configuration Check
         bool[] configurationCheck;
@@ -292,6 +296,9 @@ namespace SummitTouretteTask
             this.fftSetting.binSize = -1;
             this.fftSetting.powerbandSetting = new List<PowerChannel>(4);
             this.fftSetting.powerbandEnables = 0;
+
+            // Initialize Theray Groups
+            therapyGroups = new TherapyGroup[4];
 
             // Initialize Accelerometer
             this.miscSetting.accSampleRate = AccelSampleRate.Disabled;
@@ -523,8 +530,9 @@ namespace SummitTouretteTask
             // Read the battery level
             GeneralInterrogateData generalData;
             APIReturnInfo commandReturn = this.summitSystem.ReadGeneralInfo(out generalData);
-            
+
             // Ensure the command was successful before using the result
+            ActiveGroup activeGroup;
             if (commandReturn.RejectCode == 0)
             {
                 // Retrieve the battery level from the output buffer
@@ -539,10 +547,12 @@ namespace SummitTouretteTask
 
                 string stimStatus = generalData.TherapyStatusData.TherapyStatus.ToString();
                 this.Summit_StimStatus.Text = "Stimulation Status: " + stimStatus;
+                activeGroup = generalData.TherapyStatusData.ActiveGroup;
             }
             else
             {
                 MessageBox.Show("Read General Info Failed...");
+                return;
             }
 
             SensingState sensingStatus;
@@ -556,6 +566,34 @@ namespace SummitTouretteTask
             else
             {
                 MessageBox.Show("Read Sensing Status Failed...");
+                return;
+            }
+
+            // Get Stimulation Settings
+            Label[] amplitude = { this.Status_StimSet1_Amp, this.Status_StimSet2_Amp, this.Status_StimSet3_Amp, this.Status_StimSet4_Amp };
+            Label[] pulsewidth = { this.Status_StimSet1_PW, this.Status_StimSet2_PW, this.Status_StimSet3_PW, this.Status_StimSet4_PW };
+            Label[] frequency = { this.Status_StimSet1_Freq, this.Status_StimSet2_Freq, this.Status_StimSet3_Freq, this.Status_StimSet4_Freq };
+
+            commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group0, out therapyGroups[0]);
+            commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group1, out therapyGroups[1]);
+            commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group2, out therapyGroups[2]);
+            commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group3, out therapyGroups[3]);
+
+            if (commandReturn.RejectCode == 0)
+            {
+                int i = 0;
+                foreach(TherapyProgram therapyProgram in therapyGroups[(int)activeGroup].Programs)
+                {
+                    amplitude[i].Text = therapyProgram.AmplitudeInMilliamps.ToString() + "mA";
+                    pulsewidth[i].Text = therapyProgram.PulseWidthInMicroseconds.ToString() + "uS";
+                    frequency[i].Text = therapyGroups[(int)activeGroup].RateInHz.ToString() + "Hz";
+                    i++;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Read Theray Group Status Failed...");
+                return;
             }
         }
 
@@ -1888,6 +1926,5 @@ namespace SummitTouretteTask
             this.workingMonitor = screens[this.Task_MonitorPicker.SelectedIndex];
             this.MonitorSizeLabel.Text = this.workingMonitor.WorkingArea.Width.ToString() + " x " + this.workingMonitor.WorkingArea.Height.ToString();
         }
-
     }
 }
