@@ -1,6 +1,7 @@
 ﻿using Medtronic.NeuroStim.Olympus.DataTypes.Sensing;
 using Medtronic.SummitAPI.Classes;
 using Medtronic.SummitAPI.Events;
+using Medtronic.NeuroStim.Olympus.DataTypes.Therapy;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.IO.Ports;
 
 namespace SummitTouretteTask
 {
@@ -28,6 +30,8 @@ namespace SummitTouretteTask
         public TdSensingSetting tdSettings;
         public FFTSensingSetting fftSettings;
         public MISCSensingSetting miscSettings;
+        public STIMSetting stimSetting;
+        public double[] impedance;
 
         public SummitSystem summitSystem;
         public bool[] streamingOption;
@@ -35,14 +39,17 @@ namespace SummitTouretteTask
         public string storedFileName;
         public string configurationFileName;
         public Stopwatch stopWatch;
+        public string serialPortName;
+        public SerialPort serialPort;
 
         public bool debugMode;
+        public Trigno trignoServer;
         
         public DataAcquisition()
         {
             InitializeComponent();
-            storedFileName = DateTime.Now.ToString("[yyyy-MM-dd-hh-mm-ss]") + "DataAccquisitionTest.dat";
-            configurationFileName = DateTime.Now.ToString("[yyyy-MM-dd-hh-mm-ss]") + "DataAccquisitionTest.config";
+            storedFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " DataAccquisitionTest.dat";
+            configurationFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " DataAccquisitionTest.config";
             stopWatch = new Stopwatch();
         }
         
@@ -105,6 +112,15 @@ namespace SummitTouretteTask
             System.Timers.Timer timer = (System.Timers.Timer)sender;
             timer.Stop();
         }
+        
+        public void SerialPortMessage(string message)
+        {
+            if (this.serialPort != null)
+            {
+                this.serialPort.Write(message);
+                this.serialPort.ReadExisting();
+            }
+        }
 
         public void AcquisitionStart()
         {
@@ -116,6 +132,15 @@ namespace SummitTouretteTask
                 if (streamingOption[2]) this.summitSystem.DataReceivedPowerHandler += DataReceiver_Power;
                 if (streamingOption[3] && streamingOption[4]) this.summitSystem.DataReceivedDetectorHandler += DataReceiver_Detector;
                 if (streamingOption[5]) this.summitSystem.DataReceivedAccelHandler += DataReceiver_Accelerometer;
+            }
+
+            if (trignoServer != null)
+            {
+                if (trignoServer.connected)
+                {
+                    trignoServer.StartAcquisition();
+                    trignoServer.StartDataWriter();
+                }
             }
 
             // Start Stopwatch
@@ -148,8 +173,54 @@ namespace SummitTouretteTask
                 if (streamingOption[5]) this.summitSystem.DataReceivedAccelHandler -= DataReceiver_Accelerometer;
             }
 
+            if (trignoServer != null)
+            {
+                if (trignoServer.connected)
+                {
+                    trignoServer.StopAcquisition();
+                }
+            }
+
             // Disable Streaming
             if (!debugMode) this.summitSystem.WriteSensingDisableStreams(true);
+        }
+
+        public bool Stimulation_State(bool on)
+        {
+            if (on)
+            {
+                APIReturnInfo commandReturn = this.summitSystem.StimChangeTherapyOn();
+                if (commandReturn.RejectCode != 0)
+                {
+                    Debug.Print("Cannot turn on therapy...");
+                    return false;
+                }
+                Task_WriteTrigger("StimOn");
+            }
+            else
+            {
+                APIReturnInfo commandReturn = this.summitSystem.StimChangeTherapyOff(false);
+                if (commandReturn.RejectCode != 0)
+                {
+                    Debug.Print("Cannot turn off therapy...");
+                    return false;
+                }
+                Task_WriteTrigger("StimOff");
+            }
+
+            return true;
+        }
+
+        public bool Stimulation_AmplitudeChange(byte programNum, double deltaAmplitude, out double? newStimAmplitude)
+        {
+            APIReturnInfo commandReturn = this.summitSystem.StimChangeStepAmp(programNum, deltaAmplitude, out newStimAmplitude);
+            if (commandReturn.RejectCode != 0)
+            {
+                Debug.Print("Cannot modify the stimulation amplitude" + commandReturn.Descriptor);
+                return false;
+            }
+
+            return true;
         }
 
         public void DataReceiver_TimeDomain(object sender, SensingEventTD tdSenseEvent)
@@ -396,6 +467,29 @@ namespace SummitTouretteTask
 
         }
 
+        public void Configuration_WriteImpedance()
+        {
+            byte[] rawBytes = new byte[40*8 + 8];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+            rawBytes[3] = 0;
+
+            // Populate the Headers #2 - Type of Data Det  
+            byte[] dataType = Encoding.ASCII.GetBytes("Impe");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            for (int i = 0; i < 40; i++)
+            {
+                byte[] impedanceBytes = BitConverter.GetBytes(impedance[i]);
+                Buffer.BlockCopy(impedanceBytes, 0, rawBytes, 8 + i * 8, sizeof(double));
+            }
+            
+            dataManager.WriteBinary_ThreadSafe(storedFileName, rawBytes);
+        }
+
         public void Task_WriteTrigger(string trigger)
         {
             byte[] rawBytes = new byte[32];
@@ -523,14 +617,59 @@ namespace SummitTouretteTask
             return rawBytes;
         }
         
+        public byte[] GetByteArrayFromStruct(STIMSetting str)
+        {
+            byte[] rawBytes = new byte[124];
+
+            // Populate the Headers - Magic Number BML + Global Sequence Byte
+            rawBytes[0] = 66;
+            rawBytes[1] = 77;
+            rawBytes[2] = 76;
+
+            // Starting on 5th byte - Configuration Type - 8 bytes total
+            byte[] dataType = Encoding.ASCII.GetBytes("StimConf");
+            Buffer.BlockCopy(dataType, 0, rawBytes, 4, dataType.Length);
+
+            // The data format is all in bytes. dumpping them in in order
+            for (int i = 0; i < 4; i++)
+            {
+
+                byte[] frequencyBytes = BitConverter.GetBytes(str.frequency[i]);
+                Buffer.BlockCopy(frequencyBytes, 0, rawBytes, 12 + i * 28, frequencyBytes.Length);
+
+                byte[] pulsewidthBytes = BitConverter.GetBytes(str.pulsewidth[i]);
+                Buffer.BlockCopy(pulsewidthBytes, 0, rawBytes, 12 + i * 28 + 8, pulsewidthBytes.Length);
+
+                byte[] amplitudeBytes = BitConverter.GetBytes(str.amplitude[i]);
+                Buffer.BlockCopy(amplitudeBytes, 0, rawBytes, 12 + i * 28 + 12, amplitudeBytes.Length);
+
+                byte[] contactBytes = BitConverter.GetBytes(str.plusContacts[i]);
+                Buffer.BlockCopy(contactBytes, 0, rawBytes, 12 + i * 28 + 20, contactBytes.Length);
+
+                contactBytes = BitConverter.GetBytes(str.minusContacts[i]);
+                Buffer.BlockCopy(contactBytes, 0, rawBytes, 12 + i * 28 + 24, contactBytes.Length);
+            }
+
+            return rawBytes;
+        }
+
+
         public void Task_WriteConfigurations()
         {
-            byte[] tdConfiguration = GetByteArrayFromStruct(tdSettings);
-            dataManager.WriteBinary_ThreadSafe(configurationFileName, tdConfiguration);
-            byte[] fftConfiguration = GetByteArrayFromStruct(fftSettings);
-            dataManager.WriteBinary_ThreadSafe(configurationFileName, fftConfiguration);
-            byte[] miscConfiguration = GetByteArrayFromStruct(miscSettings);
-            dataManager.WriteBinary_ThreadSafe(configurationFileName, miscConfiguration);
+            if (!debugMode)
+            {
+                byte[] tdConfiguration = GetByteArrayFromStruct(tdSettings);
+                dataManager.WriteBinary_ThreadSafe(configurationFileName, tdConfiguration);
+                byte[] fftConfiguration = GetByteArrayFromStruct(fftSettings);
+                dataManager.WriteBinary_ThreadSafe(configurationFileName, fftConfiguration);
+                byte[] miscConfiguration = GetByteArrayFromStruct(miscSettings);
+                dataManager.WriteBinary_ThreadSafe(configurationFileName, miscConfiguration);
+                byte[] stimConfiguration = GetByteArrayFromStruct(stimSetting);
+                dataManager.WriteBinary_ThreadSafe(configurationFileName, stimConfiguration);
+                Configuration_WriteImpedance();
+            }
         }
+
+
     }
 }

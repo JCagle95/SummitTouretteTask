@@ -16,7 +16,8 @@ namespace SummitTouretteTask
         public VoluntaryMovement()
         {
             InitializeComponent();
-            storedFileName = DateTime.Now.ToString("[yyyy-MM-dd-hh-mm-ss]") + "VoluntaryMovement.dat";
+            storedFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " VoluntaryMovement.dat";
+            configurationFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss] ") + " VoluntaryMovement.config";
             stopWatch = new Stopwatch();
         }
         
@@ -32,8 +33,12 @@ namespace SummitTouretteTask
             if (key.KeyChar.ToString() == "n")
             {
                 dataManager = new DataManager();
+                storedFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " VoluntaryMovement.dat";
+                configurationFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss] ") + " VoluntaryMovement.config";
+                trignoServer.storedFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " VoluntaryMovement.mdat";
                 this.displayThread = new Thread(new ThreadStart(this.InitializeTaskDisplay));
                 this.taskCondition = true;
+                Task_WriteConfigurations();
                 this.displayThread.Start();
             }
         }
@@ -47,7 +52,6 @@ namespace SummitTouretteTask
                 Delay(1000);
             }
 
-            Task_WriteConfigurations();
             AcquisitionStart();
             
             for (int i = 0; i < 8; i++)
@@ -59,6 +63,7 @@ namespace SummitTouretteTask
                 for (int repeat = 0; repeat < 10; repeat++)
                 {
                     Task_WriteTrigger("Move Start");
+                    SerialPortMessage("Hello World");
                     DisplayImageSafe(Resources.HandOpen, Resources.HandOpen.Width, Resources.HandOpen.Height);
                     Delay(200);
                     DisplayImageSafe(Resources.HandClosing, Resources.HandClosing.Width, Resources.HandClosing.Height);

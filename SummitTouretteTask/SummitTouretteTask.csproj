@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +26,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Trigno.cs" />
     <Compile Include="DataAcquisition.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +118,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StimAndRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StimAndRecord.Designer.cs">
+      <DependentUpon>StimAndRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="VoluntaryMovement.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +152,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="StimAndRecord.resx">
+      <DependentUpon>StimAndRecord.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VoluntaryMovement.resx">
       <DependentUpon>VoluntaryMovement.cs</DependentUpon>
     </EmbeddedResource>

@@ -23,6 +23,9 @@ SummitTouretteTask/bin/*
 SummitTouretteTask/obj/*
 .vs/*
 
+# Summit Folder
+SummitTouretteTask/SummitRDK_1_6_0/*
+
 # =========================
 # Operating System Files
 # =========================

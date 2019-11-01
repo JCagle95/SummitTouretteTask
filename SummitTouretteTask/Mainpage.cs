@@ -19,6 +19,8 @@ using Medtronic.NeuroStim.Olympus.DataTypes.DeviceManagement;
 using Medtronic.NeuroStim.Olympus.DataTypes.Sensing;
 using System.IO;
 using Medtronic.NeuroStim.Olympus.DataTypes.Therapy;
+using System.IO.Ports;
+using Medtronic.NeuroStim.Olympus.DataTypes.Measurement;
 
 namespace SummitTouretteTask
 {
@@ -66,6 +68,15 @@ namespace SummitTouretteTask
 
         public AccelSampleRate accSampleRate;
     };
+
+    public struct STIMSetting
+    {
+        public double[] frequency;
+        public int[] pulsewidth;
+        public double[] amplitude;
+        public int[] plusContacts;
+        public int[] minusContacts;
+    }
     
     public partial class Mainpage : Form
     {
@@ -84,8 +95,11 @@ namespace SummitTouretteTask
         MISCSensingSetting miscSetting;
 
         // Stimulation Setting
+        STIMSetting stimSetting;
         TherapyGroup[] therapyGroups;
-        
+        AmplitudeLimits[] amplitudeLimits;
+        double[] impedanceResults;
+
         // Configuration Check
         bool[] configurationCheck;
         bool[] streamingOptions;
@@ -96,12 +110,18 @@ namespace SummitTouretteTask
 
         DataManager dataManager;
 
+        SerialPort serialPort;
+
+        // Trigno Sensors
+        Trigno trignoServer;
+
         // To Handle ORCA Window
         [DllImport("User32")]
         private static extern int ShowWindow(int windowHandler, int showCMD);
         private Thread ORCA_Thread = null;
         private int ORCA_Task;
         private bool ORCA_TaskComplete;
+        private bool DisableORCA;
 
         // To Handle Configuration Files
         public byte[] GetByteArrayFromStruct(TdSensingSetting str)
@@ -252,7 +272,7 @@ namespace SummitTouretteTask
 
             byte[] loopRecorderBufferBytes = BitConverter.GetBytes(str.lrBuffer);
             Buffer.BlockCopy(loopRecorderBufferBytes, 0, rawBytes, 16, loopRecorderBufferBytes.Length);
-            
+
             return rawBytes;
         }
 
@@ -265,9 +285,11 @@ namespace SummitTouretteTask
             str.lrTrigger = (LoopRecordingTriggers)array[14];
             str.accSampleRate = (AccelSampleRate)array[15];
             str.lrBuffer = BitConverter.ToUInt16(array, 16);
-            
+
             return str;
         }
+
+        #region MainWindow Initialization
 
         public Mainpage()
         {
@@ -298,7 +320,15 @@ namespace SummitTouretteTask
             this.fftSetting.powerbandEnables = 0;
 
             // Initialize Theray Groups
+            stimSetting.amplitude = new double[4];
+            stimSetting.frequency = new double[4];
+            stimSetting.pulsewidth = new int[4];
+            stimSetting.plusContacts = new int[4];
+            stimSetting.minusContacts = new int[4];
+
             therapyGroups = new TherapyGroup[4];
+            amplitudeLimits = new AmplitudeLimits[4];
+            impedanceResults = new double[40];
 
             // Initialize Accelerometer
             this.miscSetting.accSampleRate = AccelSampleRate.Disabled;
@@ -320,6 +350,10 @@ namespace SummitTouretteTask
             this.ORCA_ProjectName.Text = "projectSummitTourette";
             this.ORCA_TaskComplete = false;
             this.ORCA_Task = 0;
+            this.DisableORCA = true;
+
+            // Setup Delsys
+            trignoServer = new Trigno();
         }
 
         /// <summary>
@@ -342,6 +376,10 @@ namespace SummitTouretteTask
                 this.ORCA_Thread.Join();
             }
         }
+
+        #endregion
+
+        #region Summit Initialization
 
         /// <summary>
         /// Establish Connection with Summit RC+S through USB or Bluetooth. 
@@ -394,6 +432,67 @@ namespace SummitTouretteTask
             this.Summit_DiscoverRCS.Enabled = true;
         }
 
+        private void Summit_DiscoverRCS_Click(object sender, EventArgs e)
+        {
+            List<DiscoveredDevice> discoveredDevices;
+            do
+            {
+                Debug.WriteLine("Discovered 0 Device...");
+                this.summitSystem.OlympusDiscovery(out discoveredDevices);
+                Debug.WriteLine("Complete Discovery...");
+                if (discoveredDevices == null)
+                {
+                    discoveredDevices = new List<DiscoveredDevice>();
+                }
+                System.Threading.Thread.Sleep(1000);
+            } while (discoveredDevices.Count == 0);
+
+            // Connect to the INS with default parameters and ORCA annotations
+            Debug.WriteLine("Creating Summit Interface.");
+
+            // Start ORCA Handler
+            this.ORCA_TaskComplete = false;
+            this.ORCA_Task = 1;
+            this.ORCA_Thread = new Thread(new ThreadStart(this.ORCA_Handler));
+            this.ORCA_Thread.Start();
+
+            // We can disable ORCA annotations because this is a non-human use INS (see disclaimer)
+            // Human-use INS devices ignore the OlympusConnect disableAnnotation flag and always enable annotations.
+            // Connect to a device
+            ConnectReturn theWarnings;
+            APIReturnInfo connectReturn;
+            int i = 0;
+            do
+            {
+                Debug.WriteLine("Initialization for Summit Interface");
+                connectReturn = summitSystem.StartInsSession(discoveredDevices[0], out theWarnings, this.DisableORCA);
+                Debug.WriteLine("Create Summit Result: " + connectReturn.Descriptor);
+                Debug.WriteLine("Create Summit Result: " + connectReturn.CtmCommandCode);
+                i++;
+                if (i > 20)
+                {
+                    MessageBox.Show("More than 20 initialization error. Please retry later...");
+                    return;
+                }
+            } while (theWarnings.HasFlag(ConnectReturn.InitializationError));
+
+            this.ORCA_TaskComplete = true;
+            this.ORCA_Task = 0;
+            this.ORCA_Thread.Join();
+
+            ORCA_Handler();
+
+            if (connectReturn.RejectCode != 0)
+            {
+                MessageBox.Show("Discover INS Failure...");
+                return;
+            }
+
+            this.Summit_DiscoverRCS.Enabled = false;
+            this.Summit_GetStatusButton.Enabled = true;
+            this.Summit_LoadConfigurations.Enabled = true;
+        }
+
         /// <summary>
         /// Lock up the textbox for ORCA Project name to prevent mistake by the user. 
         /// Once ORCA Project Name is locked, the Summit Connection can be established.
@@ -411,6 +510,129 @@ namespace SummitTouretteTask
                 this.Summit_Connect.Enabled = true;
             }
         }
+
+        private void ORCA_Handler()
+        {
+            try
+            {
+                int actionCounter = 0;
+
+                do
+                {
+                    Process[] processList = Process.GetProcesses();
+                    foreach (Process myProcess in processList)
+                    {
+                        if (!String.IsNullOrEmpty(myProcess.MainWindowTitle))
+                        {
+                            if (myProcess.ProcessName == "Annotator")
+                            {
+                                if (ORCA_Task == 1)
+                                {
+                                    myProcess.CloseMainWindow();
+                                    actionCounter++;
+                                    Thread.Sleep(5000);
+                                }
+                                else
+                                {
+                                    ShowWindow(myProcess.MainWindowHandle.ToInt32(), 6);
+                                }
+                            }
+                        }
+                    }
+                    Thread.Sleep(1000);
+                } while (!ORCA_TaskComplete && actionCounter < 20);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception.Message);
+            }
+        }
+
+        #endregion
+
+        #region Serial Port / Arduino Communications
+
+        private void Task_SerialPortCheck_Click(object sender, EventArgs e)
+        {
+            SerialPortSearch();
+        }
+
+        private void SerialPortSearch()
+        {
+            string[] ports = SerialPort.GetPortNames();
+
+            Console.WriteLine("The following serial ports were found:");
+
+            // Display each port name to the console.
+            foreach (string port in ports)
+            {
+                Debug.WriteLine(port);
+                SerialPort _serialPort = new SerialPort(port, 9600, Parity.None, 8, StopBits.One);
+                _serialPort.Handshake = Handshake.None;
+                _serialPort.WriteTimeout = 20;
+                try
+                {
+                    _serialPort.Open();
+                    _serialPort.Write("Hello World");
+                    Thread.Sleep(100);
+                    if (_serialPort.BytesToRead > 0)
+                    {
+                        Int32 message = _serialPort.ReadChar();
+                        if (message == 90)
+                        {
+                            this.serialPort = _serialPort;
+                        }
+                    }
+                    else
+                    {
+                        _serialPort.Close();
+                    }
+                }
+                catch (TimeoutException e)
+                {
+                    Debug.WriteLine("Timeout Exception Reach: " + e.Message);
+                }
+                catch (System.IO.IOException e)
+                {
+                    Debug.WriteLine("IO Exception Reach: " + e.Message);
+                }
+            }
+
+            if (this.serialPort == null)
+            {
+                MessageBox.Show("No Arduino Found. Serial Port NULL. ");
+            }
+        }
+
+        #endregion
+
+        #region Delsys Communications
+
+        private void Delsys_ConnectServer_Click(object sender, EventArgs e)
+        {
+            trignoServer.SetupServer();
+            if (trignoServer.connected)
+            {
+                Delsys_UpdateSensors.Enabled = true;
+                Delsys_StartRecording.Enabled = true;
+                Delsys_StopRecording.Enabled = true;
+            }
+        }
+        
+        private void Delsys_UpdateSensors_Click(object sender, EventArgs e)
+        {
+            trignoServer.UpdateSensors();
+            RadioButton[] sensorIndicators = { Sensor01_LED, Sensor02_LED, Sensor03_LED, Sensor04_LED, Sensor05_LED, Sensor06_LED, Sensor07_LED, Sensor08_LED, Sensor09_LED, Sensor10_LED, Sensor11_LED, Sensor12_LED, Sensor13_LED, Sensor14_LED, Sensor15_LED, Sensor16_LED };
+            for (int i = 0; i < 16; i++)
+            {
+                sensorIndicators[i].Checked = trignoServer.connectedSensors[i] != Trigno.SensorTypes.NoSensor;
+                trignoServer.sensorStatus[i] = sensorIndicators[i].Checked;
+            }
+        }
+
+        #endregion
+
+        #region Montage Recording
 
         /// <summary>
         /// Execute Montage recordings through another Windows Form Window. 
@@ -441,6 +663,10 @@ namespace SummitTouretteTask
             display.Show();
         }
 
+        #endregion
+
+        #region UI Declaration and Initialization
+
         /// <summary>
         /// Montage Leads Checkbox Callbacks
         /// </summary>
@@ -449,81 +675,28 @@ namespace SummitTouretteTask
             CheckBox checkbox = (CheckBox)sender;
             montageSetting.leadSelection[0] = checkbox.CheckState == CheckState.Checked;
         }
+
         private void RightCh1_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = (CheckBox)sender;
             montageSetting.leadSelection[2] = checkbox.CheckState == CheckState.Checked;
         }
+
         private void LeftCh2_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = (CheckBox)sender;
             montageSetting.leadSelection[1] = checkbox.CheckState == CheckState.Checked;
         }
+
         private void RightCh2_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkbox = (CheckBox)sender;
             montageSetting.leadSelection[3] = checkbox.CheckState == CheckState.Checked;
         }
 
-        private void Summit_DiscoverRCS_Click(object sender, EventArgs e)
-        {
-            List<DiscoveredDevice> discoveredDevices;
-            do
-            {
-                Debug.WriteLine("Discovered 0 Device...");
-                this.summitSystem.OlympusDiscovery(out discoveredDevices);
-                Debug.WriteLine("Complete Discovery...");
-                if (discoveredDevices == null)
-                {
-                    discoveredDevices = new List<DiscoveredDevice>();
-                }
-                System.Threading.Thread.Sleep(1000);
-            } while (discoveredDevices.Count == 0);
-            
-            // Connect to the INS with default parameters and ORCA annotations
-            Debug.WriteLine("Creating Summit Interface.");
+        #endregion
 
-            // Start ORCA Handler
-            this.ORCA_TaskComplete = false;
-            this.ORCA_Task = 1;
-            this.ORCA_Thread = new Thread(new ThreadStart(this.ORCA_Handler));
-            this.ORCA_Thread.Start();
-
-            // We can disable ORCA annotations because this is a non-human use INS (see disclaimer)
-            // Human-use INS devices ignore the OlympusConnect disableAnnotation flag and always enable annotations.
-            // Connect to a device
-            ConnectReturn theWarnings;
-            APIReturnInfo connectReturn;
-            int i = 0;
-            do
-            {
-                Debug.WriteLine("Initialization for Summit Interface");
-                connectReturn = summitSystem.StartInsSession(discoveredDevices[0], out theWarnings);
-                Debug.WriteLine("Create Summit Result: " + connectReturn.Descriptor);
-                i++;
-                if (i > 20)
-                {
-                    MessageBox.Show("More than 20 initialization error. Please retry later...");
-                    return;
-                }
-            } while (theWarnings.HasFlag(ConnectReturn.InitializationError));
-            
-            this.ORCA_TaskComplete = true;
-            this.ORCA_Task = 0;
-            this.ORCA_Thread.Join();
-
-            ORCA_Handler();
-
-            if (connectReturn.RejectCode != 0)
-            {
-                MessageBox.Show("Discover INS Failure...");
-                return;
-            }
-
-            this.Summit_DiscoverRCS.Enabled = false;
-            this.Summit_GetStatusButton.Enabled = true;
-            this.Summit_LoadConfigurations.Enabled = true;
-        }
+        #region Summit Methods
 
         private void Summit_GetStatusButton_Click(object sender, EventArgs e)
         {
@@ -547,6 +720,18 @@ namespace SummitTouretteTask
 
                 string stimStatus = generalData.TherapyStatusData.TherapyStatus.ToString();
                 this.Summit_StimStatus.Text = "Stimulation Status: " + stimStatus;
+
+                if (generalData.TherapyStatusData.TherapyStatus == InterrogateTherapyStatusTypes.TherapyOff)
+                {
+                    Stimulation_TherapyOn.Enabled = true;
+                    Stimulation_TherapyOff.Enabled = false;
+                }
+                else
+                {
+                    Stimulation_TherapyOn.Enabled = false;
+                    Stimulation_TherapyOff.Enabled = true;
+                }
+
                 activeGroup = generalData.TherapyStatusData.ActiveGroup;
             }
             else
@@ -554,41 +739,201 @@ namespace SummitTouretteTask
                 MessageBox.Show("Read General Info Failed...");
                 return;
             }
+            
+            // Disable Sensing
+            SenseStates sensingState = SenseStates.None;
 
-            SensingState sensingStatus;
-            commandReturn = this.summitSystem.ReadSensingState(out sensingStatus);
-
-            if (commandReturn.RejectCode == 0)
+            APIReturnInfo returnInfo;
+            returnInfo = this.summitSystem.WriteSensingState(sensingState, 0x00);
+            if (returnInfo.RejectCode != 0)
             {
-                string stateValue = sensingStatus.State.ToString();
-                this.Summit_SenseStatus.Text = "Sensing Status: " + stateValue;
+                MessageBox.Show("Error Setting Status: " + returnInfo.Descriptor);
+                return;
+            }
+            Debug.WriteLine("Setting Sensing State Correctly: " + returnInfo.Descriptor);
+
+            // Get Lead Impedances
+            LeadIntegrityTestResult testResultBuffer;
+            APIReturnInfo testReturnInfo = this.summitSystem.LeadIntegrityTest(
+                    new List<Tuple<byte, byte>> {
+                        // Electrode 1
+                        new Tuple<byte, byte>(0, 1),
+                        new Tuple<byte, byte>(0, 2),
+                        new Tuple<byte, byte>(0, 3),
+                        new Tuple<byte, byte>(1, 2),
+                        new Tuple<byte, byte>(1, 3),
+                        new Tuple<byte, byte>(2, 3),
+                        new Tuple<byte, byte>(0, 16),
+                        new Tuple<byte, byte>(1, 16),
+                        new Tuple<byte, byte>(2, 16),
+                        new Tuple<byte, byte>(3, 16)
+                    },
+                    out testResultBuffer);
+            
+            if (testReturnInfo.RejectCode == 0 && testResultBuffer != null)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    this.impedanceResults[i] = testResultBuffer.PairResults[i].Impedance;
+                }
             }
             else
             {
-                MessageBox.Show("Read Sensing Status Failed...");
-                return;
+                for (int i = 0; i < 10; i++)
+                {
+                    this.impedanceResults[i] = 0;
+                }
+            }
+            
+            testReturnInfo = this.summitSystem.LeadIntegrityTest(
+                    new List<Tuple<byte, byte>> {
+                        // Electrode 2
+                        new Tuple<byte, byte>(4, 5),
+                        new Tuple<byte, byte>(4, 6),
+                        new Tuple<byte, byte>(4, 7),
+                        new Tuple<byte, byte>(5, 6),
+                        new Tuple<byte, byte>(5, 7),
+                        new Tuple<byte, byte>(6, 7),
+                        new Tuple<byte, byte>(4, 16),
+                        new Tuple<byte, byte>(5, 16),
+                        new Tuple<byte, byte>(6, 16),
+                        new Tuple<byte, byte>(7, 16)
+
+                    },
+                    out testResultBuffer);
+
+            if (testReturnInfo.RejectCode == 0 && testResultBuffer != null)
+            {
+                for (int i = 10; i < 20; i++)
+                {
+                    this.impedanceResults[i] = testResultBuffer.PairResults[i-10].Impedance;
+                }
+            }
+            else
+            {
+                for (int i = 10; i < 20; i++)
+                {
+                    this.impedanceResults[i] = 0;
+                }
+            }
+
+            testReturnInfo = this.summitSystem.LeadIntegrityTest(
+                    new List<Tuple<byte, byte>> {
+                        // Electrode 3
+                        new Tuple<byte, byte>(8, 9),
+                        new Tuple<byte, byte>(8, 10),
+                        new Tuple<byte, byte>(8, 11),
+                        new Tuple<byte, byte>(9, 10),
+                        new Tuple<byte, byte>(9, 11),
+                        new Tuple<byte, byte>(10, 11),
+                        new Tuple<byte, byte>(8, 16),
+                        new Tuple<byte, byte>(9, 16),
+                        new Tuple<byte, byte>(10, 16),
+                        new Tuple<byte, byte>(11, 16)
+
+                    },
+                    out testResultBuffer);
+
+            if (testReturnInfo.RejectCode == 0 && testResultBuffer != null)
+            {
+                for (int i = 20; i < 30; i++)
+                {
+                    this.impedanceResults[i] = testResultBuffer.PairResults[i - 20].Impedance;
+                }
+            }
+            else
+            {
+                for (int i = 20; i < 30; i++)
+                {
+                    this.impedanceResults[i] = 0;
+                }
+            }
+
+            testReturnInfo = this.summitSystem.LeadIntegrityTest(
+                    new List<Tuple<byte, byte>> {
+                        // Electrode 4
+                        new Tuple<byte, byte>(12, 13),
+                        new Tuple<byte, byte>(12, 14),
+                        new Tuple<byte, byte>(12, 15),
+                        new Tuple<byte, byte>(13, 14),
+                        new Tuple<byte, byte>(13, 15),
+                        new Tuple<byte, byte>(14, 15),
+                        new Tuple<byte, byte>(12, 16),
+                        new Tuple<byte, byte>(13, 16),
+                        new Tuple<byte, byte>(14, 16),
+                        new Tuple<byte, byte>(15, 16)
+
+                    },
+                    out testResultBuffer);
+
+            if (testReturnInfo.RejectCode == 0 && testResultBuffer != null)
+            {
+                for (int i = 30; i < 40; i++)
+                {
+                    this.impedanceResults[i] = testResultBuffer.PairResults[i - 30].Impedance;
+                }
+            }
+            else
+            {
+                for (int i = 30; i < 40; i++)
+                {
+                    this.impedanceResults[i] = 0;
+                }
             }
 
             // Get Stimulation Settings
             Label[] amplitude = { this.Status_StimSet1_Amp, this.Status_StimSet2_Amp, this.Status_StimSet3_Amp, this.Status_StimSet4_Amp };
             Label[] pulsewidth = { this.Status_StimSet1_PW, this.Status_StimSet2_PW, this.Status_StimSet3_PW, this.Status_StimSet4_PW };
             Label[] frequency = { this.Status_StimSet1_Freq, this.Status_StimSet2_Freq, this.Status_StimSet3_Freq, this.Status_StimSet4_Freq };
+            Label[] contacts = { this.Status_StimSet1_Contacts, this.Status_StimSet2_Contacts, this.Status_StimSet3_Contacts, this.Status_StimSet4_Contacts };
 
             commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group0, out therapyGroups[0]);
             commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group1, out therapyGroups[1]);
             commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group2, out therapyGroups[2]);
             commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group3, out therapyGroups[3]);
+            commandReturn = this.summitSystem.ReadStimAmplitudeLimits(GroupNumber.Group0, out amplitudeLimits[0]);
+            commandReturn = this.summitSystem.ReadStimAmplitudeLimits(GroupNumber.Group1, out amplitudeLimits[1]);
+            commandReturn = this.summitSystem.ReadStimAmplitudeLimits(GroupNumber.Group2, out amplitudeLimits[2]);
+            commandReturn = this.summitSystem.ReadStimAmplitudeLimits(GroupNumber.Group3, out amplitudeLimits[3]);
 
             if (commandReturn.RejectCode == 0)
             {
                 int i = 0;
                 foreach(TherapyProgram therapyProgram in therapyGroups[(int)activeGroup].Programs)
                 {
-                    amplitude[i].Text = therapyProgram.AmplitudeInMilliamps.ToString() + "mA";
-                    pulsewidth[i].Text = therapyProgram.PulseWidthInMicroseconds.ToString() + "uS";
-                    frequency[i].Text = therapyGroups[(int)activeGroup].RateInHz.ToString() + "Hz";
+                    if (therapyProgram.IsEnabled == ProgramEnables.Version0Enabled)
+                    {
+                        amplitude[i].Text = therapyProgram.AmplitudeInMilliamps.ToString() + "mA";
+                        pulsewidth[i].Text = therapyProgram.PulseWidthInMicroseconds.ToString() + "uS";
+                        frequency[i].Text = therapyGroups[(int)activeGroup].RateInHz.ToString() + "Hz";
+                        contacts[i].Text = "";
+                        int electrodeID = 0;
+                        foreach (Electrode electrode in therapyProgram.Electrodes)
+                        {
+                            if (!electrode.IsOff)
+                            {
+                                if (electrode.ElectrodeType == ElectrodeTypes.Anode)
+                                {
+                                    contacts[i].Text = contacts[i].Text + "E" + electrodeID + "+" + Environment.NewLine;
+                                }
+                                else
+                                {
+                                    contacts[i].Text = contacts[i].Text + "E" + electrodeID + "-" + Environment.NewLine;
+                                }
+                            }
+                            electrodeID++;
+                        }
+                    }
+                    else
+                    {
+                        amplitude[i].Text = "Disabled";
+                        pulsewidth[i].Text = "Disabled";
+                        frequency[i].Text = "Disabled";
+                        contacts[i].Text = "Disabled";
+                    }
                     i++;
                 }
+                Stimulation_ActiveGroupSelection.SelectedIndex = (int)activeGroup;
             }
             else
             {
@@ -608,9 +953,9 @@ namespace SummitTouretteTask
                     Debug.WriteLine(fileSelector.FileName);
                     byte[] rawBytes = File.ReadAllBytes(fileSelector.FileName);
                     
-                    if (rawBytes.Length != 124)
+                    if (rawBytes.Length != 248)
                     {
-                        MessageBox.Show("Cannot Load MISC Setting. Incorrect data length");
+                        MessageBox.Show("Cannot Load Configuration. Incorrect data length");
                         return;
                     }
 
@@ -618,7 +963,7 @@ namespace SummitTouretteTask
                     Debug.WriteLine(magic);
                     if (string.Equals(magic,"BML"))
                     {
-                        MessageBox.Show("Cannot Load MISC Setting. Incorrect magic number");
+                        MessageBox.Show("Cannot Load Td Setting. Incorrect magic number");
                         return;
                     }
                     magic = BitConverter.ToString(rawBytes.Skip(44).Take(3).ToArray());
@@ -635,6 +980,18 @@ namespace SummitTouretteTask
                         MessageBox.Show("Cannot Load MISC Setting. Incorrect magic number");
                         return;
                     }
+
+                    // Disable Sensing before loading data. 
+                    SenseStates sensingState = SenseStates.None;
+
+                    APIReturnInfo returnInfo;
+                    returnInfo = this.summitSystem.WriteSensingState(sensingState, 0x00);
+                    if (returnInfo.RejectCode != 0)
+                    {
+                        MessageBox.Show("Error Setting Status: " + returnInfo.Descriptor);
+                        return;
+                    }
+                    Debug.WriteLine("Setting Sensing State Correctly: " + returnInfo.Descriptor);
 
                     this.sensingSetting = GetTimeDomainSetting(rawBytes.Skip(0).Take(44).ToArray());
                     // Time Channel Settings
@@ -782,6 +1139,414 @@ namespace SummitTouretteTask
                 }
             }
         }
+
+        #endregion
+
+        #region Stimulation Methods
+
+        private UInt32 Stimulation_ElectrodeConfiguration(TherapyElectrodes electrodes, ElectrodeTypes type)
+        {
+            int electrodeID = 0;
+            UInt32 contacts = 0;
+            foreach (Electrode electrode in electrodes)
+            {
+                if (!electrode.IsOff)
+                {
+                    if (electrode.ElectrodeType == type)
+                    {
+                        contacts += (UInt32)Math.Pow(2, (double)electrodeID);
+                    }
+                }
+                electrodeID++;
+            }
+            return contacts;
+        }
+
+        private void Stimulation_ActiveGroupSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TherapyGroup therapyGroup = therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex];
+
+            NumericUpDown[] amplitude = { Stimulation_Param1_Amplitude, Stimulation_Param2_Amplitude, Stimulation_Param3_Amplitude, Stimulation_Param4_Amplitude };
+            NumericUpDown[] pulsewidth = { Stimulation_Param1_Pulsewidth, Stimulation_Param2_Pulsewidth, Stimulation_Param3_Pulsewidth, Stimulation_Param4_Pulsewidth };
+            NumericUpDown[] frequency = { Stimulation_Param1_Frequency, Stimulation_Param2_Frequency, Stimulation_Param3_Frequency, Stimulation_Param4_Frequency };
+            Label[] amplitudeRange = { Stimulation_Param1_AmplitudeRange, Stimulation_Param2_AmplitudeRange, Stimulation_Param3_AmplitudeRange, Stimulation_Param4_AmplitudeRange };
+            Label[] pulsewidthRange = { Stimulation_Param1_PulsewidthRange, Stimulation_Param2_PulsewidthRange, Stimulation_Param3_PulsewidthRange, Stimulation_Param4_PulsewidthRange };
+            Label[] frequencyRange = { Stimulation_Param1_FrequencyRange, Stimulation_Param2_FrequencyRange, Stimulation_Param3_FrequencyRange, Stimulation_Param4_FrequencyRange };
+            Label[] contacts = { Stimulation_Param1_Contacts, Stimulation_Param2_Contacts, Stimulation_Param3_Contacts, Stimulation_Param4_Contacts };
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (therapyGroup.Programs[i].IsEnabled == ProgramEnables.Version0Enabled)
+                {
+                    amplitude[i].Enabled = false;
+                    switch (i)
+                    {
+                        case 0:
+                            amplitude[i].Minimum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog0LowerInMilliamps;
+                            amplitude[i].Maximum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog0UpperInMilliamps;
+                            amplitude[i].Value = (decimal)therapyGroup.Programs[i].AmplitudeInMilliamps;
+                            break;
+                        case 1:
+                            amplitude[i].Minimum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog1LowerInMilliamps;
+                            amplitude[i].Maximum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog1UpperInMilliamps;
+                            amplitude[i].Value = (decimal)therapyGroup.Programs[i].AmplitudeInMilliamps;
+                            break;
+                        case 2:
+                            amplitude[i].Minimum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog2LowerInMilliamps;
+                            amplitude[i].Maximum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog2UpperInMilliamps;
+                            amplitude[i].Value = (decimal)therapyGroup.Programs[i].AmplitudeInMilliamps;
+                            break;
+                        case 3:
+                            amplitude[i].Minimum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog3LowerInMilliamps;
+                            amplitude[i].Maximum = (decimal)amplitudeLimits[Stimulation_ActiveGroupSelection.SelectedIndex].Prog3UpperInMilliamps;
+                            amplitude[i].Value = (decimal)therapyGroup.Programs[i].AmplitudeInMilliamps;
+                            break;
+                    }
+                    this.stimSetting.amplitude[i] = (double)amplitude[i].Value;
+                    amplitudeRange[i].Text = "( " + amplitude[i].Minimum + " - " + amplitude[i].Maximum + " )";
+
+                    pulsewidth[i].Enabled = false;
+                    pulsewidth[i].Minimum = therapyGroup.PulseWidthLowerLimitInMicroseconds;
+                    pulsewidth[i].Maximum = therapyGroup.PulseWidthUpperLimitInMicroseconds;
+                    pulsewidth[i].Value = therapyGroup.Programs[i].PulseWidthInMicroseconds;
+                    this.stimSetting.pulsewidth[i] = (int)pulsewidth[i].Value;
+                    pulsewidthRange[i].Text = "( " + pulsewidth[i].Minimum + " - " + pulsewidth[i].Maximum + " )";
+
+                    frequency[i].Enabled = false;
+                    frequency[i].Minimum = (decimal)therapyGroup.RateLowerLimitInHz;
+                    frequency[i].Maximum = (decimal)therapyGroup.RateUpperLimitInHz;
+                    frequency[i].Value = (decimal)therapyGroup.RateInHz;
+                    this.stimSetting.frequency[i] = (double)frequency[i].Value;
+                    frequencyRange[i].Text = "( " + frequency[i].Minimum + " - " + frequency[i].Maximum + " )";
+
+                    contacts[i].Text = "Contacts: (";
+                    contacts[i].Text += Stimulation_ElectrodeConfiguration(therapyGroup.Programs[i].Electrodes, ElectrodeTypes.Anode).ToString();
+                    contacts[i].Text += ",";
+                    contacts[i].Text += Stimulation_ElectrodeConfiguration(therapyGroup.Programs[i].Electrodes, ElectrodeTypes.Cathode).ToString();
+                    contacts[i].Text += ")";
+                    this.stimSetting.plusContacts[i] = (int)Stimulation_ElectrodeConfiguration(therapyGroup.Programs[i].Electrodes, ElectrodeTypes.Anode);
+                    this.stimSetting.minusContacts[i] = (int)Stimulation_ElectrodeConfiguration(therapyGroup.Programs[i].Electrodes, ElectrodeTypes.Cathode);
+                }
+                else
+                {
+                    amplitude[i].Enabled = false;
+                    amplitude[i].Minimum = 0.0M;
+                    amplitude[i].Value = 0.0M;
+                    amplitude[i].Maximum = 0.0M;
+                    amplitudeRange[i].Text = "( 00 - 00 )";
+                    this.stimSetting.amplitude[i] = 0;
+
+                    pulsewidth[i].Enabled = false;
+                    pulsewidth[i].Minimum = 0.0M;
+                    pulsewidth[i].Value = 0.0M;
+                    pulsewidth[i].Maximum = 0.0M;
+                    pulsewidthRange[i].Text = "( 00 - 00 )";
+                    this.stimSetting.pulsewidth[i] = 0;
+
+                    frequency[i].Enabled = false;
+                    frequency[i].Minimum = 0.0M;
+                    frequency[i].Value = 0.0M;
+                    frequency[i].Maximum = 0.0M;
+                    frequencyRange[i].Text = "( 00 - 00 )";
+                    this.stimSetting.frequency[i] = 0;
+
+                    contacts[i].Text = "Stim Contacts: (+/-)";
+                    this.stimSetting.plusContacts[i] = 0;
+                    this.stimSetting.minusContacts[i] = 0;
+                }
+
+            }
+        }
+
+        private void Stimulation_ActivateGroup_Click(object sender, EventArgs e)
+        {
+            APIReturnInfo commandReturn = this.summitSystem.StimChangeActiveGroup((ActiveGroup)Stimulation_ActiveGroupSelection.SelectedIndex);
+            if (commandReturn.RejectCode == 0)
+            {
+                NumericUpDown[] amplitude = { Stimulation_Param1_Amplitude, Stimulation_Param2_Amplitude, Stimulation_Param3_Amplitude, Stimulation_Param4_Amplitude };
+                NumericUpDown[] pulsewidth = { Stimulation_Param1_Pulsewidth, Stimulation_Param2_Pulsewidth, Stimulation_Param3_Pulsewidth, Stimulation_Param4_Pulsewidth };
+                NumericUpDown[] frequency = { Stimulation_Param1_Frequency, Stimulation_Param2_Frequency, Stimulation_Param3_Frequency, Stimulation_Param4_Frequency };
+                Label[] amplitudeRange = { Stimulation_Param1_AmplitudeRange, Stimulation_Param2_AmplitudeRange, Stimulation_Param3_AmplitudeRange, Stimulation_Param4_AmplitudeRange };
+                Label[] pulsewidthRange = { Stimulation_Param1_PulsewidthRange, Stimulation_Param2_PulsewidthRange, Stimulation_Param3_PulsewidthRange, Stimulation_Param4_PulsewidthRange };
+                Label[] frequencyRange = { Stimulation_Param1_FrequencyRange, Stimulation_Param2_FrequencyRange, Stimulation_Param3_FrequencyRange, Stimulation_Param4_FrequencyRange };
+
+                for (int i = 0; i < 4; i++)
+                {
+                    amplitude[i].Enabled = true;
+                    pulsewidth[i].Enabled = true;
+                    frequency[0].Enabled = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Change Stimulation Group Failed...");
+                return;
+            }
+        }
+        
+        private void Stimulation_Param1_Amplitude_ValueChanged(object sender, EventArgs e)
+        {
+            if (Stimulation_Param1_Amplitude.Enabled)
+            {
+                double? newStimAmplitude;
+                double deltaAmplitude = (double)Stimulation_Param1_Amplitude.Value - therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[0].AmplitudeInMilliamps;
+                APIReturnInfo commandReturn = this.summitSystem.StimChangeStepAmp(0, deltaAmplitude, out newStimAmplitude);
+                if (commandReturn.RejectCode == 0)
+                {
+                    Stimulation_Param1_Amplitude.Enabled = false;
+                    Stimulation_Param1_Amplitude.Value = (decimal)newStimAmplitude;
+                    Stimulation_Param1_Amplitude.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Cannot modify the stimulation amplitude" + commandReturn.Descriptor);
+                    Stimulation_Param1_Amplitude.Enabled = false;
+                    Stimulation_Param1_Amplitude.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[0].AmplitudeInMilliamps;
+                    Stimulation_Param1_Amplitude.Enabled = true;
+                }
+
+                switch (Stimulation_ActiveGroupSelection.SelectedIndex)
+                {
+                    case 0:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group0, out therapyGroups[0]);
+                        break;
+                    case 1:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group1, out therapyGroups[1]);
+                        break;
+                    case 2:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group2, out therapyGroups[2]);
+                        break;
+                    case 3:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group3, out therapyGroups[3]);
+                        break;
+                }
+                if (commandReturn.RejectCode == 0)
+                {
+                }
+                else
+                {
+                    MessageBox.Show("Cannot read back the updated amplitude" + commandReturn.Descriptor);
+                }
+            }
+        }
+
+        private void Stimulation_Param2_Amplitude_ValueChanged(object sender, EventArgs e)
+        {
+            if (Stimulation_Param2_Amplitude.Enabled)
+            {
+                double? newStimAmplitude;
+                double deltaAmplitude = (double)Stimulation_Param2_Amplitude.Value - therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[1].AmplitudeInMilliamps;
+                APIReturnInfo commandReturn = this.summitSystem.StimChangeStepAmp(1, deltaAmplitude, out newStimAmplitude);
+                if (commandReturn.RejectCode == 0)
+                {
+                    Stimulation_Param2_Amplitude.Enabled = false;
+                    Stimulation_Param2_Amplitude.Value = (decimal)newStimAmplitude;
+                    Stimulation_Param2_Amplitude.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Cannot modify the stimulation amplitude" + commandReturn.Descriptor);
+                    Stimulation_Param2_Amplitude.Enabled = false;
+                    Stimulation_Param2_Amplitude.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[1].AmplitudeInMilliamps;
+                    Stimulation_Param2_Amplitude.Enabled = true;
+                }
+
+                switch (Stimulation_ActiveGroupSelection.SelectedIndex)
+                {
+                    case 0:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group0, out therapyGroups[0]);
+                        break;
+                    case 1:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group1, out therapyGroups[1]);
+                        break;
+                    case 2:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group2, out therapyGroups[2]);
+                        break;
+                    case 3:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group3, out therapyGroups[3]);
+                        break;
+                }
+                if (commandReturn.RejectCode == 0)
+                {
+                }
+                else
+                {
+                    MessageBox.Show("Cannot read back the updated amplitude" + commandReturn.Descriptor);
+                }
+            }
+        }
+
+        private void Stimulation_Param3_Amplitude_ValueChanged(object sender, EventArgs e)
+        {
+            if (Stimulation_Param3_Amplitude.Enabled)
+            {
+                double? newStimAmplitude;
+                double deltaAmplitude = (double)Stimulation_Param3_Amplitude.Value - therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[2].AmplitudeInMilliamps;
+                APIReturnInfo commandReturn = this.summitSystem.StimChangeStepAmp(2, deltaAmplitude, out newStimAmplitude);
+                if (commandReturn.RejectCode == 0)
+                {
+                    Stimulation_Param3_Amplitude.Enabled = false;
+                    Stimulation_Param3_Amplitude.Value = (decimal)newStimAmplitude;
+                    Stimulation_Param3_Amplitude.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Cannot modify the stimulation amplitude" + commandReturn.Descriptor);
+                    Stimulation_Param3_Amplitude.Enabled = false;
+                    Stimulation_Param3_Amplitude.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[2].AmplitudeInMilliamps;
+                    Stimulation_Param3_Amplitude.Enabled = true;
+                }
+
+                switch (Stimulation_ActiveGroupSelection.SelectedIndex)
+                {
+                    case 0:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group0, out therapyGroups[0]);
+                        break;
+                    case 1:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group1, out therapyGroups[1]);
+                        break;
+                    case 2:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group2, out therapyGroups[2]);
+                        break;
+                    case 3:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group3, out therapyGroups[3]);
+                        break;
+                }
+                if (commandReturn.RejectCode == 0)
+                {
+                }
+                else
+                {
+                    MessageBox.Show("Cannot read back the updated amplitude" + commandReturn.Descriptor);
+                }
+            }
+        }
+
+        private void Stimulation_Param4_Amplitude_ValueChanged(object sender, EventArgs e)
+        {
+            if (Stimulation_Param4_Amplitude.Enabled)
+            {
+                double? newStimAmplitude;
+                double deltaAmplitude = (double)Stimulation_Param4_Amplitude.Value - therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[3].AmplitudeInMilliamps;
+                APIReturnInfo commandReturn = this.summitSystem.StimChangeStepAmp(3, deltaAmplitude, out newStimAmplitude);
+                if (commandReturn.RejectCode == 0)
+                {
+                    Stimulation_Param4_Amplitude.Enabled = false;
+                    Stimulation_Param4_Amplitude.Value = (decimal)newStimAmplitude;
+                    Stimulation_Param4_Amplitude.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Cannot modify the stimulation amplitude" + commandReturn.Descriptor);
+                    Stimulation_Param4_Amplitude.Enabled = false;
+                    Stimulation_Param4_Amplitude.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].Programs[3].AmplitudeInMilliamps;
+                    Stimulation_Param4_Amplitude.Enabled = true;
+                }
+
+                switch (Stimulation_ActiveGroupSelection.SelectedIndex)
+                {
+                    case 0:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group0, out therapyGroups[0]);
+                        break;
+                    case 1:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group1, out therapyGroups[1]);
+                        break;
+                    case 2:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group2, out therapyGroups[2]);
+                        break;
+                    case 3:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group3, out therapyGroups[3]);
+                        break;
+                }
+                if (commandReturn.RejectCode == 0)
+                {
+                }
+                else
+                {
+                    MessageBox.Show("Cannot read back the updated amplitude" + commandReturn.Descriptor);
+                }
+            }
+        }
+
+        private void Stimulation_Param1_Frequency_ValueChanged(object sender, EventArgs e)
+        {
+            if (Stimulation_Param1_Frequency.Enabled)
+            {
+                double? newFrequency;
+                double deltaFrequency = (double)Stimulation_Param1_Frequency.Value - therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].RateInHz;
+                APIReturnInfo commandReturn = this.summitSystem.StimChangeStepFrequency(deltaFrequency, true, out newFrequency);
+                if (commandReturn.RejectCode == 0)
+                {
+                    Stimulation_Param1_Frequency.Enabled = false;
+                    Stimulation_Param1_Frequency.Value = (decimal)newFrequency;
+                    Stimulation_Param2_Frequency.Value = (decimal)newFrequency;
+                    Stimulation_Param3_Frequency.Value = (decimal)newFrequency;
+                    Stimulation_Param4_Frequency.Value = (decimal)newFrequency;
+                    Stimulation_Param1_Frequency.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Cannot modify the stimulation amplitude" + commandReturn.Descriptor);
+                    Stimulation_Param1_Frequency.Enabled = false;
+                    Stimulation_Param1_Frequency.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].RateInHz;
+                    Stimulation_Param2_Frequency.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].RateInHz;
+                    Stimulation_Param3_Frequency.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].RateInHz;
+                    Stimulation_Param4_Frequency.Value = (decimal)therapyGroups[Stimulation_ActiveGroupSelection.SelectedIndex].RateInHz;
+                    Stimulation_Param1_Frequency.Enabled = true;
+                }
+
+                switch (Stimulation_ActiveGroupSelection.SelectedIndex)
+                {
+                    case 0:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group0, out therapyGroups[0]);
+                        break;
+                    case 1:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group1, out therapyGroups[1]);
+                        break;
+                    case 2:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group2, out therapyGroups[2]);
+                        break;
+                    case 3:
+                        commandReturn = this.summitSystem.ReadStimGroup(GroupNumber.Group3, out therapyGroups[3]);
+                        break;
+                }
+                if (commandReturn.RejectCode == 0)
+                {
+                }
+                else
+                {
+                    MessageBox.Show("Cannot read back the updated amplitude" + commandReturn.Descriptor);
+                }
+            }
+        }
+
+        private void Stimulation_TherapyOn_Click(object sender, EventArgs e)
+        {
+            APIReturnInfo commandReturn = this.summitSystem.StimChangeTherapyOn();
+            if (commandReturn.RejectCode != 0)
+            {
+                MessageBox.Show("Cannot turn on therapy...");
+                return;
+            }
+            Stimulation_TherapyOn.Enabled = false;
+            Stimulation_TherapyOff.Enabled = true;
+        }
+
+        private void Stimulation_TherapyOff_Click(object sender, EventArgs e)
+        {
+            APIReturnInfo commandReturn = this.summitSystem.StimChangeTherapyOff(false);
+            if (commandReturn.RejectCode != 0)
+            {
+                MessageBox.Show("Cannot turn off therapy...");
+                return;
+            }
+            Stimulation_TherapyOn.Enabled = true;
+            Stimulation_TherapyOff.Enabled = false;
+        }
+
+        #endregion
+
+        #region Sensing Methods
 
         private void Sensing_GetStatusButton_Click(object sender, EventArgs e)
         {
@@ -1796,7 +2561,11 @@ namespace SummitTouretteTask
             
             this.configurationCheck[3] = true;
         }
-        
+
+        #endregion
+
+        #region Streaming Methods
+
         private void Streaming_Disable_Click(object sender, EventArgs e)
         {
             if (this.summitManager == null || this.summitSystem == null)
@@ -1817,6 +2586,17 @@ namespace SummitTouretteTask
             Debug.WriteLine("Setting Sensing State Correctly: " + returnInfo.Descriptor);
         }
 
+        private void Task_MonitorPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.workingMonitor = screens[this.Task_MonitorPicker.SelectedIndex];
+            this.MonitorSizeLabel.Text = this.workingMonitor.WorkingArea.Width.ToString() + " x " + this.workingMonitor.WorkingArea.Height.ToString();
+        }
+
+        #endregion 
+
+        /*************************************/
+        /******* Data Acquisition Code *******/
+        /*************************************/
         private void DataAcquisition_Run_Click(object sender, EventArgs e)
         {
             VoluntaryMovement display = new VoluntaryMovement();
@@ -1824,6 +2604,8 @@ namespace SummitTouretteTask
             display.tdSettings = this.sensingSetting;
             display.fftSettings = this.fftSetting;
             display.miscSettings = this.miscSetting;
+            display.stimSetting = this.stimSetting;
+            display.impedance = this.impedanceResults;
 
             display.FormBorderStyle = FormBorderStyle.None;
             display.WindowState = FormWindowState.Maximized;
@@ -1856,12 +2638,21 @@ namespace SummitTouretteTask
         {
             ExtensiveSampling display = new ExtensiveSampling();
 
+            display.tdSettings = this.sensingSetting;
+            display.fftSettings = this.fftSetting;
+            display.miscSettings = this.miscSetting;
+            display.stimSetting = this.stimSetting;
+            display.impedance = this.impedanceResults;
+
             display.FormBorderStyle = FormBorderStyle.None;
             display.WindowState = FormWindowState.Maximized;
             display.summitSystem = this.summitSystem;
             display.streamingOption = this.streamingOptions;
             display.StartPosition = FormStartPosition.Manual;
             display.Location = this.workingMonitor.WorkingArea.Location;
+            display.serialPort = this.serialPort;
+
+            display.trignoServer = this.trignoServer;
 
             if (this.summitManager == null || this.summitSystem == null)
             {
@@ -1884,47 +2675,54 @@ namespace SummitTouretteTask
 
         }
 
-        private void ORCA_Handler()
+        private void StimAndRecord_Run_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int actionCounter = 0;
+            StimAndRecord display = new StimAndRecord();
 
-                do
-                {
-                    Process[] processList = Process.GetProcesses();
-                    foreach (Process myProcess in processList)
-                    {
-                        if (!String.IsNullOrEmpty(myProcess.MainWindowTitle))
-                        {
-                            if (myProcess.ProcessName == "Annotator")
-                            {
-                                if (ORCA_Task == 1)
-                                {
-                                    myProcess.CloseMainWindow();
-                                    actionCounter++;
-                                    Thread.Sleep(5000);
-                                }
-                                else
-                                {
-                                    ShowWindow(myProcess.MainWindowHandle.ToInt32(), 6);
-                                }
-                            }
-                        }
-                    } 
-                    Thread.Sleep(1000);
-                } while (!ORCA_TaskComplete && actionCounter < 20);
-            }
-            catch (Exception exception)
+            display.tdSettings = this.sensingSetting;
+            display.fftSettings = this.fftSetting;
+            display.miscSettings = this.miscSetting;
+            display.stimSetting = this.stimSetting;
+            display.impedance = this.impedanceResults;
+
+            display.FormBorderStyle = FormBorderStyle.None;
+            display.WindowState = FormWindowState.Maximized;
+            display.summitSystem = this.summitSystem;
+            display.streamingOption = this.streamingOptions;
+            display.StartPosition = FormStartPosition.Manual;
+            display.Location = this.workingMonitor.WorkingArea.Location;
+            display.serialPort = this.serialPort;
+
+            if (this.summitManager == null || this.summitSystem == null)
             {
-                Debug.WriteLine(exception.Message);
+                MessageBox.Show("Entering Debug Mode");
+
+                display.debugMode = true;
+                display.Show();
+
+                return;
             }
+
+            if (!this.configurationCheck.All(configuration => configuration == true))
+            {
+                MessageBox.Show("Not all configuration checked.");
+                return;
+            }
+
+            display.debugMode = false;
+            display.Show();
+
         }
 
-        private void Task_MonitorPicker_SelectedIndexChanged(object sender, EventArgs e)
+        private void Delsys_StartRecording_Click(object sender, EventArgs e)
         {
-            this.workingMonitor = screens[this.Task_MonitorPicker.SelectedIndex];
-            this.MonitorSizeLabel.Text = this.workingMonitor.WorkingArea.Width.ToString() + " x " + this.workingMonitor.WorkingArea.Height.ToString();
+            trignoServer.StartAcquisition();
+            trignoServer.StartDataWriter();
+        }
+
+        private void Delsys_StopRecording_Click(object sender, EventArgs e)
+        {
+            trignoServer.StopAcquisition();
         }
     }
 }

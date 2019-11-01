@@ -31,6 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainpage));
             this.Sensing_GetFFTStatusButton = new System.Windows.Forms.TabControl();
             this.Welcome_Tab = new System.Windows.Forms.TabPage();
+            this.Status_StimSet4_Contacts = new System.Windows.Forms.Label();
+            this.Status_StimSet3_Contacts = new System.Windows.Forms.Label();
+            this.Status_StimSet2_Contacts = new System.Windows.Forms.Label();
+            this.Status_StimSet4_PW = new System.Windows.Forms.Label();
+            this.Status_StimSet3_PW = new System.Windows.Forms.Label();
+            this.Status_StimSet2_PW = new System.Windows.Forms.Label();
+            this.Status_StimSet4_Freq = new System.Windows.Forms.Label();
+            this.Status_StimSet3_Freq = new System.Windows.Forms.Label();
+            this.Status_StimSet2_Freq = new System.Windows.Forms.Label();
+            this.Status_StimSet4_Amp = new System.Windows.Forms.Label();
+            this.Status_StimSet3_Amp = new System.Windows.Forms.Label();
+            this.Status_StimSet2_Amp = new System.Windows.Forms.Label();
             this.Status_StimSet1_Contacts = new System.Windows.Forms.Label();
             this.Status_StimSet1_PW = new System.Windows.Forms.Label();
             this.Status_StimSet1_Freq = new System.Windows.Forms.Label();
@@ -43,7 +55,6 @@
             this.label73 = new System.Windows.Forms.Label();
             this.label72 = new System.Windows.Forms.Label();
             this.label71 = new System.Windows.Forms.Label();
-            this.label69 = new System.Windows.Forms.Label();
             this.Summit_LoadConfigurations = new System.Windows.Forms.Button();
             this.Summit_SenseStatus = new System.Windows.Forms.Label();
             this.Summit_StimStatus = new System.Windows.Forms.Label();
@@ -59,15 +70,15 @@
             this.Summit_Connect = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.Stimulation_Tab = new System.Windows.Forms.TabPage();
-            this.comboBox9 = new System.Windows.Forms.ComboBox();
+            this.Stimulation_TherapyOff = new System.Windows.Forms.Button();
+            this.Stimulation_TherapyOn = new System.Windows.Forms.Button();
+            this.Stimulation_ActiveGroupSelection = new System.Windows.Forms.ComboBox();
             this.Stimulation_ActivateGroup = new System.Windows.Forms.Button();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.Stimulation_Param4_PulsewidthRange = new System.Windows.Forms.Label();
             this.label96 = new System.Windows.Forms.Label();
             this.Stimulation_Param4_Pulsewidth = new System.Windows.Forms.NumericUpDown();
-            this.Stimulation_Param4_ContactMinus = new System.Windows.Forms.ComboBox();
-            this.Stimulation_Param4_ContactPlus = new System.Windows.Forms.ComboBox();
-            this.label97 = new System.Windows.Forms.Label();
+            this.Stimulation_Param4_Contacts = new System.Windows.Forms.Label();
             this.Stimulation_Param4_FrequencyRange = new System.Windows.Forms.Label();
             this.label99 = new System.Windows.Forms.Label();
             this.Stimulation_Param4_Frequency = new System.Windows.Forms.NumericUpDown();
@@ -77,9 +88,7 @@
             this.Stimulation_Param3_PulsewidthRange = new System.Windows.Forms.Label();
             this.label89 = new System.Windows.Forms.Label();
             this.Stimulation_Param3_Pulsewidth = new System.Windows.Forms.NumericUpDown();
-            this.Stimulation_Param3_ContactMinus = new System.Windows.Forms.ComboBox();
-            this.Stimulation_Param3_ContactPlus = new System.Windows.Forms.ComboBox();
-            this.label90 = new System.Windows.Forms.Label();
+            this.Stimulation_Param3_Contacts = new System.Windows.Forms.Label();
             this.Stimulation_Param3_FrequencyRange = new System.Windows.Forms.Label();
             this.label92 = new System.Windows.Forms.Label();
             this.Stimulation_Param3_Frequency = new System.Windows.Forms.NumericUpDown();
@@ -89,9 +98,7 @@
             this.Stimulation_Param2_PulsewidthRange = new System.Windows.Forms.Label();
             this.label82 = new System.Windows.Forms.Label();
             this.Stimulation_Param2_Pulsewidth = new System.Windows.Forms.NumericUpDown();
-            this.Stimulation_Param2_ContactMinus = new System.Windows.Forms.ComboBox();
-            this.Stimulation_Param2_ContactPlus = new System.Windows.Forms.ComboBox();
-            this.label83 = new System.Windows.Forms.Label();
+            this.Stimulation_Param2_Contacts = new System.Windows.Forms.Label();
             this.Stimulation_Param2_FrequencyRange = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.Stimulation_Param2_Frequency = new System.Windows.Forms.NumericUpDown();
@@ -101,9 +108,7 @@
             this.Stimulation_Param1_PulsewidthRange = new System.Windows.Forms.Label();
             this.label81 = new System.Windows.Forms.Label();
             this.Stimulation_Param1_Pulsewidth = new System.Windows.Forms.NumericUpDown();
-            this.Stimulation_Param1_ContactMinus = new System.Windows.Forms.ComboBox();
-            this.Stimulation_Param1_ContactPlus = new System.Windows.Forms.ComboBox();
-            this.label79 = new System.Windows.Forms.Label();
+            this.Stimulation_Param1_Contacts = new System.Windows.Forms.Label();
             this.Stimulation_Param1_FrequencyRange = new System.Windows.Forms.Label();
             this.label70 = new System.Windows.Forms.Label();
             this.Stimulation_Param1_Frequency = new System.Windows.Forms.NumericUpDown();
@@ -257,14 +262,25 @@
             this.Streaming_SetStatus = new System.Windows.Forms.Button();
             this.Streaming_GetStatus = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.label60 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label59 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label58 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label57 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.Delsys_UpdateSensors = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.Sensor16_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor15_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor14_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor13_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor12_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor11_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor10_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor09_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor08_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor07_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor06_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor05_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor04_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor03_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor02_LED = new System.Windows.Forms.RadioButton();
+            this.Sensor01_LED = new System.Windows.Forms.RadioButton();
+            this.Delsys_ConnectServer = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.Streaming_LoopRecorder = new System.Windows.Forms.CheckBox();
             this.Streaming_Adaptive = new System.Windows.Forms.CheckBox();
@@ -275,6 +291,8 @@
             this.Streaming_FFT = new System.Windows.Forms.CheckBox();
             this.Streaming_LFP = new System.Windows.Forms.CheckBox();
             this.Task_Tab = new System.Windows.Forms.TabPage();
+            this.StimAndRecord_Run = new System.Windows.Forms.Button();
+            this.Task_SerialPortCheck = new System.Windows.Forms.Button();
             this.MonitorSizeLabel = new System.Windows.Forms.Label();
             this.label67 = new System.Windows.Forms.Label();
             this.Task_MonitorPicker = new System.Windows.Forms.ComboBox();
@@ -295,18 +313,8 @@
             this.LeftCh2_Checkbox = new System.Windows.Forms.CheckBox();
             this.LeftCh1_Checkbox = new System.Windows.Forms.CheckBox();
             this.Montage_Run = new System.Windows.Forms.Button();
-            this.Status_StimSet2_Amp = new System.Windows.Forms.Label();
-            this.Status_StimSet3_Amp = new System.Windows.Forms.Label();
-            this.Status_StimSet4_Amp = new System.Windows.Forms.Label();
-            this.Status_StimSet4_Freq = new System.Windows.Forms.Label();
-            this.Status_StimSet3_Freq = new System.Windows.Forms.Label();
-            this.Status_StimSet2_Freq = new System.Windows.Forms.Label();
-            this.Status_StimSet4_PW = new System.Windows.Forms.Label();
-            this.Status_StimSet3_PW = new System.Windows.Forms.Label();
-            this.Status_StimSet2_PW = new System.Windows.Forms.Label();
-            this.Status_StimSet4_Contacts = new System.Windows.Forms.Label();
-            this.Status_StimSet3_Contacts = new System.Windows.Forms.Label();
-            this.Status_StimSet2_Contacts = new System.Windows.Forms.Label();
+            this.Delsys_StopRecording = new System.Windows.Forms.Button();
+            this.Delsys_StartRecording = new System.Windows.Forms.Button();
             this.Sensing_GetFFTStatusButton.SuspendLayout();
             this.Welcome_Tab.SuspendLayout();
             this.Stimulation_Tab.SuspendLayout();
@@ -354,6 +362,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Sensing_LoopRecorderBuffer)).BeginInit();
             this.ConfigStream_Tab.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.Task_Tab.SuspendLayout();
             this.Montage_Tab.SuspendLayout();
@@ -364,9 +373,6 @@
             // 
             // Sensing_GetFFTStatusButton
             // 
-            this.Sensing_GetFFTStatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.Sensing_GetFFTStatusButton.Controls.Add(this.Welcome_Tab);
             this.Sensing_GetFFTStatusButton.Controls.Add(this.Stimulation_Tab);
             this.Sensing_GetFFTStatusButton.Controls.Add(this.ConfigTdSensing_Tab);
@@ -381,7 +387,7 @@
             this.Sensing_GetFFTStatusButton.Name = "Sensing_GetFFTStatusButton";
             this.Sensing_GetFFTStatusButton.Padding = new System.Drawing.Point(8, 3);
             this.Sensing_GetFFTStatusButton.SelectedIndex = 0;
-            this.Sensing_GetFFTStatusButton.Size = new System.Drawing.Size(880, 468);
+            this.Sensing_GetFFTStatusButton.Size = new System.Drawing.Size(900, 450);
             this.Sensing_GetFFTStatusButton.TabIndex = 0;
             // 
             // Welcome_Tab
@@ -412,7 +418,6 @@
             this.Welcome_Tab.Controls.Add(this.label73);
             this.Welcome_Tab.Controls.Add(this.label72);
             this.Welcome_Tab.Controls.Add(this.label71);
-            this.Welcome_Tab.Controls.Add(this.label69);
             this.Welcome_Tab.Controls.Add(this.Summit_LoadConfigurations);
             this.Welcome_Tab.Controls.Add(this.Summit_SenseStatus);
             this.Welcome_Tab.Controls.Add(this.Summit_StimStatus);
@@ -432,17 +437,161 @@
             this.Welcome_Tab.Margin = new System.Windows.Forms.Padding(2);
             this.Welcome_Tab.Name = "Welcome_Tab";
             this.Welcome_Tab.Padding = new System.Windows.Forms.Padding(2);
-            this.Welcome_Tab.Size = new System.Drawing.Size(872, 442);
+            this.Welcome_Tab.Size = new System.Drawing.Size(892, 424);
             this.Welcome_Tab.TabIndex = 0;
             this.Welcome_Tab.Text = "Welcome";
             this.Welcome_Tab.UseVisualStyleBackColor = true;
+            // 
+            // Status_StimSet4_Contacts
+            // 
+            this.Status_StimSet4_Contacts.AutoSize = true;
+            this.Status_StimSet4_Contacts.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet4_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet4_Contacts.Location = new System.Drawing.Point(744, 316);
+            this.Status_StimSet4_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet4_Contacts.Name = "Status_StimSet4_Contacts";
+            this.Status_StimSet4_Contacts.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet4_Contacts.TabIndex = 46;
+            this.Status_StimSet4_Contacts.Text = "NaN";
+            // 
+            // Status_StimSet3_Contacts
+            // 
+            this.Status_StimSet3_Contacts.AutoSize = true;
+            this.Status_StimSet3_Contacts.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet3_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet3_Contacts.Location = new System.Drawing.Point(664, 316);
+            this.Status_StimSet3_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet3_Contacts.Name = "Status_StimSet3_Contacts";
+            this.Status_StimSet3_Contacts.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet3_Contacts.TabIndex = 45;
+            this.Status_StimSet3_Contacts.Text = "NaN";
+            // 
+            // Status_StimSet2_Contacts
+            // 
+            this.Status_StimSet2_Contacts.AutoSize = true;
+            this.Status_StimSet2_Contacts.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet2_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet2_Contacts.Location = new System.Drawing.Point(586, 316);
+            this.Status_StimSet2_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet2_Contacts.Name = "Status_StimSet2_Contacts";
+            this.Status_StimSet2_Contacts.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet2_Contacts.TabIndex = 44;
+            this.Status_StimSet2_Contacts.Text = "NaN";
+            // 
+            // Status_StimSet4_PW
+            // 
+            this.Status_StimSet4_PW.AutoSize = true;
+            this.Status_StimSet4_PW.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet4_PW.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet4_PW.Location = new System.Drawing.Point(744, 282);
+            this.Status_StimSet4_PW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet4_PW.Name = "Status_StimSet4_PW";
+            this.Status_StimSet4_PW.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet4_PW.TabIndex = 43;
+            this.Status_StimSet4_PW.Text = "NaN";
+            // 
+            // Status_StimSet3_PW
+            // 
+            this.Status_StimSet3_PW.AutoSize = true;
+            this.Status_StimSet3_PW.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet3_PW.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet3_PW.Location = new System.Drawing.Point(664, 282);
+            this.Status_StimSet3_PW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet3_PW.Name = "Status_StimSet3_PW";
+            this.Status_StimSet3_PW.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet3_PW.TabIndex = 42;
+            this.Status_StimSet3_PW.Text = "NaN";
+            // 
+            // Status_StimSet2_PW
+            // 
+            this.Status_StimSet2_PW.AutoSize = true;
+            this.Status_StimSet2_PW.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet2_PW.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet2_PW.Location = new System.Drawing.Point(586, 282);
+            this.Status_StimSet2_PW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet2_PW.Name = "Status_StimSet2_PW";
+            this.Status_StimSet2_PW.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet2_PW.TabIndex = 41;
+            this.Status_StimSet2_PW.Text = "NaN";
+            // 
+            // Status_StimSet4_Freq
+            // 
+            this.Status_StimSet4_Freq.AutoSize = true;
+            this.Status_StimSet4_Freq.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet4_Freq.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet4_Freq.Location = new System.Drawing.Point(744, 249);
+            this.Status_StimSet4_Freq.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet4_Freq.Name = "Status_StimSet4_Freq";
+            this.Status_StimSet4_Freq.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet4_Freq.TabIndex = 40;
+            this.Status_StimSet4_Freq.Text = "NaN";
+            // 
+            // Status_StimSet3_Freq
+            // 
+            this.Status_StimSet3_Freq.AutoSize = true;
+            this.Status_StimSet3_Freq.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet3_Freq.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet3_Freq.Location = new System.Drawing.Point(664, 249);
+            this.Status_StimSet3_Freq.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet3_Freq.Name = "Status_StimSet3_Freq";
+            this.Status_StimSet3_Freq.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet3_Freq.TabIndex = 39;
+            this.Status_StimSet3_Freq.Text = "NaN";
+            // 
+            // Status_StimSet2_Freq
+            // 
+            this.Status_StimSet2_Freq.AutoSize = true;
+            this.Status_StimSet2_Freq.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet2_Freq.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet2_Freq.Location = new System.Drawing.Point(586, 249);
+            this.Status_StimSet2_Freq.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet2_Freq.Name = "Status_StimSet2_Freq";
+            this.Status_StimSet2_Freq.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet2_Freq.TabIndex = 38;
+            this.Status_StimSet2_Freq.Text = "NaN";
+            // 
+            // Status_StimSet4_Amp
+            // 
+            this.Status_StimSet4_Amp.AutoSize = true;
+            this.Status_StimSet4_Amp.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet4_Amp.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet4_Amp.Location = new System.Drawing.Point(744, 218);
+            this.Status_StimSet4_Amp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet4_Amp.Name = "Status_StimSet4_Amp";
+            this.Status_StimSet4_Amp.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet4_Amp.TabIndex = 37;
+            this.Status_StimSet4_Amp.Text = "NaN";
+            // 
+            // Status_StimSet3_Amp
+            // 
+            this.Status_StimSet3_Amp.AutoSize = true;
+            this.Status_StimSet3_Amp.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet3_Amp.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet3_Amp.Location = new System.Drawing.Point(664, 218);
+            this.Status_StimSet3_Amp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet3_Amp.Name = "Status_StimSet3_Amp";
+            this.Status_StimSet3_Amp.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet3_Amp.TabIndex = 36;
+            this.Status_StimSet3_Amp.Text = "NaN";
+            // 
+            // Status_StimSet2_Amp
+            // 
+            this.Status_StimSet2_Amp.AutoSize = true;
+            this.Status_StimSet2_Amp.BackColor = System.Drawing.Color.Transparent;
+            this.Status_StimSet2_Amp.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Status_StimSet2_Amp.Location = new System.Drawing.Point(586, 218);
+            this.Status_StimSet2_Amp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Status_StimSet2_Amp.Name = "Status_StimSet2_Amp";
+            this.Status_StimSet2_Amp.Size = new System.Drawing.Size(42, 21);
+            this.Status_StimSet2_Amp.TabIndex = 35;
+            this.Status_StimSet2_Amp.Text = "NaN";
             // 
             // Status_StimSet1_Contacts
             // 
             this.Status_StimSet1_Contacts.AutoSize = true;
             this.Status_StimSet1_Contacts.BackColor = System.Drawing.Color.Transparent;
             this.Status_StimSet1_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet1_Contacts.Location = new System.Drawing.Point(525, 316);
+            this.Status_StimSet1_Contacts.Location = new System.Drawing.Point(510, 316);
             this.Status_StimSet1_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Status_StimSet1_Contacts.Name = "Status_StimSet1_Contacts";
             this.Status_StimSet1_Contacts.Size = new System.Drawing.Size(42, 21);
@@ -454,7 +603,7 @@
             this.Status_StimSet1_PW.AutoSize = true;
             this.Status_StimSet1_PW.BackColor = System.Drawing.Color.Transparent;
             this.Status_StimSet1_PW.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet1_PW.Location = new System.Drawing.Point(525, 282);
+            this.Status_StimSet1_PW.Location = new System.Drawing.Point(510, 282);
             this.Status_StimSet1_PW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Status_StimSet1_PW.Name = "Status_StimSet1_PW";
             this.Status_StimSet1_PW.Size = new System.Drawing.Size(42, 21);
@@ -466,7 +615,7 @@
             this.Status_StimSet1_Freq.AutoSize = true;
             this.Status_StimSet1_Freq.BackColor = System.Drawing.Color.Transparent;
             this.Status_StimSet1_Freq.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet1_Freq.Location = new System.Drawing.Point(525, 249);
+            this.Status_StimSet1_Freq.Location = new System.Drawing.Point(510, 249);
             this.Status_StimSet1_Freq.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Status_StimSet1_Freq.Name = "Status_StimSet1_Freq";
             this.Status_StimSet1_Freq.Size = new System.Drawing.Size(42, 21);
@@ -478,7 +627,7 @@
             this.Status_StimSet1_Amp.AutoSize = true;
             this.Status_StimSet1_Amp.BackColor = System.Drawing.Color.Transparent;
             this.Status_StimSet1_Amp.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet1_Amp.Location = new System.Drawing.Point(525, 218);
+            this.Status_StimSet1_Amp.Location = new System.Drawing.Point(510, 218);
             this.Status_StimSet1_Amp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Status_StimSet1_Amp.Name = "Status_StimSet1_Amp";
             this.Status_StimSet1_Amp.Size = new System.Drawing.Size(42, 21);
@@ -580,18 +729,6 @@
             this.label71.Size = new System.Drawing.Size(154, 21);
             this.label71.TabIndex = 23;
             this.label71.Text = "Therapy Amplitude:";
-            // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.BackColor = System.Drawing.Color.Transparent;
-            this.label69.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label69.Location = new System.Drawing.Point(302, 185);
-            this.label69.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(127, 21);
-            this.label69.TabIndex = 22;
-            this.label69.Text = "Therapy Group: ";
             // 
             // Summit_LoadConfigurations
             // 
@@ -766,37 +903,65 @@
             // Stimulation_Tab
             // 
             this.Stimulation_Tab.AutoScroll = true;
-            this.Stimulation_Tab.Controls.Add(this.comboBox9);
+            this.Stimulation_Tab.Controls.Add(this.Stimulation_TherapyOff);
+            this.Stimulation_Tab.Controls.Add(this.Stimulation_TherapyOn);
+            this.Stimulation_Tab.Controls.Add(this.Stimulation_ActiveGroupSelection);
             this.Stimulation_Tab.Controls.Add(this.Stimulation_ActivateGroup);
             this.Stimulation_Tab.Controls.Add(this.groupBox11);
             this.Stimulation_Tab.Location = new System.Drawing.Point(4, 22);
             this.Stimulation_Tab.Name = "Stimulation_Tab";
             this.Stimulation_Tab.Padding = new System.Windows.Forms.Padding(3);
-            this.Stimulation_Tab.Size = new System.Drawing.Size(872, 442);
+            this.Stimulation_Tab.Size = new System.Drawing.Size(892, 424);
             this.Stimulation_Tab.TabIndex = 7;
             this.Stimulation_Tab.Text = "Stimulation";
             this.Stimulation_Tab.UseVisualStyleBackColor = true;
             // 
-            // comboBox9
+            // Stimulation_TherapyOff
             // 
-            this.comboBox9.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox9.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.comboBox9.FormattingEnabled = true;
-            this.comboBox9.Items.AddRange(new object[] {
+            this.Stimulation_TherapyOff.Enabled = false;
+            this.Stimulation_TherapyOff.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Stimulation_TherapyOff.Location = new System.Drawing.Point(721, 27);
+            this.Stimulation_TherapyOff.Margin = new System.Windows.Forms.Padding(2);
+            this.Stimulation_TherapyOff.Name = "Stimulation_TherapyOff";
+            this.Stimulation_TherapyOff.Size = new System.Drawing.Size(107, 31);
+            this.Stimulation_TherapyOff.TabIndex = 27;
+            this.Stimulation_TherapyOff.Text = "Therapy Off";
+            this.Stimulation_TherapyOff.UseVisualStyleBackColor = true;
+            this.Stimulation_TherapyOff.Click += new System.EventHandler(this.Stimulation_TherapyOff_Click);
+            // 
+            // Stimulation_TherapyOn
+            // 
+            this.Stimulation_TherapyOn.Enabled = false;
+            this.Stimulation_TherapyOn.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Stimulation_TherapyOn.Location = new System.Drawing.Point(594, 27);
+            this.Stimulation_TherapyOn.Margin = new System.Windows.Forms.Padding(2);
+            this.Stimulation_TherapyOn.Name = "Stimulation_TherapyOn";
+            this.Stimulation_TherapyOn.Size = new System.Drawing.Size(107, 31);
+            this.Stimulation_TherapyOn.TabIndex = 26;
+            this.Stimulation_TherapyOn.Text = "Therapy On";
+            this.Stimulation_TherapyOn.UseVisualStyleBackColor = true;
+            this.Stimulation_TherapyOn.Click += new System.EventHandler(this.Stimulation_TherapyOn_Click);
+            // 
+            // Stimulation_ActiveGroupSelection
+            // 
+            this.Stimulation_ActiveGroupSelection.BackColor = System.Drawing.SystemColors.Window;
+            this.Stimulation_ActiveGroupSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Stimulation_ActiveGroupSelection.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Stimulation_ActiveGroupSelection.FormattingEnabled = true;
+            this.Stimulation_ActiveGroupSelection.Items.AddRange(new object[] {
             "Stimulation Group A",
             "Stimulation Group B",
             "Stimulation Group C",
             "Stimulation Group Adaptive"});
-            this.comboBox9.Location = new System.Drawing.Point(25, 27);
-            this.comboBox9.Margin = new System.Windows.Forms.Padding(2);
-            this.comboBox9.Name = "comboBox9";
-            this.comboBox9.Size = new System.Drawing.Size(189, 29);
-            this.comboBox9.TabIndex = 25;
+            this.Stimulation_ActiveGroupSelection.Location = new System.Drawing.Point(25, 27);
+            this.Stimulation_ActiveGroupSelection.Margin = new System.Windows.Forms.Padding(2);
+            this.Stimulation_ActiveGroupSelection.Name = "Stimulation_ActiveGroupSelection";
+            this.Stimulation_ActiveGroupSelection.Size = new System.Drawing.Size(189, 29);
+            this.Stimulation_ActiveGroupSelection.TabIndex = 25;
+            this.Stimulation_ActiveGroupSelection.SelectedIndexChanged += new System.EventHandler(this.Stimulation_ActiveGroupSelection_SelectedIndexChanged);
             // 
             // Stimulation_ActivateGroup
             // 
-            this.Stimulation_ActivateGroup.Enabled = false;
             this.Stimulation_ActivateGroup.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.Stimulation_ActivateGroup.Location = new System.Drawing.Point(235, 27);
             this.Stimulation_ActivateGroup.Margin = new System.Windows.Forms.Padding(2);
@@ -805,15 +970,14 @@
             this.Stimulation_ActivateGroup.TabIndex = 10;
             this.Stimulation_ActivateGroup.Text = "Activate";
             this.Stimulation_ActivateGroup.UseVisualStyleBackColor = true;
+            this.Stimulation_ActivateGroup.Click += new System.EventHandler(this.Stimulation_ActivateGroup_Click);
             // 
             // groupBox11
             // 
             this.groupBox11.Controls.Add(this.Stimulation_Param4_PulsewidthRange);
             this.groupBox11.Controls.Add(this.label96);
             this.groupBox11.Controls.Add(this.Stimulation_Param4_Pulsewidth);
-            this.groupBox11.Controls.Add(this.Stimulation_Param4_ContactMinus);
-            this.groupBox11.Controls.Add(this.Stimulation_Param4_ContactPlus);
-            this.groupBox11.Controls.Add(this.label97);
+            this.groupBox11.Controls.Add(this.Stimulation_Param4_Contacts);
             this.groupBox11.Controls.Add(this.Stimulation_Param4_FrequencyRange);
             this.groupBox11.Controls.Add(this.label99);
             this.groupBox11.Controls.Add(this.Stimulation_Param4_Frequency);
@@ -823,9 +987,7 @@
             this.groupBox11.Controls.Add(this.Stimulation_Param3_PulsewidthRange);
             this.groupBox11.Controls.Add(this.label89);
             this.groupBox11.Controls.Add(this.Stimulation_Param3_Pulsewidth);
-            this.groupBox11.Controls.Add(this.Stimulation_Param3_ContactMinus);
-            this.groupBox11.Controls.Add(this.Stimulation_Param3_ContactPlus);
-            this.groupBox11.Controls.Add(this.label90);
+            this.groupBox11.Controls.Add(this.Stimulation_Param3_Contacts);
             this.groupBox11.Controls.Add(this.Stimulation_Param3_FrequencyRange);
             this.groupBox11.Controls.Add(this.label92);
             this.groupBox11.Controls.Add(this.Stimulation_Param3_Frequency);
@@ -835,9 +997,7 @@
             this.groupBox11.Controls.Add(this.Stimulation_Param2_PulsewidthRange);
             this.groupBox11.Controls.Add(this.label82);
             this.groupBox11.Controls.Add(this.Stimulation_Param2_Pulsewidth);
-            this.groupBox11.Controls.Add(this.Stimulation_Param2_ContactMinus);
-            this.groupBox11.Controls.Add(this.Stimulation_Param2_ContactPlus);
-            this.groupBox11.Controls.Add(this.label83);
+            this.groupBox11.Controls.Add(this.Stimulation_Param2_Contacts);
             this.groupBox11.Controls.Add(this.Stimulation_Param2_FrequencyRange);
             this.groupBox11.Controls.Add(this.label85);
             this.groupBox11.Controls.Add(this.Stimulation_Param2_Frequency);
@@ -847,9 +1007,7 @@
             this.groupBox11.Controls.Add(this.Stimulation_Param1_PulsewidthRange);
             this.groupBox11.Controls.Add(this.label81);
             this.groupBox11.Controls.Add(this.Stimulation_Param1_Pulsewidth);
-            this.groupBox11.Controls.Add(this.Stimulation_Param1_ContactMinus);
-            this.groupBox11.Controls.Add(this.Stimulation_Param1_ContactPlus);
-            this.groupBox11.Controls.Add(this.label79);
+            this.groupBox11.Controls.Add(this.Stimulation_Param1_Contacts);
             this.groupBox11.Controls.Add(this.Stimulation_Param1_FrequencyRange);
             this.groupBox11.Controls.Add(this.label70);
             this.groupBox11.Controls.Add(this.Stimulation_Param1_Frequency);
@@ -861,7 +1019,7 @@
             this.groupBox11.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox11.Size = new System.Drawing.Size(1059, 327);
+            this.groupBox11.Size = new System.Drawing.Size(1059, 310);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Active Group";
@@ -893,6 +1051,7 @@
             // 
             this.Stimulation_Param4_Pulsewidth.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param4_Pulsewidth.DecimalPlaces = 1;
+            this.Stimulation_Param4_Pulsewidth.Enabled = false;
             this.Stimulation_Param4_Pulsewidth.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param4_Pulsewidth.Increment = new decimal(new int[] {
             1,
@@ -911,60 +1070,16 @@
             this.Stimulation_Param4_Pulsewidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param4_Pulsewidth.ThousandsSeparator = true;
             // 
-            // Stimulation_Param4_ContactMinus
+            // Stimulation_Param4_Contacts
             // 
-            this.Stimulation_Param4_ContactMinus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param4_ContactMinus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param4_ContactMinus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param4_ContactMinus.FormattingEnabled = true;
-            this.Stimulation_Param4_ContactMinus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param4_ContactMinus.Location = new System.Drawing.Point(969, 246);
-            this.Stimulation_Param4_ContactMinus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param4_ContactMinus.Name = "Stimulation_Param4_ContactMinus";
-            this.Stimulation_Param4_ContactMinus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param4_ContactMinus.TabIndex = 78;
-            // 
-            // Stimulation_Param4_ContactPlus
-            // 
-            this.Stimulation_Param4_ContactPlus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param4_ContactPlus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param4_ContactPlus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param4_ContactPlus.FormattingEnabled = true;
-            this.Stimulation_Param4_ContactPlus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param4_ContactPlus.Location = new System.Drawing.Point(969, 213);
-            this.Stimulation_Param4_ContactPlus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param4_ContactPlus.Name = "Stimulation_Param4_ContactPlus";
-            this.Stimulation_Param4_ContactPlus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param4_ContactPlus.TabIndex = 77;
-            // 
-            // label97
-            // 
-            this.label97.AutoSize = true;
-            this.label97.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label97.Location = new System.Drawing.Point(801, 231);
-            this.label97.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(153, 21);
-            this.label97.TabIndex = 76;
-            this.label97.Text = "Stim Contacts: (+/-)";
+            this.Stimulation_Param4_Contacts.AutoSize = true;
+            this.Stimulation_Param4_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Stimulation_Param4_Contacts.Location = new System.Drawing.Point(801, 231);
+            this.Stimulation_Param4_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Stimulation_Param4_Contacts.Name = "Stimulation_Param4_Contacts";
+            this.Stimulation_Param4_Contacts.Size = new System.Drawing.Size(153, 21);
+            this.Stimulation_Param4_Contacts.TabIndex = 76;
+            this.Stimulation_Param4_Contacts.Text = "Stim Contacts: (+/-)";
             // 
             // Stimulation_Param4_FrequencyRange
             // 
@@ -993,6 +1108,7 @@
             // 
             this.Stimulation_Param4_Frequency.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param4_Frequency.DecimalPlaces = 1;
+            this.Stimulation_Param4_Frequency.Enabled = false;
             this.Stimulation_Param4_Frequency.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param4_Frequency.Increment = new decimal(new int[] {
             1,
@@ -1038,6 +1154,7 @@
             // 
             this.Stimulation_Param4_Amplitude.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param4_Amplitude.DecimalPlaces = 1;
+            this.Stimulation_Param4_Amplitude.Enabled = false;
             this.Stimulation_Param4_Amplitude.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param4_Amplitude.Increment = new decimal(new int[] {
             1,
@@ -1055,6 +1172,7 @@
             this.Stimulation_Param4_Amplitude.TabIndex = 70;
             this.Stimulation_Param4_Amplitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param4_Amplitude.ThousandsSeparator = true;
+            this.Stimulation_Param4_Amplitude.ValueChanged += new System.EventHandler(this.Stimulation_Param4_Amplitude_ValueChanged);
             // 
             // Stimulation_Param3_PulsewidthRange
             // 
@@ -1083,6 +1201,7 @@
             // 
             this.Stimulation_Param3_Pulsewidth.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param3_Pulsewidth.DecimalPlaces = 1;
+            this.Stimulation_Param3_Pulsewidth.Enabled = false;
             this.Stimulation_Param3_Pulsewidth.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param3_Pulsewidth.Increment = new decimal(new int[] {
             1,
@@ -1101,60 +1220,16 @@
             this.Stimulation_Param3_Pulsewidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param3_Pulsewidth.ThousandsSeparator = true;
             // 
-            // Stimulation_Param3_ContactMinus
+            // Stimulation_Param3_Contacts
             // 
-            this.Stimulation_Param3_ContactMinus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param3_ContactMinus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param3_ContactMinus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param3_ContactMinus.FormattingEnabled = true;
-            this.Stimulation_Param3_ContactMinus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param3_ContactMinus.Location = new System.Drawing.Point(697, 246);
-            this.Stimulation_Param3_ContactMinus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param3_ContactMinus.Name = "Stimulation_Param3_ContactMinus";
-            this.Stimulation_Param3_ContactMinus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param3_ContactMinus.TabIndex = 66;
-            // 
-            // Stimulation_Param3_ContactPlus
-            // 
-            this.Stimulation_Param3_ContactPlus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param3_ContactPlus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param3_ContactPlus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param3_ContactPlus.FormattingEnabled = true;
-            this.Stimulation_Param3_ContactPlus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param3_ContactPlus.Location = new System.Drawing.Point(697, 213);
-            this.Stimulation_Param3_ContactPlus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param3_ContactPlus.Name = "Stimulation_Param3_ContactPlus";
-            this.Stimulation_Param3_ContactPlus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param3_ContactPlus.TabIndex = 65;
-            // 
-            // label90
-            // 
-            this.label90.AutoSize = true;
-            this.label90.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label90.Location = new System.Drawing.Point(529, 231);
-            this.label90.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(153, 21);
-            this.label90.TabIndex = 64;
-            this.label90.Text = "Stim Contacts: (+/-)";
+            this.Stimulation_Param3_Contacts.AutoSize = true;
+            this.Stimulation_Param3_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Stimulation_Param3_Contacts.Location = new System.Drawing.Point(529, 231);
+            this.Stimulation_Param3_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Stimulation_Param3_Contacts.Name = "Stimulation_Param3_Contacts";
+            this.Stimulation_Param3_Contacts.Size = new System.Drawing.Size(153, 21);
+            this.Stimulation_Param3_Contacts.TabIndex = 64;
+            this.Stimulation_Param3_Contacts.Text = "Stim Contacts: (+/-)";
             // 
             // Stimulation_Param3_FrequencyRange
             // 
@@ -1183,6 +1258,7 @@
             // 
             this.Stimulation_Param3_Frequency.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param3_Frequency.DecimalPlaces = 1;
+            this.Stimulation_Param3_Frequency.Enabled = false;
             this.Stimulation_Param3_Frequency.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param3_Frequency.Increment = new decimal(new int[] {
             1,
@@ -1228,6 +1304,7 @@
             // 
             this.Stimulation_Param3_Amplitude.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param3_Amplitude.DecimalPlaces = 1;
+            this.Stimulation_Param3_Amplitude.Enabled = false;
             this.Stimulation_Param3_Amplitude.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param3_Amplitude.Increment = new decimal(new int[] {
             1,
@@ -1245,6 +1322,7 @@
             this.Stimulation_Param3_Amplitude.TabIndex = 58;
             this.Stimulation_Param3_Amplitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param3_Amplitude.ThousandsSeparator = true;
+            this.Stimulation_Param3_Amplitude.ValueChanged += new System.EventHandler(this.Stimulation_Param3_Amplitude_ValueChanged);
             // 
             // Stimulation_Param2_PulsewidthRange
             // 
@@ -1273,6 +1351,7 @@
             // 
             this.Stimulation_Param2_Pulsewidth.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param2_Pulsewidth.DecimalPlaces = 1;
+            this.Stimulation_Param2_Pulsewidth.Enabled = false;
             this.Stimulation_Param2_Pulsewidth.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param2_Pulsewidth.Increment = new decimal(new int[] {
             1,
@@ -1291,60 +1370,16 @@
             this.Stimulation_Param2_Pulsewidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param2_Pulsewidth.ThousandsSeparator = true;
             // 
-            // Stimulation_Param2_ContactMinus
+            // Stimulation_Param2_Contacts
             // 
-            this.Stimulation_Param2_ContactMinus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param2_ContactMinus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param2_ContactMinus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param2_ContactMinus.FormattingEnabled = true;
-            this.Stimulation_Param2_ContactMinus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param2_ContactMinus.Location = new System.Drawing.Point(434, 246);
-            this.Stimulation_Param2_ContactMinus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param2_ContactMinus.Name = "Stimulation_Param2_ContactMinus";
-            this.Stimulation_Param2_ContactMinus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param2_ContactMinus.TabIndex = 54;
-            // 
-            // Stimulation_Param2_ContactPlus
-            // 
-            this.Stimulation_Param2_ContactPlus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param2_ContactPlus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param2_ContactPlus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param2_ContactPlus.FormattingEnabled = true;
-            this.Stimulation_Param2_ContactPlus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param2_ContactPlus.Location = new System.Drawing.Point(434, 213);
-            this.Stimulation_Param2_ContactPlus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param2_ContactPlus.Name = "Stimulation_Param2_ContactPlus";
-            this.Stimulation_Param2_ContactPlus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param2_ContactPlus.TabIndex = 53;
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label83.Location = new System.Drawing.Point(266, 231);
-            this.label83.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(153, 21);
-            this.label83.TabIndex = 52;
-            this.label83.Text = "Stim Contacts: (+/-)";
+            this.Stimulation_Param2_Contacts.AutoSize = true;
+            this.Stimulation_Param2_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Stimulation_Param2_Contacts.Location = new System.Drawing.Point(266, 231);
+            this.Stimulation_Param2_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Stimulation_Param2_Contacts.Name = "Stimulation_Param2_Contacts";
+            this.Stimulation_Param2_Contacts.Size = new System.Drawing.Size(153, 21);
+            this.Stimulation_Param2_Contacts.TabIndex = 52;
+            this.Stimulation_Param2_Contacts.Text = "Stim Contacts: (+/-)";
             // 
             // Stimulation_Param2_FrequencyRange
             // 
@@ -1373,6 +1408,7 @@
             // 
             this.Stimulation_Param2_Frequency.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param2_Frequency.DecimalPlaces = 1;
+            this.Stimulation_Param2_Frequency.Enabled = false;
             this.Stimulation_Param2_Frequency.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param2_Frequency.Increment = new decimal(new int[] {
             1,
@@ -1418,6 +1454,7 @@
             // 
             this.Stimulation_Param2_Amplitude.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param2_Amplitude.DecimalPlaces = 1;
+            this.Stimulation_Param2_Amplitude.Enabled = false;
             this.Stimulation_Param2_Amplitude.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param2_Amplitude.Increment = new decimal(new int[] {
             1,
@@ -1435,6 +1472,7 @@
             this.Stimulation_Param2_Amplitude.TabIndex = 46;
             this.Stimulation_Param2_Amplitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param2_Amplitude.ThousandsSeparator = true;
+            this.Stimulation_Param2_Amplitude.ValueChanged += new System.EventHandler(this.Stimulation_Param2_Amplitude_ValueChanged);
             // 
             // Stimulation_Param1_PulsewidthRange
             // 
@@ -1463,6 +1501,7 @@
             // 
             this.Stimulation_Param1_Pulsewidth.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param1_Pulsewidth.DecimalPlaces = 1;
+            this.Stimulation_Param1_Pulsewidth.Enabled = false;
             this.Stimulation_Param1_Pulsewidth.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param1_Pulsewidth.Increment = new decimal(new int[] {
             1,
@@ -1481,60 +1520,16 @@
             this.Stimulation_Param1_Pulsewidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param1_Pulsewidth.ThousandsSeparator = true;
             // 
-            // Stimulation_Param1_ContactMinus
+            // Stimulation_Param1_Contacts
             // 
-            this.Stimulation_Param1_ContactMinus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param1_ContactMinus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param1_ContactMinus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param1_ContactMinus.FormattingEnabled = true;
-            this.Stimulation_Param1_ContactMinus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param1_ContactMinus.Location = new System.Drawing.Point(172, 246);
-            this.Stimulation_Param1_ContactMinus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param1_ContactMinus.Name = "Stimulation_Param1_ContactMinus";
-            this.Stimulation_Param1_ContactMinus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param1_ContactMinus.TabIndex = 42;
-            // 
-            // Stimulation_Param1_ContactPlus
-            // 
-            this.Stimulation_Param1_ContactPlus.BackColor = System.Drawing.SystemColors.Window;
-            this.Stimulation_Param1_ContactPlus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Stimulation_Param1_ContactPlus.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Stimulation_Param1_ContactPlus.FormattingEnabled = true;
-            this.Stimulation_Param1_ContactPlus.Items.AddRange(new object[] {
-            "CAN",
-            "Mux0",
-            "Mux1",
-            "Mux2",
-            "Mux3",
-            "Mux4",
-            "Mux5",
-            "Mux6",
-            "Mux7"});
-            this.Stimulation_Param1_ContactPlus.Location = new System.Drawing.Point(172, 213);
-            this.Stimulation_Param1_ContactPlus.Margin = new System.Windows.Forms.Padding(2);
-            this.Stimulation_Param1_ContactPlus.Name = "Stimulation_Param1_ContactPlus";
-            this.Stimulation_Param1_ContactPlus.Size = new System.Drawing.Size(64, 29);
-            this.Stimulation_Param1_ContactPlus.TabIndex = 41;
-            // 
-            // label79
-            // 
-            this.label79.AutoSize = true;
-            this.label79.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label79.Location = new System.Drawing.Point(4, 231);
-            this.label79.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(153, 21);
-            this.label79.TabIndex = 40;
-            this.label79.Text = "Stim Contacts: (+/-)";
+            this.Stimulation_Param1_Contacts.AutoSize = true;
+            this.Stimulation_Param1_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Stimulation_Param1_Contacts.Location = new System.Drawing.Point(4, 231);
+            this.Stimulation_Param1_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Stimulation_Param1_Contacts.Name = "Stimulation_Param1_Contacts";
+            this.Stimulation_Param1_Contacts.Size = new System.Drawing.Size(153, 21);
+            this.Stimulation_Param1_Contacts.TabIndex = 40;
+            this.Stimulation_Param1_Contacts.Text = "Stim Contacts: (+/-)";
             // 
             // Stimulation_Param1_FrequencyRange
             // 
@@ -1563,6 +1558,7 @@
             // 
             this.Stimulation_Param1_Frequency.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param1_Frequency.DecimalPlaces = 1;
+            this.Stimulation_Param1_Frequency.Enabled = false;
             this.Stimulation_Param1_Frequency.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param1_Frequency.Increment = new decimal(new int[] {
             1,
@@ -1580,6 +1576,7 @@
             this.Stimulation_Param1_Frequency.TabIndex = 37;
             this.Stimulation_Param1_Frequency.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param1_Frequency.ThousandsSeparator = true;
+            this.Stimulation_Param1_Frequency.ValueChanged += new System.EventHandler(this.Stimulation_Param1_Frequency_ValueChanged);
             // 
             // Stimulation_Param1_AmplitudeRange
             // 
@@ -1608,6 +1605,7 @@
             // 
             this.Stimulation_Param1_Amplitude.Cursor = System.Windows.Forms.Cursors.Default;
             this.Stimulation_Param1_Amplitude.DecimalPlaces = 1;
+            this.Stimulation_Param1_Amplitude.Enabled = false;
             this.Stimulation_Param1_Amplitude.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Stimulation_Param1_Amplitude.Increment = new decimal(new int[] {
             1,
@@ -1625,6 +1623,7 @@
             this.Stimulation_Param1_Amplitude.TabIndex = 30;
             this.Stimulation_Param1_Amplitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Stimulation_Param1_Amplitude.ThousandsSeparator = true;
+            this.Stimulation_Param1_Amplitude.ValueChanged += new System.EventHandler(this.Stimulation_Param1_Amplitude_ValueChanged);
             // 
             // ConfigTdSensing_Tab
             // 
@@ -1640,7 +1639,7 @@
             this.ConfigTdSensing_Tab.Margin = new System.Windows.Forms.Padding(2);
             this.ConfigTdSensing_Tab.Name = "ConfigTdSensing_Tab";
             this.ConfigTdSensing_Tab.Padding = new System.Windows.Forms.Padding(2);
-            this.ConfigTdSensing_Tab.Size = new System.Drawing.Size(872, 442);
+            this.ConfigTdSensing_Tab.Size = new System.Drawing.Size(892, 424);
             this.ConfigTdSensing_Tab.TabIndex = 2;
             this.ConfigTdSensing_Tab.Text = "Td Stream Configuration";
             this.ConfigTdSensing_Tab.UseVisualStyleBackColor = true;
@@ -2657,7 +2656,7 @@
             this.ConfigFFT_Tab.Controls.Add(this.Sensing_GetFFTStatus);
             this.ConfigFFT_Tab.Location = new System.Drawing.Point(4, 22);
             this.ConfigFFT_Tab.Name = "ConfigFFT_Tab";
-            this.ConfigFFT_Tab.Size = new System.Drawing.Size(872, 442);
+            this.ConfigFFT_Tab.Size = new System.Drawing.Size(892, 424);
             this.ConfigFFT_Tab.TabIndex = 4;
             this.ConfigFFT_Tab.Text = "FFT Configuration";
             this.ConfigFFT_Tab.UseVisualStyleBackColor = true;
@@ -3491,7 +3490,7 @@
             this.ConfigMISC_Tab.Controls.Add(this.Sensing_GetMISCStatus);
             this.ConfigMISC_Tab.Location = new System.Drawing.Point(4, 22);
             this.ConfigMISC_Tab.Name = "ConfigMISC_Tab";
-            this.ConfigMISC_Tab.Size = new System.Drawing.Size(872, 442);
+            this.ConfigMISC_Tab.Size = new System.Drawing.Size(892, 424);
             this.ConfigMISC_Tab.TabIndex = 5;
             this.ConfigMISC_Tab.Text = "MISC Configuation";
             this.ConfigMISC_Tab.UseVisualStyleBackColor = true;
@@ -3683,7 +3682,7 @@
             this.ConfigStream_Tab.Controls.Add(this.groupBox9);
             this.ConfigStream_Tab.Location = new System.Drawing.Point(4, 22);
             this.ConfigStream_Tab.Name = "ConfigStream_Tab";
-            this.ConfigStream_Tab.Size = new System.Drawing.Size(872, 442);
+            this.ConfigStream_Tab.Size = new System.Drawing.Size(892, 424);
             this.ConfigStream_Tab.TabIndex = 6;
             this.ConfigStream_Tab.Text = "Streaming Configuration";
             this.ConfigStream_Tab.UseVisualStyleBackColor = true;
@@ -3726,103 +3725,260 @@
             // 
             // groupBox10
             // 
-            this.groupBox10.Controls.Add(this.label60);
-            this.groupBox10.Controls.Add(this.textBox4);
-            this.groupBox10.Controls.Add(this.label59);
-            this.groupBox10.Controls.Add(this.textBox3);
-            this.groupBox10.Controls.Add(this.label58);
-            this.groupBox10.Controls.Add(this.textBox2);
-            this.groupBox10.Controls.Add(this.label57);
-            this.groupBox10.Controls.Add(this.textBox1);
+            this.groupBox10.Controls.Add(this.Delsys_StartRecording);
+            this.groupBox10.Controls.Add(this.Delsys_StopRecording);
+            this.groupBox10.Controls.Add(this.Delsys_UpdateSensors);
+            this.groupBox10.Controls.Add(this.panel1);
+            this.groupBox10.Controls.Add(this.Delsys_ConnectServer);
             this.groupBox10.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.groupBox10.Location = new System.Drawing.Point(27, 184);
             this.groupBox10.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox10.Size = new System.Drawing.Size(804, 225);
+            this.groupBox10.Size = new System.Drawing.Size(804, 226);
             this.groupBox10.TabIndex = 7;
             this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Streaming Filenames";
+            this.groupBox10.Text = "Delsys - Trigno Configuration";
             // 
-            // label60
+            // Delsys_UpdateSensors
             // 
-            this.label60.AutoSize = true;
-            this.label60.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label60.Location = new System.Drawing.Point(21, 119);
-            this.label60.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(102, 21);
-            this.label60.TabIndex = 7;
-            this.label60.Text = "Time Stream";
+            this.Delsys_UpdateSensors.Enabled = false;
+            this.Delsys_UpdateSensors.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Delsys_UpdateSensors.Location = new System.Drawing.Point(319, 31);
+            this.Delsys_UpdateSensors.Margin = new System.Windows.Forms.Padding(2);
+            this.Delsys_UpdateSensors.Name = "Delsys_UpdateSensors";
+            this.Delsys_UpdateSensors.Size = new System.Drawing.Size(195, 38);
+            this.Delsys_UpdateSensors.TabIndex = 20;
+            this.Delsys_UpdateSensors.Text = "Update Sensors";
+            this.Delsys_UpdateSensors.UseVisualStyleBackColor = true;
+            this.Delsys_UpdateSensors.Click += new System.EventHandler(this.Delsys_UpdateSensors_Click);
             // 
-            // textBox4
+            // panel1
             // 
-            this.textBox4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox4.Location = new System.Drawing.Point(137, 119);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(215, 29);
-            this.textBox4.TabIndex = 6;
+            this.panel1.Controls.Add(this.Sensor16_LED);
+            this.panel1.Controls.Add(this.Sensor15_LED);
+            this.panel1.Controls.Add(this.Sensor14_LED);
+            this.panel1.Controls.Add(this.Sensor13_LED);
+            this.panel1.Controls.Add(this.Sensor12_LED);
+            this.panel1.Controls.Add(this.Sensor11_LED);
+            this.panel1.Controls.Add(this.Sensor10_LED);
+            this.panel1.Controls.Add(this.Sensor09_LED);
+            this.panel1.Controls.Add(this.Sensor08_LED);
+            this.panel1.Controls.Add(this.Sensor07_LED);
+            this.panel1.Controls.Add(this.Sensor06_LED);
+            this.panel1.Controls.Add(this.Sensor05_LED);
+            this.panel1.Controls.Add(this.Sensor04_LED);
+            this.panel1.Controls.Add(this.Sensor03_LED);
+            this.panel1.Controls.Add(this.Sensor02_LED);
+            this.panel1.Controls.Add(this.Sensor01_LED);
+            this.panel1.Location = new System.Drawing.Point(607, 15);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(189, 200);
+            this.panel1.TabIndex = 19;
             // 
-            // label59
+            // Sensor16_LED
             // 
-            this.label59.AutoSize = true;
-            this.label59.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label59.Location = new System.Drawing.Point(21, 90);
-            this.label59.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(111, 21);
-            this.label59.TabIndex = 5;
-            this.label59.Text = "Power Stream";
+            this.Sensor16_LED.AutoSize = true;
+            this.Sensor16_LED.Enabled = false;
+            this.Sensor16_LED.Location = new System.Drawing.Point(103, 175);
+            this.Sensor16_LED.Name = "Sensor16_LED";
+            this.Sensor16_LED.Size = new System.Drawing.Size(69, 17);
+            this.Sensor16_LED.TabIndex = 15;
+            this.Sensor16_LED.TabStop = true;
+            this.Sensor16_LED.Text = "Sensor16";
+            this.Sensor16_LED.UseVisualStyleBackColor = true;
             // 
-            // textBox3
+            // Sensor15_LED
             // 
-            this.textBox3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox3.Location = new System.Drawing.Point(137, 90);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(215, 29);
-            this.textBox3.TabIndex = 4;
+            this.Sensor15_LED.AutoSize = true;
+            this.Sensor15_LED.Enabled = false;
+            this.Sensor15_LED.Location = new System.Drawing.Point(103, 152);
+            this.Sensor15_LED.Name = "Sensor15_LED";
+            this.Sensor15_LED.Size = new System.Drawing.Size(69, 17);
+            this.Sensor15_LED.TabIndex = 14;
+            this.Sensor15_LED.TabStop = true;
+            this.Sensor15_LED.Text = "Sensor15";
+            this.Sensor15_LED.UseVisualStyleBackColor = true;
             // 
-            // label58
+            // Sensor14_LED
             // 
-            this.label58.AutoSize = true;
-            this.label58.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label58.Location = new System.Drawing.Point(21, 61);
-            this.label58.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(91, 21);
-            this.label58.TabIndex = 3;
-            this.label58.Text = "FFT Stream";
+            this.Sensor14_LED.AutoSize = true;
+            this.Sensor14_LED.Enabled = false;
+            this.Sensor14_LED.Location = new System.Drawing.Point(103, 129);
+            this.Sensor14_LED.Name = "Sensor14_LED";
+            this.Sensor14_LED.Size = new System.Drawing.Size(69, 17);
+            this.Sensor14_LED.TabIndex = 13;
+            this.Sensor14_LED.TabStop = true;
+            this.Sensor14_LED.Text = "Sensor14";
+            this.Sensor14_LED.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // Sensor13_LED
             // 
-            this.textBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox2.Location = new System.Drawing.Point(137, 61);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(215, 29);
-            this.textBox2.TabIndex = 2;
+            this.Sensor13_LED.AutoSize = true;
+            this.Sensor13_LED.Enabled = false;
+            this.Sensor13_LED.Location = new System.Drawing.Point(103, 106);
+            this.Sensor13_LED.Name = "Sensor13_LED";
+            this.Sensor13_LED.Size = new System.Drawing.Size(69, 17);
+            this.Sensor13_LED.TabIndex = 12;
+            this.Sensor13_LED.TabStop = true;
+            this.Sensor13_LED.Text = "Sensor13";
+            this.Sensor13_LED.UseVisualStyleBackColor = true;
             // 
-            // label57
+            // Sensor12_LED
             // 
-            this.label57.AutoSize = true;
-            this.label57.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.label57.Location = new System.Drawing.Point(21, 32);
-            this.label57.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(91, 21);
-            this.label57.TabIndex = 1;
-            this.label57.Text = "LFP Stream";
+            this.Sensor12_LED.AutoSize = true;
+            this.Sensor12_LED.Enabled = false;
+            this.Sensor12_LED.Location = new System.Drawing.Point(103, 83);
+            this.Sensor12_LED.Name = "Sensor12_LED";
+            this.Sensor12_LED.Size = new System.Drawing.Size(69, 17);
+            this.Sensor12_LED.TabIndex = 11;
+            this.Sensor12_LED.TabStop = true;
+            this.Sensor12_LED.Text = "Sensor12";
+            this.Sensor12_LED.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // Sensor11_LED
             // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.textBox1.Location = new System.Drawing.Point(137, 32);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(215, 29);
-            this.textBox1.TabIndex = 0;
+            this.Sensor11_LED.AutoSize = true;
+            this.Sensor11_LED.Enabled = false;
+            this.Sensor11_LED.Location = new System.Drawing.Point(103, 60);
+            this.Sensor11_LED.Name = "Sensor11_LED";
+            this.Sensor11_LED.Size = new System.Drawing.Size(67, 17);
+            this.Sensor11_LED.TabIndex = 10;
+            this.Sensor11_LED.TabStop = true;
+            this.Sensor11_LED.Text = "Sensor11";
+            this.Sensor11_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor10_LED
+            // 
+            this.Sensor10_LED.AutoSize = true;
+            this.Sensor10_LED.Enabled = false;
+            this.Sensor10_LED.Location = new System.Drawing.Point(103, 37);
+            this.Sensor10_LED.Name = "Sensor10_LED";
+            this.Sensor10_LED.Size = new System.Drawing.Size(69, 17);
+            this.Sensor10_LED.TabIndex = 9;
+            this.Sensor10_LED.TabStop = true;
+            this.Sensor10_LED.Text = "Sensor10";
+            this.Sensor10_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor09_LED
+            // 
+            this.Sensor09_LED.AutoSize = true;
+            this.Sensor09_LED.Enabled = false;
+            this.Sensor09_LED.Location = new System.Drawing.Point(103, 14);
+            this.Sensor09_LED.Name = "Sensor09_LED";
+            this.Sensor09_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor09_LED.TabIndex = 8;
+            this.Sensor09_LED.TabStop = true;
+            this.Sensor09_LED.Text = "Sensor09";
+            this.Sensor09_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor08_LED
+            // 
+            this.Sensor08_LED.AutoSize = true;
+            this.Sensor08_LED.Enabled = false;
+            this.Sensor08_LED.Location = new System.Drawing.Point(20, 175);
+            this.Sensor08_LED.Name = "Sensor08_LED";
+            this.Sensor08_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor08_LED.TabIndex = 7;
+            this.Sensor08_LED.TabStop = true;
+            this.Sensor08_LED.Text = "Sensor08";
+            this.Sensor08_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor07_LED
+            // 
+            this.Sensor07_LED.AutoSize = true;
+            this.Sensor07_LED.Enabled = false;
+            this.Sensor07_LED.Location = new System.Drawing.Point(20, 152);
+            this.Sensor07_LED.Name = "Sensor07_LED";
+            this.Sensor07_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor07_LED.TabIndex = 6;
+            this.Sensor07_LED.TabStop = true;
+            this.Sensor07_LED.Text = "Sensor07";
+            this.Sensor07_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor06_LED
+            // 
+            this.Sensor06_LED.AutoSize = true;
+            this.Sensor06_LED.Enabled = false;
+            this.Sensor06_LED.Location = new System.Drawing.Point(20, 129);
+            this.Sensor06_LED.Name = "Sensor06_LED";
+            this.Sensor06_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor06_LED.TabIndex = 5;
+            this.Sensor06_LED.TabStop = true;
+            this.Sensor06_LED.Text = "Sensor06";
+            this.Sensor06_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor05_LED
+            // 
+            this.Sensor05_LED.AutoSize = true;
+            this.Sensor05_LED.Enabled = false;
+            this.Sensor05_LED.Location = new System.Drawing.Point(20, 106);
+            this.Sensor05_LED.Name = "Sensor05_LED";
+            this.Sensor05_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor05_LED.TabIndex = 4;
+            this.Sensor05_LED.TabStop = true;
+            this.Sensor05_LED.Text = "Sensor05";
+            this.Sensor05_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor04_LED
+            // 
+            this.Sensor04_LED.AutoSize = true;
+            this.Sensor04_LED.Enabled = false;
+            this.Sensor04_LED.Location = new System.Drawing.Point(20, 83);
+            this.Sensor04_LED.Name = "Sensor04_LED";
+            this.Sensor04_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor04_LED.TabIndex = 3;
+            this.Sensor04_LED.TabStop = true;
+            this.Sensor04_LED.Text = "Sensor04";
+            this.Sensor04_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor03_LED
+            // 
+            this.Sensor03_LED.AutoSize = true;
+            this.Sensor03_LED.Enabled = false;
+            this.Sensor03_LED.Location = new System.Drawing.Point(20, 60);
+            this.Sensor03_LED.Name = "Sensor03_LED";
+            this.Sensor03_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor03_LED.TabIndex = 2;
+            this.Sensor03_LED.TabStop = true;
+            this.Sensor03_LED.Text = "Sensor03";
+            this.Sensor03_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor02_LED
+            // 
+            this.Sensor02_LED.AutoSize = true;
+            this.Sensor02_LED.Enabled = false;
+            this.Sensor02_LED.Location = new System.Drawing.Point(20, 37);
+            this.Sensor02_LED.Name = "Sensor02_LED";
+            this.Sensor02_LED.Size = new System.Drawing.Size(71, 17);
+            this.Sensor02_LED.TabIndex = 1;
+            this.Sensor02_LED.TabStop = true;
+            this.Sensor02_LED.Text = "Sensor02";
+            this.Sensor02_LED.UseVisualStyleBackColor = true;
+            // 
+            // Sensor01_LED
+            // 
+            this.Sensor01_LED.AutoSize = true;
+            this.Sensor01_LED.Enabled = false;
+            this.Sensor01_LED.Location = new System.Drawing.Point(20, 14);
+            this.Sensor01_LED.Name = "Sensor01_LED";
+            this.Sensor01_LED.Size = new System.Drawing.Size(69, 17);
+            this.Sensor01_LED.TabIndex = 0;
+            this.Sensor01_LED.TabStop = true;
+            this.Sensor01_LED.Text = "Sensor01";
+            this.Sensor01_LED.UseVisualStyleBackColor = true;
+            // 
+            // Delsys_ConnectServer
+            // 
+            this.Delsys_ConnectServer.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Delsys_ConnectServer.Location = new System.Drawing.Point(25, 31);
+            this.Delsys_ConnectServer.Margin = new System.Windows.Forms.Padding(2);
+            this.Delsys_ConnectServer.Name = "Delsys_ConnectServer";
+            this.Delsys_ConnectServer.Size = new System.Drawing.Size(195, 38);
+            this.Delsys_ConnectServer.TabIndex = 18;
+            this.Delsys_ConnectServer.Text = "Connect Delsys Server";
+            this.Delsys_ConnectServer.UseVisualStyleBackColor = true;
+            this.Delsys_ConnectServer.Click += new System.EventHandler(this.Delsys_ConnectServer_Click);
             // 
             // groupBox9
             // 
@@ -3942,6 +4098,8 @@
             // 
             // Task_Tab
             // 
+            this.Task_Tab.Controls.Add(this.StimAndRecord_Run);
+            this.Task_Tab.Controls.Add(this.Task_SerialPortCheck);
             this.Task_Tab.Controls.Add(this.MonitorSizeLabel);
             this.Task_Tab.Controls.Add(this.label67);
             this.Task_Tab.Controls.Add(this.Task_MonitorPicker);
@@ -3950,10 +4108,38 @@
             this.Task_Tab.Location = new System.Drawing.Point(4, 22);
             this.Task_Tab.Margin = new System.Windows.Forms.Padding(2);
             this.Task_Tab.Name = "Task_Tab";
-            this.Task_Tab.Size = new System.Drawing.Size(872, 442);
+            this.Task_Tab.Size = new System.Drawing.Size(892, 424);
             this.Task_Tab.TabIndex = 3;
             this.Task_Tab.Text = "Task Selection";
             this.Task_Tab.UseVisualStyleBackColor = true;
+            // 
+            // StimAndRecord_Run
+            // 
+            this.StimAndRecord_Run.BackColor = System.Drawing.Color.Gainsboro;
+            this.StimAndRecord_Run.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            this.StimAndRecord_Run.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.StimAndRecord_Run.Location = new System.Drawing.Point(583, 322);
+            this.StimAndRecord_Run.Margin = new System.Windows.Forms.Padding(2);
+            this.StimAndRecord_Run.Name = "StimAndRecord_Run";
+            this.StimAndRecord_Run.Size = new System.Drawing.Size(260, 36);
+            this.StimAndRecord_Run.TabIndex = 28;
+            this.StimAndRecord_Run.Text = "Run Stim and Record Test";
+            this.StimAndRecord_Run.UseVisualStyleBackColor = false;
+            this.StimAndRecord_Run.Click += new System.EventHandler(this.StimAndRecord_Run_Click);
+            // 
+            // Task_SerialPortCheck
+            // 
+            this.Task_SerialPortCheck.BackColor = System.Drawing.Color.Gainsboro;
+            this.Task_SerialPortCheck.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            this.Task_SerialPortCheck.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Task_SerialPortCheck.Location = new System.Drawing.Point(601, 46);
+            this.Task_SerialPortCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.Task_SerialPortCheck.Name = "Task_SerialPortCheck";
+            this.Task_SerialPortCheck.Size = new System.Drawing.Size(181, 36);
+            this.Task_SerialPortCheck.TabIndex = 27;
+            this.Task_SerialPortCheck.Text = "Serial Port Check";
+            this.Task_SerialPortCheck.UseVisualStyleBackColor = false;
+            this.Task_SerialPortCheck.Click += new System.EventHandler(this.Task_SerialPortCheck_Click);
             // 
             // MonitorSizeLabel
             // 
@@ -4035,7 +4221,7 @@
             this.Montage_Tab.Margin = new System.Windows.Forms.Padding(2);
             this.Montage_Tab.Name = "Montage_Tab";
             this.Montage_Tab.Padding = new System.Windows.Forms.Padding(2);
-            this.Montage_Tab.Size = new System.Drawing.Size(872, 442);
+            this.Montage_Tab.Size = new System.Drawing.Size(892, 424);
             this.Montage_Tab.TabIndex = 1;
             this.Montage_Tab.Text = "Montage Check";
             // 
@@ -4277,156 +4463,38 @@
             this.Montage_Run.UseVisualStyleBackColor = false;
             this.Montage_Run.Click += new System.EventHandler(this.Montage_Run_Click);
             // 
-            // Status_StimSet2_Amp
+            // Delsys_StopRecording
             // 
-            this.Status_StimSet2_Amp.AutoSize = true;
-            this.Status_StimSet2_Amp.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet2_Amp.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet2_Amp.Location = new System.Drawing.Point(601, 218);
-            this.Status_StimSet2_Amp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet2_Amp.Name = "Status_StimSet2_Amp";
-            this.Status_StimSet2_Amp.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet2_Amp.TabIndex = 35;
-            this.Status_StimSet2_Amp.Text = "NaN";
+            this.Delsys_StopRecording.Enabled = false;
+            this.Delsys_StopRecording.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Delsys_StopRecording.Location = new System.Drawing.Point(319, 85);
+            this.Delsys_StopRecording.Margin = new System.Windows.Forms.Padding(2);
+            this.Delsys_StopRecording.Name = "Delsys_StopRecording";
+            this.Delsys_StopRecording.Size = new System.Drawing.Size(195, 38);
+            this.Delsys_StopRecording.TabIndex = 21;
+            this.Delsys_StopRecording.Text = "Stop Recording";
+            this.Delsys_StopRecording.UseVisualStyleBackColor = true;
+            this.Delsys_StopRecording.Click += new System.EventHandler(this.Delsys_StopRecording_Click);
             // 
-            // Status_StimSet3_Amp
+            // Delsys_StartRecording
             // 
-            this.Status_StimSet3_Amp.AutoSize = true;
-            this.Status_StimSet3_Amp.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet3_Amp.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet3_Amp.Location = new System.Drawing.Point(679, 218);
-            this.Status_StimSet3_Amp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet3_Amp.Name = "Status_StimSet3_Amp";
-            this.Status_StimSet3_Amp.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet3_Amp.TabIndex = 36;
-            this.Status_StimSet3_Amp.Text = "NaN";
-            // 
-            // Status_StimSet4_Amp
-            // 
-            this.Status_StimSet4_Amp.AutoSize = true;
-            this.Status_StimSet4_Amp.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet4_Amp.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet4_Amp.Location = new System.Drawing.Point(759, 218);
-            this.Status_StimSet4_Amp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet4_Amp.Name = "Status_StimSet4_Amp";
-            this.Status_StimSet4_Amp.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet4_Amp.TabIndex = 37;
-            this.Status_StimSet4_Amp.Text = "NaN";
-            // 
-            // Status_StimSet4_Freq
-            // 
-            this.Status_StimSet4_Freq.AutoSize = true;
-            this.Status_StimSet4_Freq.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet4_Freq.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet4_Freq.Location = new System.Drawing.Point(759, 249);
-            this.Status_StimSet4_Freq.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet4_Freq.Name = "Status_StimSet4_Freq";
-            this.Status_StimSet4_Freq.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet4_Freq.TabIndex = 40;
-            this.Status_StimSet4_Freq.Text = "NaN";
-            // 
-            // Status_StimSet3_Freq
-            // 
-            this.Status_StimSet3_Freq.AutoSize = true;
-            this.Status_StimSet3_Freq.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet3_Freq.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet3_Freq.Location = new System.Drawing.Point(679, 249);
-            this.Status_StimSet3_Freq.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet3_Freq.Name = "Status_StimSet3_Freq";
-            this.Status_StimSet3_Freq.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet3_Freq.TabIndex = 39;
-            this.Status_StimSet3_Freq.Text = "NaN";
-            // 
-            // Status_StimSet2_Freq
-            // 
-            this.Status_StimSet2_Freq.AutoSize = true;
-            this.Status_StimSet2_Freq.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet2_Freq.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet2_Freq.Location = new System.Drawing.Point(601, 249);
-            this.Status_StimSet2_Freq.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet2_Freq.Name = "Status_StimSet2_Freq";
-            this.Status_StimSet2_Freq.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet2_Freq.TabIndex = 38;
-            this.Status_StimSet2_Freq.Text = "NaN";
-            // 
-            // Status_StimSet4_PW
-            // 
-            this.Status_StimSet4_PW.AutoSize = true;
-            this.Status_StimSet4_PW.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet4_PW.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet4_PW.Location = new System.Drawing.Point(759, 282);
-            this.Status_StimSet4_PW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet4_PW.Name = "Status_StimSet4_PW";
-            this.Status_StimSet4_PW.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet4_PW.TabIndex = 43;
-            this.Status_StimSet4_PW.Text = "NaN";
-            // 
-            // Status_StimSet3_PW
-            // 
-            this.Status_StimSet3_PW.AutoSize = true;
-            this.Status_StimSet3_PW.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet3_PW.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet3_PW.Location = new System.Drawing.Point(679, 282);
-            this.Status_StimSet3_PW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet3_PW.Name = "Status_StimSet3_PW";
-            this.Status_StimSet3_PW.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet3_PW.TabIndex = 42;
-            this.Status_StimSet3_PW.Text = "NaN";
-            // 
-            // Status_StimSet2_PW
-            // 
-            this.Status_StimSet2_PW.AutoSize = true;
-            this.Status_StimSet2_PW.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet2_PW.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet2_PW.Location = new System.Drawing.Point(601, 282);
-            this.Status_StimSet2_PW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet2_PW.Name = "Status_StimSet2_PW";
-            this.Status_StimSet2_PW.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet2_PW.TabIndex = 41;
-            this.Status_StimSet2_PW.Text = "NaN";
-            // 
-            // Status_StimSet4_Contacts
-            // 
-            this.Status_StimSet4_Contacts.AutoSize = true;
-            this.Status_StimSet4_Contacts.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet4_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet4_Contacts.Location = new System.Drawing.Point(759, 316);
-            this.Status_StimSet4_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet4_Contacts.Name = "Status_StimSet4_Contacts";
-            this.Status_StimSet4_Contacts.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet4_Contacts.TabIndex = 46;
-            this.Status_StimSet4_Contacts.Text = "NaN";
-            // 
-            // Status_StimSet3_Contacts
-            // 
-            this.Status_StimSet3_Contacts.AutoSize = true;
-            this.Status_StimSet3_Contacts.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet3_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet3_Contacts.Location = new System.Drawing.Point(679, 316);
-            this.Status_StimSet3_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet3_Contacts.Name = "Status_StimSet3_Contacts";
-            this.Status_StimSet3_Contacts.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet3_Contacts.TabIndex = 45;
-            this.Status_StimSet3_Contacts.Text = "NaN";
-            // 
-            // Status_StimSet2_Contacts
-            // 
-            this.Status_StimSet2_Contacts.AutoSize = true;
-            this.Status_StimSet2_Contacts.BackColor = System.Drawing.Color.Transparent;
-            this.Status_StimSet2_Contacts.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.Status_StimSet2_Contacts.Location = new System.Drawing.Point(601, 316);
-            this.Status_StimSet2_Contacts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Status_StimSet2_Contacts.Name = "Status_StimSet2_Contacts";
-            this.Status_StimSet2_Contacts.Size = new System.Drawing.Size(42, 21);
-            this.Status_StimSet2_Contacts.TabIndex = 44;
-            this.Status_StimSet2_Contacts.Text = "NaN";
+            this.Delsys_StartRecording.Enabled = false;
+            this.Delsys_StartRecording.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.Delsys_StartRecording.Location = new System.Drawing.Point(25, 85);
+            this.Delsys_StartRecording.Margin = new System.Windows.Forms.Padding(2);
+            this.Delsys_StartRecording.Name = "Delsys_StartRecording";
+            this.Delsys_StartRecording.Size = new System.Drawing.Size(195, 38);
+            this.Delsys_StartRecording.TabIndex = 22;
+            this.Delsys_StartRecording.Text = "Start Recording";
+            this.Delsys_StartRecording.UseVisualStyleBackColor = true;
+            this.Delsys_StartRecording.Click += new System.EventHandler(this.Delsys_StartRecording_Click);
             // 
             // Mainpage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(947, 525);
+            this.ClientSize = new System.Drawing.Size(982, 506);
             this.Controls.Add(this.Sensing_GetFFTStatusButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -4493,7 +4561,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Sensing_LoopRecorderBuffer)).EndInit();
             this.ConfigStream_Tab.ResumeLayout(false);
             this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             this.Task_Tab.ResumeLayout(false);
@@ -4681,14 +4750,6 @@
         private System.Windows.Forms.CheckBox Streaming_FFT;
         private System.Windows.Forms.CheckBox Streaming_LFP;
         private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.Label label60;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Label label59;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label58;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label57;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button Streaming_SetStatus;
         private System.Windows.Forms.Button Streaming_GetStatus;
         private System.Windows.Forms.Button Streaming_Disable;
@@ -4724,7 +4785,6 @@
         private System.Windows.Forms.Label label73;
         private System.Windows.Forms.Label label72;
         private System.Windows.Forms.Label label71;
-        private System.Windows.Forms.Label label69;
         private System.Windows.Forms.Label Status_StimSet1_Contacts;
         private System.Windows.Forms.Label Status_StimSet1_PW;
         private System.Windows.Forms.Label Status_StimSet1_Freq;
@@ -4732,14 +4792,12 @@
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.Label label77;
         private System.Windows.Forms.Label label76;
-        private System.Windows.Forms.ComboBox comboBox9;
+        private System.Windows.Forms.ComboBox Stimulation_ActiveGroupSelection;
         private System.Windows.Forms.Button Stimulation_ActivateGroup;
         private System.Windows.Forms.Label Stimulation_Param4_PulsewidthRange;
         private System.Windows.Forms.Label label96;
         private System.Windows.Forms.NumericUpDown Stimulation_Param4_Pulsewidth;
-        private System.Windows.Forms.ComboBox Stimulation_Param4_ContactMinus;
-        private System.Windows.Forms.ComboBox Stimulation_Param4_ContactPlus;
-        private System.Windows.Forms.Label label97;
+        private System.Windows.Forms.Label Stimulation_Param4_Contacts;
         private System.Windows.Forms.Label Stimulation_Param4_FrequencyRange;
         private System.Windows.Forms.Label label99;
         private System.Windows.Forms.NumericUpDown Stimulation_Param4_Frequency;
@@ -4749,9 +4807,7 @@
         private System.Windows.Forms.Label Stimulation_Param3_PulsewidthRange;
         private System.Windows.Forms.Label label89;
         private System.Windows.Forms.NumericUpDown Stimulation_Param3_Pulsewidth;
-        private System.Windows.Forms.ComboBox Stimulation_Param3_ContactMinus;
-        private System.Windows.Forms.ComboBox Stimulation_Param3_ContactPlus;
-        private System.Windows.Forms.Label label90;
+        private System.Windows.Forms.Label Stimulation_Param3_Contacts;
         private System.Windows.Forms.Label Stimulation_Param3_FrequencyRange;
         private System.Windows.Forms.Label label92;
         private System.Windows.Forms.NumericUpDown Stimulation_Param3_Frequency;
@@ -4761,9 +4817,7 @@
         private System.Windows.Forms.Label Stimulation_Param2_PulsewidthRange;
         private System.Windows.Forms.Label label82;
         private System.Windows.Forms.NumericUpDown Stimulation_Param2_Pulsewidth;
-        private System.Windows.Forms.ComboBox Stimulation_Param2_ContactMinus;
-        private System.Windows.Forms.ComboBox Stimulation_Param2_ContactPlus;
-        private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.Label Stimulation_Param2_Contacts;
         private System.Windows.Forms.Label Stimulation_Param2_FrequencyRange;
         private System.Windows.Forms.Label label85;
         private System.Windows.Forms.NumericUpDown Stimulation_Param2_Frequency;
@@ -4773,9 +4827,7 @@
         private System.Windows.Forms.Label Stimulation_Param1_PulsewidthRange;
         private System.Windows.Forms.Label label81;
         private System.Windows.Forms.NumericUpDown Stimulation_Param1_Pulsewidth;
-        private System.Windows.Forms.ComboBox Stimulation_Param1_ContactMinus;
-        private System.Windows.Forms.ComboBox Stimulation_Param1_ContactPlus;
-        private System.Windows.Forms.Label label79;
+        private System.Windows.Forms.Label Stimulation_Param1_Contacts;
         private System.Windows.Forms.Label Status_StimSet4_Contacts;
         private System.Windows.Forms.Label Status_StimSet3_Contacts;
         private System.Windows.Forms.Label Status_StimSet2_Contacts;
@@ -4788,6 +4840,31 @@
         private System.Windows.Forms.Label Status_StimSet4_Amp;
         private System.Windows.Forms.Label Status_StimSet3_Amp;
         private System.Windows.Forms.Label Status_StimSet2_Amp;
+        private System.Windows.Forms.Button Stimulation_TherapyOff;
+        private System.Windows.Forms.Button Stimulation_TherapyOn;
+        private System.Windows.Forms.Button Task_SerialPortCheck;
+        private System.Windows.Forms.Button StimAndRecord_Run;
+        private System.Windows.Forms.Button Delsys_ConnectServer;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton Sensor16_LED;
+        private System.Windows.Forms.RadioButton Sensor15_LED;
+        private System.Windows.Forms.RadioButton Sensor14_LED;
+        private System.Windows.Forms.RadioButton Sensor13_LED;
+        private System.Windows.Forms.RadioButton Sensor12_LED;
+        private System.Windows.Forms.RadioButton Sensor11_LED;
+        private System.Windows.Forms.RadioButton Sensor10_LED;
+        private System.Windows.Forms.RadioButton Sensor09_LED;
+        private System.Windows.Forms.RadioButton Sensor08_LED;
+        private System.Windows.Forms.RadioButton Sensor07_LED;
+        private System.Windows.Forms.RadioButton Sensor06_LED;
+        private System.Windows.Forms.RadioButton Sensor05_LED;
+        private System.Windows.Forms.RadioButton Sensor04_LED;
+        private System.Windows.Forms.RadioButton Sensor03_LED;
+        private System.Windows.Forms.RadioButton Sensor02_LED;
+        private System.Windows.Forms.RadioButton Sensor01_LED;
+        private System.Windows.Forms.Button Delsys_UpdateSensors;
+        private System.Windows.Forms.Button Delsys_StartRecording;
+        private System.Windows.Forms.Button Delsys_StopRecording;
     }
 }
 

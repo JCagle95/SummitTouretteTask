@@ -1,11 +1,6 @@
 ﻿using SummitTouretteTask.Properties;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -17,7 +12,8 @@ namespace SummitTouretteTask
         public ExtensiveSampling()
         {
             InitializeComponent();
-            storedFileName = DateTime.Now.ToString("[yyyy-MM-dd-hh-mm-ss]") + "ExtensiveSampling.dat";
+            storedFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " ExtensiveSampling.dat";
+            configurationFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " ExtensiveSampling.config";
             stopWatch = new Stopwatch();
         }
         
@@ -33,8 +29,12 @@ namespace SummitTouretteTask
             if (key.KeyChar.ToString() == "n")
             {
                 dataManager = new DataManager();
+                storedFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " ExtensiveSampling.dat";
+                configurationFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " ExtensiveSampling.config";
+                trignoServer.storedFileName = DateTime.Now.ToString("[yyyyMMdd-HH_mm_ss]") + " ExtensiveSampling.mdat";
                 this.displayThread = new Thread(new ThreadStart(this.InitializeTaskDisplay));
                 this.taskCondition = true;
+                Task_WriteConfigurations();
                 this.displayThread.Start();
             }
         }
@@ -53,6 +53,7 @@ namespace SummitTouretteTask
             for (int i = 0; i < 3600*5; i++)
             {
                 DisplayTextSafe(string.Format("Sampled for {0} sec", i+1));
+                //SerialPortMessage("Hello World");
                 Delay(1000);
 
                 if (!this.taskCondition) break;
